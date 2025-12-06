@@ -1,0 +1,8 @@
+email,full_name,password,role
+admin@smd.edu.vn,Admin User,Admin@123,admin
+lecturer1@smd.edu.vn,Nguyen Van A,Pass123!,lecturer
+lecturer2@smd.edu.vn,Tran Thi B,Pass123!,lecturer
+hod@smd.edu.vn,Hoang Van C,Pass123!,hod
+aa@smd.edu.vn,Le Thi D,Pass123!,aa
+student1@smd.edu.vn,Pham Van E,Pass123!,student
+student2@smd.edu.vn,Do Thi F,Pass123!,student
