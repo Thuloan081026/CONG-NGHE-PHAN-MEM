@@ -7,6 +7,8 @@
 ### 🎯 Tính năng chính
 - ✅ Quản lý giáo trình tập trung (Centralized syllabus management)
 - ✅ Xác thực & quản lý người dùng (Authentication & user management)
+- ✅ **Version control với Rollback** (NEW - Module 2)
+- ✅ CLO/PLO mapping & metadata (NEW - Module 2)
 - ✅ Quy trình duyệt giáo trình (Syllabus review workflow)
 - ✅ AI-powered features (Diff detection, summarization, CLO-PLO mapping)
 - ✅ Tìm kiếm nâng cao & phân tích
@@ -36,6 +38,40 @@
 
 ---
 
+## 📚 MODULES
+
+### ✅ Module 1: Authentication & User Management
+**Status**: COMPLETED - 13 endpoints, 40+ files, 300+ pages documentation
+
+Features:
+- User registration & login
+- JWT token management (access + refresh)
+- Password hashing with bcrypt
+- Role-based access control (5 roles)
+- User lock/unlock for admin
+- CSV bulk import
+
+📖 **Documentation**: See `AUTHENTICATION_USER_MANAGEMENT.md`
+
+---
+
+### ✅ Module 2: Syllabus Management (NEW!)
+**Status**: COMPLETED - 20 endpoints, version control, CLO-PLO mapping
+
+Features:
+- CRUD operations for syllabuses
+- **Automatic version control** - Each update creates a new version
+- **Rollback capability** - Restore to previous versions
+- **Version comparison** - See what changed between versions
+- **CLO-PLO mapping** - Link course & program learning outcomes
+- **Workflow approval** - Draft → Submitted → Approved → Published
+- **Metadata management** - Prerequisites, textbooks, assessment weights
+- **Search & filtering** - By code, name, semester, department
+
+📖 **Documentation**: See `SYLLABUS_MANAGEMENT_MODULE.md` & `MODULE_2_IMPLEMENTATION_SUMMARY.md`
+
+---
+
 ## 🏗️ Kiến trúc (Architecture)
 
 ```
@@ -49,30 +85,30 @@ backend/
 │   │
 │   ├── models/                  # SQLAlchemy ORM models
 │   │   ├── user.py
-│   │   ├── syllabus.py
+│   │   ├── syllabus.py         # NEW - Module 2
 │   │   ├── review.py
 │   │   └── ...
 │   │
 │   ├── schemas/                 # Pydantic request/response
 │   │   ├── user_schema.py
-│   │   ├── syllabus_schema.py
+│   │   ├── syllabus_schema.py  # NEW - Module 2
 │   │   └── ...
 │   │
 │   ├── repositories/            # Data access layer (CRUD)
 │   │   ├── user_repo.py
-│   │   ├── syllabus_repo.py
+│   │   ├── syllabus_repo.py    # NEW - Module 2
 │   │   └── ...
 │   │
 │   ├── services/                # Business logic layer
 │   │   ├── user_service.py
-│   │   ├── syllabus_service.py
+│   │   ├── syllabus_service.py # NEW - Module 2
 │   │   ├── ai_service.py
 │   │   └── ...
 │   │
 │   ├── api/v1/                  # API routes
 │   │   ├── auth.py              # Authentication endpoints
 │   │   ├── user.py              # User management endpoints
-│   │   ├── syllabus.py          # Syllabus endpoints
+│   │   ├── syllabus.py          # NEW - Module 2 (20 endpoints)
 │   │   ├── review.py            # Review workflow endpoints
 │   │   └── ...
 │   │
