@@ -1,7 +1,7 @@
 from typing import Optional, List
 from sqlalchemy.orm import Session
 
-from ..schemas.user_schema import UserCreate
+from ..schemas.user_schema import UserCreate, UserUpdate
 from ..repositories import user_repo
 from ..core.security import get_password_hash, verify_password
 
@@ -41,3 +41,24 @@ def import_users_from_list(db: Session, rows: List[dict]):
             "role": r.get("role", "student"),
         })
     return user_repo.create_users_bulk(db, to_create)
+
+
+def update_user_info(db: Session, user_id: int, user_update: UserUpdate):
+    user = user_repo.get_user(db, user_id)
+    if not user:
+        raise ValueError("User not found")
+    return user_repo.update_user(db, user, **user_update.dict(exclude_unset=True))
+
+
+def lock_user_account(db: Session, user_id: int):
+    user = user_repo.get_user(db, user_id)
+    if not user:
+        raise ValueError("User not found")
+    return user_repo.lock_user(db, user)
+
+
+def unlock_user_account(db: Session, user_id: int):
+    user = user_repo.get_user(db, user_id)
+    if not user:
+        raise ValueError("User not found")
+    return user_repo.unlock_user(db, user)

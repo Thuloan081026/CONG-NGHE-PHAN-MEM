@@ -32,6 +32,32 @@ def update_password(db: Session, user: User, new_hashed_password: str) -> User:
     return user
 
 
+def update_user(db: Session, user: User, **kwargs) -> User:
+    for key, value in kwargs.items():
+        if hasattr(user, key) and key not in ["id", "hashed_password"]:
+            setattr(user, key, value)
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+def lock_user(db: Session, user: User) -> User:
+    user.is_active = False
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+def unlock_user(db: Session, user: User) -> User:
+    user.is_active = True
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
+
+
 def create_users_bulk(db: Session, users_data: list) -> List[User]:
     created = []
     for u in users_data:
