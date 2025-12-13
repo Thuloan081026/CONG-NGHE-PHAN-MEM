@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Syllabus Detail</title>
+    <link rel="stylesheet" href="/static/css/student.css">
+    <script src="/static/js/student.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h2> Chi tiết Syllabus</h2>
+
+    <p><b>Mã môn:</b> {{ s.subject_code }}</p>
+    <p><b>Tên môn:</b> {{ s.subject_name }}</p>
+    <p><b>Số tín chỉ:</b> {{ s.credits }}</p>
+
+    <hr>
+
+    <h3> Mô tả môn học</h3>
+    <p>{{ s.description }}</p>
+
+    <h3> Chuẩn đầu ra (CLO)</h3>
+    <p>{{ s.clos }}</p>
+
+    <h3> Đánh giá</h3>
+    <p>{{ s.assessment }}</p>
+
+    <h3> Tài liệu học tập</h3>
+    <p>{{ s.materials }}</p>
+
+    <div class="ai-box">
+        <h3> Tóm tắt bằng AI</h3>
+        <p>{{ ai_summary }}</p>
+    </div>
+
+    <br>
+
+    <form method="post" action="/student/follow/{{ s.id }}" onsubmit="return confirmFollow();">
+        <button class="follow-btn"> Theo dõi syllabus</button>
+    </form>
+
+    <br>
+    <a href="/student/search">⬅ Quay lại tra cứu</a>
+</div>
+
+</body>
+</html>
