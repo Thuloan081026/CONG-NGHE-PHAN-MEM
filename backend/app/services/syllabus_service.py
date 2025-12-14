@@ -7,7 +7,7 @@ from ..models.syllabus import Syllabus, SyllabusVersion
 from ..models.user import User
 from ..schemas.syllabus_schema import SyllabusCreate, SyllabusUpdate
 from ..repositories.syllabus_repo import SyllabusRepository, SyllabusVersionRepository
-from ..core.exceptions import HTTPException
+from fastapi import HTTPException
 
 
 class SyllabusService:

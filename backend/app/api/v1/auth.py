@@ -11,13 +11,16 @@ from ...repositories import user_repo
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.post("/register", response_model=UserOut)
+@router.post("/register")
 def register(user_in: UserCreate, db: Session = Depends(get_db)):
     try:
         user = user_service.register_user(db, user_in)
-    except ValueError as e:
+        db.commit()  # Manual commit
+        return f"User {user.email} created successfully with ID {user.id}"
+    except Exception as e:
+        db.rollback()
         raise HTTPException(status_code=400, detail=str(e))
-    return user
+    # Remove db.close() - let dependency injection handle it
 
 
 @router.post("/login", response_model=Token)

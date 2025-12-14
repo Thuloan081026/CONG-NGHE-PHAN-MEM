@@ -6,7 +6,7 @@ from ..models.workflow import WorkflowEvent
 from ..models.syllabus import Syllabus
 from ..repositories.syllabus_repo import SyllabusRepository
 from ..repositories.workflow_repo import WorkflowRepository
-from ..core.exceptions import HTTPException
+from fastapi import HTTPException
 
 
 class WorkflowService:

@@ -25,5 +25,5 @@ class WorkflowEvent(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     # relationships
-    syllabus = relationship("Syllabus", back_populates="versions", foreign_keys=[syllabus_id])
+    syllabus = relationship("Syllabus", back_populates="workflow_events", foreign_keys=[syllabus_id])
     performer = relationship("User", foreign_keys=[performed_by])
