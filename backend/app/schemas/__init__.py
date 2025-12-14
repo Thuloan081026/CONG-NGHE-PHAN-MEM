@@ -5,4 +5,7 @@ from .syllabus_schema import (
     SyllabusDetailOut, SyllabusVersionOut, SyllabusVersionListOut,
     SyllabusStatusUpdate, CLOPLOMappingUpdate, SyllabusBulkCreate
 )
+<<<<<<< HEAD
 from .workflow_schema import WorkflowActionRequest, WorkflowEventOut, WorkflowResultOut
+=======
+>>>>>>> origin/HoangLong

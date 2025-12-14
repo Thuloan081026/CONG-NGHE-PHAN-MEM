@@ -59,7 +59,10 @@ class Syllabus(Base):
     
     # Relationships
     versions = relationship("SyllabusVersion", back_populates="syllabus", cascade="all, delete-orphan")
+<<<<<<< HEAD
     workflow_events = relationship("WorkflowEvent", back_populates="syllabus")
+=======
+>>>>>>> origin/HoangLong
     creator = relationship("User", foreign_keys=[created_by])
 
 
