@@ -10,7 +10,10 @@ from .api.v1 import auth as auth_router
 =======
 from .api.v1 import user as user_router
 from .api.v1 import syllabus as syllabus_router
+<<<<<<< HEAD
 >>>>>>> origin/HoangLong
+=======
+>>>>>>> origin/NgoUyen
 
 
 Base.metadata.create_all(bind=engine)  # Create tables
@@ -38,4 +41,7 @@ app.include_router(auth_router.router)
 =======
 app.include_router(user_router.router)
 app.include_router(syllabus_router.router)
+<<<<<<< HEAD
 >>>>>>> origin/HoangLong
+=======
+>>>>>>> origin/NgoUyen

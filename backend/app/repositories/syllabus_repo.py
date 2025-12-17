@@ -11,11 +11,14 @@ class SyllabusRepository(BaseRepository[Syllabus]):
     """Repository for Syllabus CRUD operations"""
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     def __init__(self):
         super().__init__(Syllabus)
 
 =======
 >>>>>>> origin/HoangLong
+=======
+>>>>>>> origin/NgoUyen
     def get_by_code(self, db: Session, subject_code: str) -> Optional[Syllabus]:
         """Get syllabus by subject code"""
         return db.query(Syllabus).filter(Syllabus.subject_code == subject_code).first()
@@ -154,11 +157,14 @@ class SyllabusVersionRepository(BaseRepository[SyllabusVersion]):
     """Repository for Syllabus Version (version control)"""
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     def __init__(self):
         super().__init__(SyllabusVersion)
 
 =======
 >>>>>>> origin/HoangLong
+=======
+>>>>>>> origin/NgoUyen
     def get_by_id(self, db: Session, version_id: int) -> Optional[SyllabusVersion]:
         """Get version by ID"""
         return db.query(SyllabusVersion).filter(SyllabusVersion.id == version_id).first()

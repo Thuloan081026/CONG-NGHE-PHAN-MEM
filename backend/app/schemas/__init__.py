@@ -6,6 +6,9 @@ from .syllabus_schema import (
     SyllabusStatusUpdate, CLOPLOMappingUpdate, SyllabusBulkCreate
 )
 <<<<<<< HEAD
+<<<<<<< HEAD
 from .workflow_schema import WorkflowActionRequest, WorkflowEventOut, WorkflowResultOut
 =======
 >>>>>>> origin/HoangLong
+=======
+>>>>>>> origin/NgoUyen
