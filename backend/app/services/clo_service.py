@@ -355,13 +355,8 @@ class MappingService:
 
     @staticmethod
     def _format_mapping_response(mapping: CLO_PLO_Mapping) -> MappingResponse:
-        """Helper to format mapping response with related objects"""
-        response = MappingResponse.model_validate(mapping)
-        if mapping.clo:
-            response.clo = CLOResponse.model_validate(mapping.clo)
-        if mapping.plo:
-            response.plo = PLOResponse.model_validate(mapping.plo)
-        return response
+        """Helper to format mapping response"""
+        return MappingResponse.model_validate(mapping)
 
 
 # Singleton instances
