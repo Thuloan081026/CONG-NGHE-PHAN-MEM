@@ -17,11 +17,16 @@ def list_users(db: Session, skip: int = 0, limit: int = 100) -> List[User]:
 
 
 def create_user(db: Session, *, email: str, full_name: str, hashed_password: str, role: str = "student") -> User:
-    user = User(email=email, full_name=full_name, hashed_password=hashed_password, role=role)
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return user
+    try:
+        user = User(email=email, full_name=full_name, hashed_password=hashed_password, role=role)
+        db.add(user)
+        db.flush()
+        db.commit()
+        db.refresh(user)
+        return user
+    except Exception as e:
+        db.rollback()
+        raise
 
 
 def update_password(db: Session, user: User, new_hashed_password: str) -> User:

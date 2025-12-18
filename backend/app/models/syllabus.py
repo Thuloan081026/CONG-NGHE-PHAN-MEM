@@ -31,13 +31,8 @@ class Syllabus(Base):
     
     # Prerequisites & relationships
     prerequisites = Column(JSON, nullable=True)  # [{id, name}, ...] of prerequisite subjects
-    corequisites = Column(JSON, nullable=True)  # Học song song
+    corequisites = Column(JSON, nullable=True)  # Học song hành
     related_subjects = Column(JSON, nullable=True)  # Các môn liên quan
-    
-    # CLO/PLO (Competency & Program Learning Outcomes)
-    clos = Column(JSON, nullable=True)  # [{"id": "CLO1", "description": "...", "level": "K3"}, ...]
-    plos = Column(JSON, nullable=True)  # [{"id": "PLO1", "description": "...", "alignment": 0.8}, ...]
-    clo_plo_mapping = Column(JSON, nullable=True)  # {"CLO1": ["PLO1", "PLO2"], ...}
     
     # Assessment weights
     assessment_weights = Column(JSON, nullable=True)  # {"attendance": 10, "assignment": 30, "exam": 60}
@@ -54,12 +49,15 @@ class Syllabus(Base):
     
     # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
     published_at = Column(DateTime(timezone=True), nullable=True)
     
     # Relationships
     versions = relationship("SyllabusVersion", back_populates="syllabus", cascade="all, delete-orphan")
+    workflow_events = relationship("WorkflowEvent", back_populates="syllabus")
     creator = relationship("User", foreign_keys=[created_by])
+    clos = relationship("CLO", back_populates="syllabus", cascade="all, delete-orphan")
+    notifications = relationship("Notification", back_populates="syllabus")
 
 
 class SyllabusVersion(Base):

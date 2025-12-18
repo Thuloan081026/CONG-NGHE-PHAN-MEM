@@ -10,8 +10,11 @@ def register_user(db: Session, user_in: UserCreate):
     existing = user_repo.get_user_by_email(db, user_in.email)
     if existing:
         raise ValueError("Email already registered")
-    hashed = get_password_hash(user_in.password)
-    return user_repo.create_user(db, email=user_in.email, full_name=user_in.full_name or "", hashed_password=hashed, role=user_in.role)
+    try:
+        hashed = get_password_hash(user_in.password)
+        return user_repo.create_user(db, email=user_in.email, full_name=user_in.full_name or "", hashed_password=hashed, role=user_in.role)
+    except Exception as e:
+        raise
 
 
 def authenticate_user(db: Session, email: str, password: str):
