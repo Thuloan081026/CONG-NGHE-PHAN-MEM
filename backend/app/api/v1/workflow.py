@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import Optional
+from typing import List
 
 from ...core.database import get_db
 from ...core.deps import get_current_user, require_roles
@@ -57,7 +57,7 @@ def final_approve(
     return {"event": event, "syllabus_id": updated.id, "new_status": updated.status, "is_published": updated.is_published}
 
 
-@router.get("/{syllabus_id}/events", response_model=dict)
+@router.get("/{syllabus_id}/events")
 def list_workflow_events(
     syllabus_id: int,
     skip: int = 0,
@@ -67,7 +67,21 @@ def list_workflow_events(
 ):
     """Liệt kê lịch sử workflow của một syllabus (pagination)"""
     items, total = service.list_events(db, syllabus_id, skip, limit)
-    return {"total": total, "count": len(items), "items": items}
+    # Convert SQLAlchemy objects to dicts for JSON serialization
+    items_dict = [
+        {
+            "id": item.id,
+            "syllabus_id": item.syllabus_id,
+            "action": item.action,
+            "from_status": item.from_status,
+            "to_status": item.to_status,
+            "comment": item.comment,
+            "created_by": item.performed_by,
+            "created_at": item.created_at.isoformat() if item.created_at else None
+        }
+        for item in items
+    ]
+    return {"total": total, "count": len(items), "items": items_dict}
 
 
 @router.get("/events/{event_id}", response_model=WorkflowEventOut)
