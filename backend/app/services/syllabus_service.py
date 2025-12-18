@@ -9,6 +9,7 @@ from ..schemas.syllabus_schema import SyllabusCreate, SyllabusUpdate
 from ..repositories.syllabus_repo import SyllabusRepository, SyllabusVersionRepository
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 from fastapi import HTTPException
 =======
 from ..core.exceptions import HTTPException
@@ -16,6 +17,9 @@ from ..core.exceptions import HTTPException
 =======
 from ..core.exceptions import HTTPException
 >>>>>>> origin/NgoUyen
+=======
+from ..core.exceptions import HTTPException
+>>>>>>> origin/ThuMinh
 
 
 class SyllabusService:
