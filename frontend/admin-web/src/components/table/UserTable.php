@@ -1,12 +1,11 @@
-<table border="1" cellpadding="8">
-    <tr>
-        <th>ID</th>
-        <th>Tên</th>
-        <th>Vai trò</th>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>Nguyễn Văn A</td>
-        <td>Lecturer</td>
-    </tr>
+<?php $users = UserService::all(); ?>
+<table>
+<tr><th>Name</th><th>Email</th><th>Role</th></tr>
+<?php foreach ($users as $u): ?>
+<tr>
+    <td><?= $u['name'] ?></td>
+    <td><?= $u['email'] ?></td>
+    <td><?= $u['role'] ?></td>
+</tr>
+<?php endforeach; ?>
 </table>
