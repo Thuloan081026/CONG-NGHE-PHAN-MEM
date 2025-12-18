@@ -1,0 +1,38 @@
+body {
+    font-family: Arial;
+    background: #eef1f5;
+}
+
+.login-box {
+    width: 350px;
+    margin: 80px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 6px;
+}
+
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin: 6px 0 12px;
+}
+
+input:invalid, select:invalid {
+    border: 2px solid red;
+    background: #fff0f0;
+}
+
+input:valid, select:valid {
+    border: 2px solid green;
+    background: #f0fff4;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+}
