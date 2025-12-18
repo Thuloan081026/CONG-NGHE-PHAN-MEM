@@ -5,13 +5,6 @@ from .syllabus_schema import (
     SyllabusDetailOut, SyllabusVersionOut, SyllabusVersionListOut,
     SyllabusStatusUpdate, CLOPLOMappingUpdate, SyllabusBulkCreate
 )
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 from .workflow_schema import WorkflowActionRequest, WorkflowEventOut, WorkflowResultOut
-=======
->>>>>>> origin/HoangLong
-=======
->>>>>>> origin/NgoUyen
-=======
->>>>>>> origin/ThuMinh
+from .review_schema import ReviewCreate, ReviewUpdate, ReviewResponse
+from .clo_schema import CLOCreate, CLOUpdate, CLOResponse, PLOCreate, PLOUpdate, PLOResponse, MappingCreate, MappingResponse

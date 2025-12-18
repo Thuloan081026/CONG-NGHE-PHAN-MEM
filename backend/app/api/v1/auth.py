@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from ...core.database import get_db
 from ...core import security
 from ...core.deps import get_current_user
-from ...schemas.user_schema import UserCreate, Token, PasswordChange, UserOut
+from ...schemas.user_schema import UserCreate, Token, PasswordChange, UserOut, TokenUser
 from ...services import user_service
 from ...repositories import user_repo
 
@@ -28,10 +28,19 @@ def login(form_data: UserCreate, db: Session = Depends(get_db)):
     # reuse UserCreate for email/password payload here
     user = user_service.authenticate_user(db, form_data.email, form_data.password)
     if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+    
+    # Refresh user from DB để đảm bảo có đầy đủ fields
+    db.refresh(user)
+    
     access_token = security.create_access_token(subject=str(user.id))
     refresh_token = security.create_refresh_token(subject=str(user.id))
-    return {"access_token": access_token, "refresh_token": refresh_token}
+    
+    return {
+        "access_token": access_token, 
+        "refresh_token": refresh_token,
+        "user": TokenUser.model_validate(user)
+    }
 
 
 @router.post("/refresh", response_model=Token)

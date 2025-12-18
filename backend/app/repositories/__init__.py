@@ -1,20 +1,7 @@
 from . import user_repo
 from . import syllabus_repo
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 from . import workflow_repo
+from . import review_repo
+from . import clo_repo
 
-__all__ = ["user_repo", "syllabus_repo", "workflow_repo"]
-=======
-
-__all__ = ["user_repo", "syllabus_repo"]
->>>>>>> origin/HoangLong
-=======
-
-__all__ = ["user_repo", "syllabus_repo"]
->>>>>>> origin/NgoUyen
-=======
-
-__all__ = ["user_repo", "syllabus_repo"]
->>>>>>> origin/ThuMinh
+__all__ = ["user_repo", "syllabus_repo", "workflow_repo", "review_repo", "clo_repo"]
