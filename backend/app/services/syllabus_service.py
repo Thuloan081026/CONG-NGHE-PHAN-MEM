@@ -31,41 +31,58 @@ class SyllabusService:
         2. Tạo syllabus mới với status = "draft"
         3. Tự động tạo version 1 cho syllabus
         """
-        # Check if subject_code already exists
-        existing = self.repo.get_by_code(db, syllabus_in.subject_code)
-        if existing:
-            raise HTTPException(
-                status_code=400,
-                detail=f"Subject code '{syllabus_in.subject_code}' already exists"
+        try:
+            print(f"[DEBUG] Creating syllabus with user_id: {user_id}")
+            print(f"[DEBUG] Subject code: {syllabus_in.subject_code}")
+            
+            # Check if subject_code already exists
+            existing = self.repo.get_by_code(db, syllabus_in.subject_code)
+            if existing:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Subject code '{syllabus_in.subject_code}' already exists"
+                )
+
+            # Prepare syllabus data
+            syllabus_data = syllabus_in.dict(exclude_unset=True)  # Only include set fields
+            syllabus_data["created_by"] = user_id
+            syllabus_data["status"] = "draft"
+            syllabus_data["is_published"] = False
+            
+            print(f"[DEBUG] Syllabus data created_by: {syllabus_data['created_by']}")
+
+            # Create syllabus
+            syllabus = self.repo.create(db, syllabus_data)
+            print(f"[DEBUG] Syllabus created with ID: {syllabus.id}")
+
+            # Create initial version
+            self.version_repo.create(
+                db,
+                {
+                    "syllabus_id": syllabus.id,
+                    "version_number": 1,
+                    "change_summary": "Initial creation",
+                    "change_description": f"Giáo trình '{syllabus.subject_name}' được tạo lần đầu",
+                    "subject_code": syllabus.subject_code,
+                    "subject_name": syllabus.subject_name,
+                    "content": syllabus.content,
+                    "changed_fields": [],  # Keep as list, MySQL will serialize
+                    "version_status": "saved",
+                    "created_by": user_id
+                }
             )
 
-        # Prepare syllabus data
-        syllabus_data = syllabus_in.dict()
-        syllabus_data["created_by"] = user_id
-        syllabus_data["status"] = "draft"
-        syllabus_data["is_published"] = False
-
-        # Create syllabus
-        syllabus = self.repo.create(db, syllabus_data)
-
-        # Create initial version
-        self.version_repo.create(
-            db,
-            {
-                "syllabus_id": syllabus.id,
-                "version_number": 1,
-                "change_summary": "Initial creation",
-                "change_description": f"Giáo trình '{syllabus.subject_name}' được tạo lần đầu",
-                "subject_code": syllabus.subject_code,
-                "subject_name": syllabus.subject_name,
-                "content": syllabus.content,
-                "changed_fields": [],
-                "version_status": "saved",
-                "created_by": user_id
-            }
-        )
-
-        return syllabus
+            return syllabus
+        except HTTPException:
+            raise
+        except Exception as e:
+            print(f"[ERROR] Error creating syllabus: {e}")
+            import traceback
+            traceback.print_exc()
+            raise HTTPException(
+                status_code=500,
+                detail=f"Failed to create syllabus: {str(e)}"
+            )
 
     def update_syllabus(
         self,
