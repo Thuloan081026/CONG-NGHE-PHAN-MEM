@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container">
+        <h1>Tra cứu Giáo trình & Lộ trình học tập</h1>
+        <p>Cổng thông tin chính thức, công khai và minh bạch dành cho sinh viên và phụ huynh.</p>
+        
+        <form action="/public/" method="get" class="hero-search-form">
+            <input type="text" name="search" 
+                   placeholder="Nhập mã môn (VD: SWP391) hoặc tên môn học..." 
+                   value="{{ search_term }}">
+            <button type="submit"><i class="fas fa-search"></i> Tìm kiếm</button>
+        </form>
+    </div>
+</section>
+
+<section class="results-section container">
+    <h2 class="section-title">
+        {% if search_term %}
+            Kết quả tìm kiếm cho "{{ search_term }}"
+        {% else %}
+            Các học phần nổi bật
+        {% endif %}
+    </h2>
+    
+    <div class="syllabus-grid">
+        {% for s in syllabuses %}
+        <div class="public-card">
+            <div class="card-top">
+                <span class="badge-code">{{ s.code }}</span>
+                <span class="badge-credits">{{ s.credits }} tín chỉ</span>
+            </div>
+            <h3><a href="/public/syllabus/{{ s.id }}">{{ s.name }}</a></h3>
+            <p class="desc">{{ s.ai_summary }}</p>
+            
+            <div class="card-info">
+                <span><i class="fas fa-graduation-cap"></i> {{ s.major }}</span>
+                <span><i class="fas fa-layer-group"></i> Kỳ {{ s.semester }}</span>
+            </div>
+
+            <div class="card-bottom">
+                <a href="/public/syllabus/{{ s.id }}" class="link-detail">Xem chi tiết <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        {% else %}
+        <div class="no-result">
+            <img src="https://via.placeholder.com/100x100?text=No+Data" alt="Empty">
+            <p>Không tìm thấy môn học nào phù hợp.</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

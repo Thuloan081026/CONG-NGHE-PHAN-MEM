@@ -22,10 +22,10 @@ class UserOut(UserBase):
     id: int
     is_active: bool
     created_at: datetime
-    updated_at: datetime
+    updated_at: Optional[datetime] = None  # Can be None on first create
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserListOut(BaseModel):
@@ -37,13 +37,26 @@ class UserListOut(BaseModel):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+
+class TokenUser(BaseModel):
+    """User info trong Token response"""
+    id: int
+    email: str
+    role: str
+    full_name: Optional[str] = None
+    is_active: bool
+    
+    class Config:
+        from_attributes = True
 
 
 class Token(BaseModel):
     access_token: str
     refresh_token: str
     token_type: str = "bearer"
+    user: Optional[TokenUser] = None  # User info
 
 
 class TokenData(BaseModel):

@@ -4,20 +4,23 @@ from sqlalchemy.orm import Session
 from ...core.database import get_db
 from ...core import security
 from ...core.deps import get_current_user
-from ...schemas.user_schema import UserCreate, Token, PasswordChange, UserOut
+from ...schemas.user_schema import UserCreate, Token, PasswordChange, UserOut, TokenUser
 from ...services import user_service
 from ...repositories import user_repo
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.post("/register", response_model=UserOut)
+@router.post("/register")
 def register(user_in: UserCreate, db: Session = Depends(get_db)):
     try:
         user = user_service.register_user(db, user_in)
-    except ValueError as e:
+        db.commit()  # Manual commit
+        return f"User {user.email} created successfully with ID {user.id}"
+    except Exception as e:
+        db.rollback()
         raise HTTPException(status_code=400, detail=str(e))
-    return user
+    # Remove db.close() - let dependency injection handle it
 
 
 @router.post("/login", response_model=Token)
@@ -25,10 +28,19 @@ def login(form_data: UserCreate, db: Session = Depends(get_db)):
     # reuse UserCreate for email/password payload here
     user = user_service.authenticate_user(db, form_data.email, form_data.password)
     if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+    
+    # Refresh user from DB để đảm bảo có đầy đủ fields
+    db.refresh(user)
+    
     access_token = security.create_access_token(subject=str(user.id))
     refresh_token = security.create_refresh_token(subject=str(user.id))
-    return {"access_token": access_token, "refresh_token": refresh_token}
+    
+    return {
+        "access_token": access_token, 
+        "refresh_token": refresh_token,
+        "user": TokenUser.model_validate(user)
+    }
 
 
 @router.post("/refresh", response_model=Token)

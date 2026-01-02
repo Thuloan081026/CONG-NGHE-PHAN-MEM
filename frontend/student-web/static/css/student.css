@@ -1,70 +1,305 @@
+/* =================================================
+   1. GLOBAL RESET
+   ================================================= */
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #f4f6f9;
     margin: 0;
-    padding: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
 }
 
+/* =================================================
+   2. HEADER
+   ================================================= */
+.main-header {
+    height: 60px;
+    padding: 0 40px;
+    background: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a73e8;
+}
+
+.main-header nav a {
+    margin-left: 24px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: #555;
+    transition: color 0.2s ease;
+}
+
+.main-header nav a:hover,
+.main-header nav a.active {
+    color: #1a73e8;
+}
+
+/* =================================================
+   3. LAYOUT
+   ================================================= */
 .container {
-    width: 90%;
-    margin: auto;
-    padding: 20px;
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 20px;
+    min-height: 80vh;
 }
 
-h2, h3 {
-    color: #2c3e50;
+.page-title {
+    font-size: 24px;
+    margin-bottom: 25px;
+    color: #202124;
 }
 
-.search-box {
+/* =================================================
+   4. PROFILE PAGE
+   ================================================= */
+.profile-wrapper {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.profile-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* LEFT */
+.info-card {
+    flex: 1;
+    min-width: 300px;
+}
+
+.avatar-section {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.avatar-circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color: #1a73e8;
+    color: #ffffff;
+    font-size: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 16px;
+    background: #e8f0fe;
+    color: #1a73e8;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid #f1f3f4;
+    font-size: 14px;
+}
+
+.info-row strong {
+    color: #5f6368;
+}
+
+/* RIGHT */
+.settings-card {
+    flex: 2;
+    min-width: 300px;
+}
+
+.form-group {
     margin-bottom: 20px;
 }
 
-input[type="text"] {
-    padding: 8px;
-    width: 300px;
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #202124;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #dadce0;
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.15);
+}
+
+/* READONLY INPUT */
+input[readonly] {
+    background-color: #f8f9fa;
+    color: #5f6368;
+    cursor: not-allowed;
+}
+
+/* CHECKBOX */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* BUTTON */
+.btn-save {
+    display: inline-block;
+    background-color: #1a73e8;
+    color: #ffffff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-save:hover {
+    background-color: #1557b0;
+}
+
+/* =================================================
+   5. TABLE / DASHBOARD
+   ================================================= */
+.search-bar-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: 1px solid #dadce0;
+}
+
+.btn-search {
+    padding: 0 25px;
+    border-radius: 8px;
+    border: none;
+    background-color: #1a73e8;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 table {
     width: 100%;
-    border-collapse: collapse;
-    background-color: #ffffff;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-th, td {
-    border: 1px solid #ddd;
-    padding: 10px;
+th,
+td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #f1f3f4;
+    text-align: left;
 }
 
 th {
-    background-color: #34495e;
-    color: white;
+    background-color: #f8f9fa;
+    font-size: 13px;
+    font-weight: 600;
+    color: #5f6368;
+    text-transform: uppercase;
 }
 
-tr:nth-child(even) {
-    background-color: #f9f9f9;
+tr:last-child td {
+    border-bottom: none;
 }
 
-a {
+tr:hover td {
+    background-color: #f8f9fa;
+}
+
+/* STATUS */
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-approved {
+    background-color: #e6f4ea;
+    color: #1e8e3e;
+}
+
+.status-new {
+    background-color: #e8f0fe;
+    color: #1967d2;
+}
+
+/* ACTION */
+.action-link {
+    color: #1a73e8;
     text-decoration: none;
-    color: #3498db;
+    font-weight: 500;
 }
 
-a:hover {
+.action-link:hover {
     text-decoration: underline;
 }
 
-.ai-box {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #e8f4fd;
-    border-left: 6px solid #3498db;
-}
+/* =================================================
+   6. RESPONSIVE
+   ================================================= */
+@media (max-width: 768px) {
+    .main-header {
+        padding: 0 20px;
+    }
 
-.follow-btn {
-    background-color: #2ecc71;
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
+    .profile-wrapper {
+        flex-direction: column;
+    }
+
+    th,
+    td {
+        padding: 10px;
+        font-size: 13px;
+    }
 }
