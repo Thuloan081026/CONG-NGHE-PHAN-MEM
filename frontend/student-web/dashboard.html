@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="img/logo/logo.png" rel="icon">
+  <title>Student Dashboard - SMD System</title>
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="css/ruang-admin.min.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.html">
+        <div class="sidebar-brand-icon">
+          <img src="img/logo/logo.png" style="max-width: 40px;">
+        </div>
+        <div class="sidebar-brand-text mx-3">SMD Student</div>
+      </a>
+      <hr class="sidebar-divider my-0">
+      <li class="nav-item active">
+        <a class="nav-link" href="dashboard.html">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dashboard</span></a>
+      </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">
+        Syllabus
+      </div>
+      <li class="nav-item">
+        <a class="nav-link" href="syllabus-search.html">
+          <i class="fas fa-fw fa-search"></i>
+          <span>Tìm kiếm Giáo trình</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="my-subscriptions.html">
+          <i class="fas fa-fw fa-star"></i>
+          <span>Giáo trình theo dõi</span>
+        </a>
+      </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">
+        Hỗ trợ
+      </div>
+      <li class="nav-item">
+        <a class="nav-link" href="feedback.html">
+          <i class="fas fa-fw fa-comments"></i>
+          <span>Gửi Phản hồi</span>
+        </a>
+      </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">
+        Account
+      </div>
+      <li class="nav-item">
+        <a class="nav-link" href="profile.html">
+          <i class="fas fa-fw fa-user"></i>
+          <span>Thông tin cá nhân</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" onclick="handleLogout()">
+          <i class="fas fa-fw fa-sign-out-alt"></i>
+          <span>Đăng xuất</span>
+        </a>
+      </li>
+      <hr class="sidebar-divider">
+    </ul>
+    <!-- Sidebar -->
+
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <!-- TopBar -->
+        <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+          <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <img class="img-profile rounded-circle" src="img/logo/logo.png" style="max-width: 60px">
+                <span class="ml-2 d-none d-lg-inline text-white small" id="userFullName">Student</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="profile.html">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Profile
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" onclick="handleLogout()">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+        <!-- Topbar -->
+
+        <!-- Container Fluid-->
+        <div class="container-fluid" id="container-wrapper">
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Dashboard - Sinh viên</h1>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+            </ol>
+          </div>
+
+          <div class="row mb-3">
+            <!-- Available Syllabuses Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <div class="row align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-uppercase mb-1">Giáo trình công khai</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalSyllabuses">12</div>
+                      <div class="mt-2 mb-0 text-muted text-xs">
+                        <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 12</span>
+                        <span>mới trong tháng</span>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-book fa-2x text-primary"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- My Subscriptions Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-uppercase mb-1">Đang theo dõi</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800" id="mySubscriptions">0</div>
+                      <div class="mt-2 mb-0 text-muted text-xs">
+                        <span class="text-info mr-2"><i class="fas fa-star"></i></span>
+                        <span>môn học yêu thích</span>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-star fa-2x text-warning"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- My Major Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-uppercase mb-1">Chương trình đào tạo</div>
+                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">Công nghệ Thông tin</div>
+                      <div class="mt-2 mb-0 text-muted text-xs">
+                        <span>Khóa 2021</span>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-graduation-cap fa-2x text-success"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Updates Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-uppercase mb-1">Cập nhật gần đây</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800" id="recentUpdates">3</div>
+                      <div class="mt-2 mb-0 text-muted text-xs">
+                        <span class="text-danger mr-2"><i class="fas fa-bell"></i></span>
+                        <span>trong 7 ngày qua</span>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-bell fa-2x text-danger"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recently Updated Syllabuses -->
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Giáo trình mới cập nhật</h6>
+                  <a href="syllabus-search.html" class="btn btn-sm btn-primary">Xem tất cả</a>
+                </div>
+                <div class="table-responsive">
+                  <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Mã môn học</th>
+                        <th>Tên môn học</th>
+                        <th>Giảng viên</th>
+                        <th>Ngày cập nhật</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                      </tr>
+                    </thead>
+                    <tbody id="syllabusesTableBody">
+                      <tr>
+                        <td>CS301</td>
+                        <td>Cơ sở dữ liệu</td>
+                        <td>TS. Nguyễn Văn A</td>
+                        <td>28/12/2025</td>
+                        <td><span class="badge badge-success">Đã duyệt</span></td>
+                        <td>
+                          <a href="syllabus-detail.html?id=CS301" class="btn btn-sm btn-primary">
+                            <i class="fas fa-eye"></i> Xem
+                          </a>
+                          <button class="btn btn-sm btn-warning" onclick="toggleSubscribe('CS301')">
+                            <i class="fas fa-star"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>CS401</td>
+                        <td>Trí tuệ nhân tạo</td>
+                        <td>TS. Trần Thị B</td>
+                        <td>27/12/2025</td>
+                        <td><span class="badge badge-success">Đã duyệt</span></td>
+                        <td>
+                          <a href="syllabus-detail.html?id=CS401" class="btn btn-sm btn-primary">
+                            <i class="fas fa-eye"></i> Xem
+                          </a>
+                          <button class="btn btn-sm btn-outline-warning" onclick="toggleSubscribe('CS401')">
+                            <i class="far fa-star"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>CS201</td>
+                        <td>Cấu trúc dữ liệu và giải thuật</td>
+                        <td>TS. Lê Văn C</td>
+                        <td>26/12/2025</td>
+                        <td><span class="badge badge-success">Đã duyệt</span></td>
+                        <td>
+                          <a href="syllabus-detail.html?id=CS201" class="btn btn-sm btn-primary">
+                            <i class="fas fa-eye"></i> Xem
+                          </a>
+                          <button class="btn btn-sm btn-warning" onclick="toggleSubscribe('CS201')">
+                            <i class="fas fa-star"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>CS102</td>
+                        <td>Lập trình hướng đối tượng</td>
+                        <td>ThS. Phạm Văn D</td>
+                        <td>25/12/2025</td>
+                        <td><span class="badge badge-success">Đã duyệt</span></td>
+                        <td>
+                          <a href="syllabus-detail.html?id=CS102" class="btn btn-sm btn-primary">
+                            <i class="fas fa-eye"></i> Xem
+                          </a>
+                          <button class="btn btn-sm btn-outline-warning" onclick="toggleSubscribe('CS102')">
+                            <i class="far fa-star"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>CS303</td>
+                        <td>Mạng máy tính</td>
+                        <td>TS. Hoàng Thị E</td>
+                        <td>24/12/2025</td>
+                        <td><span class="badge badge-success">Đã duyệt</span></td>
+                        <td>
+                          <a href="syllabus-detail.html?id=CS303" class="btn btn-sm btn-primary">
+                            <i class="fas fa-eye"></i> Xem
+                          </a>
+                          <button class="btn btn-sm btn-warning" onclick="toggleSubscribe('CS303')">
+                            <i class="fas fa-star"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- My Subscribed Syllabuses -->
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-warning">Giáo trình đang theo dõi</h6>
+                  <a href="my-subscriptions.html" class="btn btn-sm btn-warning">Quản lý</a>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-4 mb-3">
+                      <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">CS301</div>
+                              <div class="h6 mb-0 font-weight-bold text-gray-800">Cơ sở dữ liệu</div>
+                              <div class="text-xs text-muted mt-2">
+                                <i class="fas fa-check-circle text-success"></i> Đã cập nhật 28/12/2025
+                              </div>
+                            </div>
+                            <div class="col-auto">
+                              <i class="fas fa-star fa-2x text-warning"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">CS201</div>
+                              <div class="h6 mb-0 font-weight-bold text-gray-800">Cấu trúc dữ liệu</div>
+                              <div class="text-xs text-muted mt-2">
+                                <i class="fas fa-check-circle text-success"></i> Đã cập nhật 26/12/2025
+                              </div>
+                            </div>
+                            <div class="col-auto">
+                              <i class="fas fa-star fa-2x text-warning"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">CS303</div>
+                              <div class="h6 mb-0 font-weight-bold text-gray-800">Mạng máy tính</div>
+                              <div class="text-xs text-muted mt-2">
+                                <i class="fas fa-check-circle text-success"></i> Đã cập nhật 24/12/2025
+                              </div>
+                            </div>
+                            <div class="col-auto">
+                              <i class="fas fa-star fa-2x text-warning"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Logout -->
+          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Đăng xuất?</h5>
+                  <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Bạn có chắc chắn muốn đăng xuất khỏi hệ thống?</p>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-outline-primary" type="button" data-dismiss="modal">Hủy</button>
+                  <button class="btn btn-primary" onclick="confirmLogout()">Đăng xuất</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!---Container Fluid-->
+      </div>
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - SMD System
+            </span>
+          </div>
+        </div>
+      </footer>
+      <!-- Footer -->
+    </div>
+  </div>
+
+  <!-- Scroll to top -->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="js/ruang-admin.min.js"></script>
+
+  <script>
+    const API_BASE_URL = 'http://localhost:8000';
+
+    // Check authentication
+    async function checkAuth() {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        window.location.href = '/index.html';
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/users/me`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.ok) {
+          const user = await response.json();
+          if (user.role !== 'student') {
+            alert('Bạn không có quyền truy cập trang này!');
+            window.location.href = '/index.html';
+            return;
+          }
+          document.getElementById('userFullName').textContent = user.full_name || 'Student';
+        } else {
+          localStorage.removeItem('access_token');
+          window.location.href = '/index.html';
+        }
+      } catch (error) {
+        console.error('Auth check error:', error);
+        // Allow viewing with mock data if backend is not available
+      }
+    }
+
+    // Handle logout
+    function handleLogout() {
+      $('#logoutModal').modal('show');
+    }
+
+    function confirmLogout() {
+      localStorage.removeItem('access_token');
+      window.location.href = '/index.html';
+    }
+
+    // Toggle subscription
+    function toggleSubscribe(subjectCode) {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        alert('Vui lòng đăng nhập để theo dõi giáo trình!');
+        return;
+      }
+
+      // TODO: Call API to subscribe/unsubscribe
+      alert(`Đang xử lý theo dõi môn học ${subjectCode}...`);
+    }
+
+    // Load dashboard data
+    async function loadDashboardData() {
+      const token = localStorage.getItem('access_token');
+      if (!token) return;
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/student/dashboard`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (!response.ok) {
+          console.error('Failed to load dashboard data');
+          return;
+        }
+
+        const data = await response.json();
+        console.log('Dashboard data:', data);
+        
+        // Update recent syllabuses table
+        const tbody = document.getElementById('syllabusesTableBody');
+        tbody.innerHTML = '';
+        
+        data.recent_syllabuses.forEach(syl => {
+          const tr = document.createElement('tr');
+          const date = new Date(syl.updated_at).toLocaleDateString('vi-VN');
+          
+          tr.innerHTML = `
+            <td>${syl.subject_code || 'N/A'}</td>
+            <td>${syl.subject_name}</td>
+            <td>Giảng viên</td>
+            <td>${date}</td>
+            <td><span class="badge badge-success">Đã duyệt</span></td>
+            <td>
+              <a href="syllabus-detail.html?id=${syl.id}" class="btn btn-sm btn-primary">
+                <i class="fas fa-eye"></i> Xem
+              </a>
+              <button class="btn btn-sm btn-outline-warning" onclick="toggleSubscribe(${syl.id})">
+                <i class="far fa-star"></i>
+              </button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+        
+      } catch (error) {
+        console.error('Error loading dashboard data:', error);
+      }
+    }
+
+    function updateSubscriptionCount() {
+      const saved = localStorage.getItem('subscriptions');
+      if (saved) {
+        const subscriptions = JSON.parse(saved);
+        document.getElementById('mySubscriptions').textContent = subscriptions.length;
+      } else {
+        document.getElementById('mySubscriptions').textContent = 0;
+      }
+    }
+
+    function listenToStorageChanges() {
+      window.addEventListener('storage', function(e) {
+        if (e.key === 'subscriptions') {
+          updateSubscriptionCount();
+        }
+      });
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      checkAuth();
+      updateSubscriptionCount();
+      listenToStorageChanges();
+      loadDashboardData();
+    });
+  </script>
+</body>
+
+</html>
