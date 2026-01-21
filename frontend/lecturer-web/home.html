@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Home - Lecturer</title>
+</head>
+<body>
+  <p>Loading...</p>
+  <script>
+    // Simple launcher page for lecturer area.
+    // If user has access_token and role lecturer, go to dashboard, else go to main index.
+    try {
+      const token = localStorage.getItem('access_token');
+      let user = null;
+      try { user = JSON.parse(localStorage.getItem('user_data') || 'null'); } catch(e) { user = null; }
+      if (token && user && user.role === 'lecturer') {
+        window.location.replace('dashboard.html');
+      } else if (token && user) {
+        // logged in but not lecturer — redirect to frontend index
+        window.location.replace('/index.html');
+      } else {
+        // not logged in — send to frontend index (login)
+        window.location.replace('/index.html');
+      }
+    } catch (e) {
+      console.error(e);
+      window.location.replace('/index.html');
+    }
+  </script>
+</body>
+</html>
