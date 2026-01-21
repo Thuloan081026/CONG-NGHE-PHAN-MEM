@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grading Scale Settings - SMD Admin</title>
+  <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
+  <link rel="stylesheet" href="../assets/css/styles.min.css" />
+  <link rel="stylesheet" href="../assets/css/smd-custom.css" />
+</head>
+
+<body>
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    <aside class="left-sidebar">
+      <div>
+        <div class="brand-logo d-flex align-items-center justify-content-between">
+          <a href="./dashboard.html" class="text-nowrap logo-img">
+            <img src="../assets/images/logos/dark-logo.svg" width="180" alt="" />
+          </a>
+          <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+            <i class="ti ti-x fs-8"></i>
+          </div>
+        </div>
+        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+          <ul id="sidebarnav">
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">ADMIN PANEL</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./dashboard.html" aria-expanded="false">
+                <span><i class="ti ti-layout-dashboard"></i></span>
+                <span class="hide-menu">Dashboard</span>
+              </a>
+            </li>
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">USER MANAGEMENT</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./users-list.html" aria-expanded="false">
+                <span><i class="ti ti-users"></i></span>
+                <span class="hide-menu">User List</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./users-create.html" aria-expanded="false">
+                <span><i class="ti ti-user-plus"></i></span>
+                <span class="hide-menu">Create User</span>
+              </a>
+            </li>
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">SYSTEM SETTINGS</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./settings-general.html" aria-expanded="false">
+                <span><i class="ti ti-settings"></i></span>
+                <span class="hide-menu">General Settings</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./settings-clo-plo.html" aria-expanded="false">
+                <span><i class="ti ti-target"></i></span>
+                <span class="hide-menu">CLO/PLO Templates</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link active" href="./settings-grading.html" aria-expanded="false">
+                <span><i class="ti ti-chart-bar"></i></span>
+                <span class="hide-menu">Grading Scale</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./settings-workflow.html" aria-expanded="false">
+                <span><i class="ti ti-git-branch"></i></span>
+                <span class="hide-menu">Workflow Rules</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </aside>
+    <!--  Sidebar End -->
+    
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+      <!--  Header Start -->
+      <header class="app-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <ul class="navbar-nav">
+            <li class="nav-item d-block d-xl-none">
+              <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
+                <i class="ti ti-menu-2"></i>
+              </a>
+            </li>
+          </ul>
+          <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+              <li class="nav-item dropdown">
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <img src="../assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+                  <div class="message-body">
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-user fs-6"></i>
+                      <p class="mb-0 fs-3">My Profile</p>
+                    </a>
+                    <a href="javascript:void(0)" onclick="logout()" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!--  Header End -->
+      
+      <div class="container-fluid">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h5 class="card-title fw-semibold mb-0">Grading Scale & Assessment Settings</h5>
+              <button class="btn btn-primary" onclick="saveGradingSettings()">
+                <i class="ti ti-device-floppy me-2"></i>Save All Settings
+              </button>
+            </div>
+            
+            <div class="alert alert-info">
+              <i class="ti ti-info-circle me-2"></i>
+              Configure grading scale, assessment weights, and evaluation criteria for syllabus management.
+            </div>
+            
+            <!-- Tabs -->
+            <ul class="nav nav-tabs mb-4" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="scale-tab" data-bs-toggle="tab" data-bs-target="#scale-panel" type="button" role="tab">
+                  <i class="ti ti-list-numbers me-2"></i>Grading Scale
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="weights-tab" data-bs-toggle="tab" data-bs-target="#weights-panel" type="button" role="tab">
+                  <i class="ti ti-percentage me-2"></i>Assessment Weights
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="criteria-tab" data-bs-toggle="tab" data-bs-target="#criteria-panel" type="button" role="tab">
+                  <i class="ti ti-checklist me-2"></i>Pass/Fail Criteria
+                </button>
+              </li>
+            </ul>
+            
+            <!-- Tab Content -->
+            <div class="tab-content">
+              <!-- Grading Scale Tab -->
+              <div class="tab-pane fade show active" id="scale-panel" role="tabpanel">
+                <div class="card">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0">Letter Grade Scale (4.0 System)</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-bordered">
+                        <thead class="table-light">
+                          <tr>
+                            <th width="100">Letter Grade</th>
+                            <th width="150">Grade Point</th>
+                            <th width="200">Min Score (%)</th>
+                            <th width="200">Max Score (%)</th>
+                            <th>Description</th>
+                          </tr>
+                        </thead>
+                        <tbody id="gradingScaleTable">
+                          <!-- Will be populated by JavaScript -->
+                        </tbody>
+                      </table>
+                    </div>
+                    
+                    <div class="alert alert-secondary mt-3">
+                      <strong>Note:</strong> This grading scale follows the HCMUTE standard. Modify values carefully to match university policies.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Assessment Weights Tab -->
+              <div class="tab-pane fade" id="weights-panel" role="tabpanel">
+                <div class="card">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0">Default Assessment Component Weights</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label fw-semibold">Attendance (%)</label>
+                          <input type="number" class="form-control" id="weightAttendance" min="0" max="100" value="10">
+                          <small class="text-muted">Class participation and presence</small>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label fw-semibold">Assignments/Homework (%)</label>
+                          <input type="number" class="form-control" id="weightAssignments" min="0" max="100" value="20">
+                          <small class="text-muted">Regular assignments and homework</small>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label fw-semibold">Midterm Exam (%)</label>
+                          <input type="number" class="form-control" id="weightMidterm" min="0" max="100" value="30">
+                          <small class="text-muted">Mid-semester examination</small>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label fw-semibold">Final Exam (%)</label>
+                          <input type="number" class="form-control" id="weightFinal" min="0" max="100" value="40">
+                          <small class="text-muted">End-of-semester examination</small>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label fw-semibold">Project/Presentation (%)</label>
+                          <input type="number" class="form-control" id="weightProject" min="0" max="100" value="0">
+                          <small class="text-muted">Course project or presentation</small>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label fw-semibold">Lab Work (%)</label>
+                          <input type="number" class="form-control" id="weightLab" min="0" max="100" value="0">
+                          <small class="text-muted">Laboratory exercises and reports</small>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="alert alert-warning" id="weightWarning" style="display: none;">
+                      <i class="ti ti-alert-triangle me-2"></i>
+                      <strong>Warning:</strong> Total weight must equal 100%. Current total: <strong id="totalWeight">100</strong>%
+                    </div>
+                    
+                    <div class="alert alert-success" id="weightSuccess" style="display: none;">
+                      <i class="ti ti-check me-2"></i>
+                      Total weight is correct: <strong>100%</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Pass/Fail Criteria Tab -->
+              <div class="tab-pane fade" id="criteria-panel" role="tabpanel">
+                <div class="card">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0">Pass/Fail Criteria Configuration</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label fw-semibold">Minimum Passing Score (%)</label>
+                          <input type="number" class="form-control" id="minPassScore" min="0" max="100" value="50">
+                          <small class="text-muted">Overall minimum score to pass the course</small>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label fw-semibold">Minimum Final Exam Score (%)</label>
+                          <input type="number" class="form-control" id="minFinalScore" min="0" max="100" value="40">
+                          <small class="text-muted">Minimum required score for final exam</small>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label fw-semibold">Minimum Attendance (%)</label>
+                          <input type="number" class="form-control" id="minAttendance" min="0" max="100" value="80">
+                          <small class="text-muted">Minimum attendance to be eligible for exam</small>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label fw-semibold">Grade Point for Pass</label>
+                          <input type="number" class="form-control" id="minGradePoint" min="0" max="4" step="0.1" value="2.0">
+                          <small class="text-muted">Minimum grade point (GPA) to pass</small>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="form-check form-switch mb-3">
+                      <input class="form-check-input" type="checkbox" id="requireAllComponents" checked>
+                      <label class="form-check-label" for="requireAllComponents">
+                        <strong>Require All Assessment Components</strong>
+                        <br><small class="text-muted">Students must complete all assessment components to pass</small>
+                      </label>
+                    </div>
+                    
+                    <div class="form-check form-switch mb-3">
+                      <input class="form-check-input" type="checkbox" id="allowRetake" checked>
+                      <label class="form-check-label" for="allowRetake">
+                        <strong>Allow Exam Retake</strong>
+                        <br><small class="text-muted">Students can retake failed exams once per semester</small>
+                      </label>
+                    </div>
+                    
+                    <div class="form-check form-switch mb-3">
+                      <input class="form-check-input" type="checkbox" id="roundGrades" checked>
+                      <label class="form-check-label" for="roundGrades">
+                        <strong>Round Final Grades</strong>
+                        <br><small class="text-muted">Round final scores to nearest integer (e.g., 74.5 → 75)</small>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Footer -->
+      <div class="py-6 px-6 text-center">
+        <p class="mb-0 fs-4">SMD - Syllabus Management & Digitalization System | University Administration Panel | v1.0.0</p>
+      </div>
+    </div>
+  </div>
+  
+  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/sidebarmenu.js"></script>
+  <script src="../assets/js/app.min.js"></script>
+  <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+  
+  <script>
+    const API_BASE_URL = 'http://127.0.0.1:8000';
+    
+    // Default grading scale
+    const defaultGradingScale = [
+      { letter: 'A', gradePoint: 4.0, minScore: 90, maxScore: 100, description: 'Excellent' },
+      { letter: 'B+', gradePoint: 3.5, minScore: 85, maxScore: 89, description: 'Very Good' },
+      { letter: 'B', gradePoint: 3.0, minScore: 80, maxScore: 84, description: 'Good' },
+      { letter: 'C+', gradePoint: 2.5, minScore: 75, maxScore: 79, description: 'Above Average' },
+      { letter: 'C', gradePoint: 2.0, minScore: 70, maxScore: 74, description: 'Average' },
+      { letter: 'D+', gradePoint: 1.5, minScore: 65, maxScore: 69, description: 'Below Average' },
+      { letter: 'D', gradePoint: 1.0, minScore: 50, maxScore: 64, description: 'Poor' },
+      { letter: 'F', gradePoint: 0.0, minScore: 0, maxScore: 49, description: 'Fail' }
+    ];
+    
+    // Check authentication
+    function checkAuth() {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        window.location.href = 'http://localhost:3000';
+        return false;
+      }
+      return token;
+    }
+    
+    function logout() {
+      localStorage.clear();
+      window.location.href = 'http://localhost:3000/home.html';
+    }
+    
+    // Render grading scale table
+    function renderGradingScale() {
+      const tbody = document.getElementById('gradingScaleTable');
+      tbody.innerHTML = defaultGradingScale.map((grade, index) => `
+        <tr>
+          <td><strong class="fs-4">${grade.letter}</strong></td>
+          <td>
+            <input type="number" class="form-control form-control-sm" 
+                   id="gradePoint_${index}" value="${grade.gradePoint}" 
+                   min="0" max="4" step="0.1" readonly>
+          </td>
+          <td>
+            <input type="number" class="form-control form-control-sm" 
+                   id="minScore_${index}" value="${grade.minScore}" 
+                   min="0" max="100" ${grade.letter === 'F' ? 'readonly' : ''}>
+          </td>
+          <td>
+            <input type="number" class="form-control form-control-sm" 
+                   id="maxScore_${index}" value="${grade.maxScore}" 
+                   min="0" max="100" ${grade.letter === 'A' ? 'readonly' : ''}>
+          </td>
+          <td>${grade.description}</td>
+        </tr>
+      `).join('');
+    }
+    
+    // Calculate total weight
+    function calculateTotalWeight() {
+      const attendance = parseFloat(document.getElementById('weightAttendance').value) || 0;
+      const assignments = parseFloat(document.getElementById('weightAssignments').value) || 0;
+      const midterm = parseFloat(document.getElementById('weightMidterm').value) || 0;
+      const final = parseFloat(document.getElementById('weightFinal').value) || 0;
+      const project = parseFloat(document.getElementById('weightProject').value) || 0;
+      const lab = parseFloat(document.getElementById('weightLab').value) || 0;
+      
+      const total = attendance + assignments + midterm + final + project + lab;
+      
+      document.getElementById('totalWeight').textContent = total.toFixed(0);
+      
+      if (total === 100) {
+        document.getElementById('weightWarning').style.display = 'none';
+        document.getElementById('weightSuccess').style.display = 'block';
+      } else {
+        document.getElementById('weightWarning').style.display = 'block';
+        document.getElementById('weightSuccess').style.display = 'none';
+      }
+      
+      return total;
+    }
+    
+    // Load grading settings
+    async function loadGradingSettings() {
+      const token = checkAuth();
+      if (!token) return;
+      
+      try {
+        const response = await fetch(`${API_BASE_URL}/settings/grading`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          applySettings(data);
+        } else {
+          // Use default values if no settings found
+          console.log('No saved settings found, using defaults');
+        }
+      } catch (error) {
+        console.error('Error loading settings:', error);
+        // Continue with default values
+      }
+    }
+    
+    function applySettings(data) {
+      // Apply assessment weights
+      if (data.weightAttendance) document.getElementById('weightAttendance').value = data.weightAttendance;
+      if (data.weightAssignments) document.getElementById('weightAssignments').value = data.weightAssignments;
+      if (data.weightMidterm) document.getElementById('weightMidterm').value = data.weightMidterm;
+      if (data.weightFinal) document.getElementById('weightFinal').value = data.weightFinal;
+      if (data.weightProject) document.getElementById('weightProject').value = data.weightProject;
+      if (data.weightLab) document.getElementById('weightLab').value = data.weightLab;
+      
+      // Apply pass/fail criteria
+      if (data.minPassScore) document.getElementById('minPassScore').value = data.minPassScore;
+      if (data.minFinalScore) document.getElementById('minFinalScore').value = data.minFinalScore;
+      if (data.minAttendance) document.getElementById('minAttendance').value = data.minAttendance;
+      if (data.minGradePoint) document.getElementById('minGradePoint').value = data.minGradePoint;
+      
+      // Apply checkboxes
+      if (data.requireAllComponents !== undefined) {
+        document.getElementById('requireAllComponents').checked = data.requireAllComponents;
+      }
+      if (data.allowRetake !== undefined) {
+        document.getElementById('allowRetake').checked = data.allowRetake;
+      }
+      if (data.roundGrades !== undefined) {
+        document.getElementById('roundGrades').checked = data.roundGrades;
+      }
+      
+      calculateTotalWeight();
+    }
+    
+    // Save grading settings
+    async function saveGradingSettings() {
+      const token = checkAuth();
+      if (!token) return;
+      
+      const totalWeight = calculateTotalWeight();
+      if (totalWeight !== 100) {
+        alert('Total assessment weight must equal 100%. Current total: ' + totalWeight + '%');
+        return;
+      }
+      
+      const settings = {
+        // Assessment weights
+        weightAttendance: parseFloat(document.getElementById('weightAttendance').value),
+        weightAssignments: parseFloat(document.getElementById('weightAssignments').value),
+        weightMidterm: parseFloat(document.getElementById('weightMidterm').value),
+        weightFinal: parseFloat(document.getElementById('weightFinal').value),
+        weightProject: parseFloat(document.getElementById('weightProject').value),
+        weightLab: parseFloat(document.getElementById('weightLab').value),
+        
+        // Pass/fail criteria
+        minPassScore: parseFloat(document.getElementById('minPassScore').value),
+        minFinalScore: parseFloat(document.getElementById('minFinalScore').value),
+        minAttendance: parseFloat(document.getElementById('minAttendance').value),
+        minGradePoint: parseFloat(document.getElementById('minGradePoint').value),
+        
+        // Options
+        requireAllComponents: document.getElementById('requireAllComponents').checked,
+        allowRetake: document.getElementById('allowRetake').checked,
+        roundGrades: document.getElementById('roundGrades').checked
+      };
+      
+      try {
+        const response = await fetch(`${API_BASE_URL}/settings/grading`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(settings)
+        });
+        
+        if (response.ok) {
+          alert('Grading settings saved successfully!');
+          
+          // Also save to localStorage as backup
+          localStorage.setItem('grading_settings', JSON.stringify(settings));
+        } else {
+          const error = await response.json();
+          alert('Error saving settings: ' + (error.detail || 'Unknown error'));
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        // Save to localStorage as fallback
+        localStorage.setItem('grading_settings', JSON.stringify(settings));
+        alert('Settings saved locally (backend not available)');
+      }
+    }
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      checkAuth();
+      renderGradingScale();
+      loadGradingSettings();
+      
+      // Add event listeners for weight inputs
+      ['weightAttendance', 'weightAssignments', 'weightMidterm', 'weightFinal', 'weightProject', 'weightLab'].forEach(id => {
+        document.getElementById(id).addEventListener('input', calculateTotalWeight);
+      });
+      
+      calculateTotalWeight();
+    });
+  </script>
+</body>
+
+</html>
