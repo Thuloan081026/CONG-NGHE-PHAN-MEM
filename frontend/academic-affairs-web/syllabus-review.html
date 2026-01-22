@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Syllabus Detail</title>
+</head>
+<body>
+  <h1>Syllabus Detail</h1>
+  <div id="content">Loading...</div>
+
+  <script>
+    const API_BASE_URL = "http://localhost:8000";
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    if (!id) {
+      document.getElementById("content").innerText = "Missing syllabus id";
+    } else {
+      fetch(`${API_BASE_URL}/syllabus/${id}`)
+        .then(r => {
+          if (!r.ok) throw new Error("API error");
+          return r.json();
+        })
+        .then(data => {
+          document.getElementById("content").innerHTML = `
+            <h2>${data.subject_code} - ${data.subject_name}</h2>
+            <p>Credits: ${data.credits}</p>
+            <p>Status: ${data.status}</p>
+            <pre>${JSON.stringify(data, null, 2)}</pre>
+          `;
+        })
+        .catch(err => {
+          document.getElementById("content").innerText = "Load failed";
+        });
+    }
+  </script>
+</body>
+</html>
