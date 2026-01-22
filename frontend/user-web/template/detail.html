@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Chi tiết: {{ s.code }}{% endblock %}
+
+{% block content %}
+<div class="container detail-wrapper">
+    
+    <div class="breadcrumbs">
+        <a href="/public/">Trang chủ</a> &rsaquo; <span>{{ s.code }}</span>
+    </div>
+
+    <div class="detail-header">
+        <div class="header-left">
+            <h1>{{ s.name }}</h1>
+            <div class="meta-tags">
+                <span class="tag code"><i class="fas fa-barcode"></i> {{ s.code }}</span>
+                <span class="tag"><i class="far fa-clock"></i> {{ s.credits }} tín chỉ</span>
+                <span class="tag"><i class="fas fa-book-reader"></i> Ngành {{ s.major }}</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <button onclick="window.print()" class="btn-print">
+                <i class="fas fa-print"></i> In / Lưu PDF
+            </button>
+        </div>
+    </div>
+
+    <div class="content-split">
+        <div class="main-col">
+            <div class="info-block ai-block">
+                <h3><i class="fas fa-robot"></i> Tóm tắt nội dung (AI Summary)</h3>
+                <p class="ai-text">{{ s.ai_summary }}</p>
+            </div>
+
+            <div class="info-block">
+                <h3><i class="fas fa-align-left"></i> Mô tả chi tiết</h3>
+                <p>{{ s.description }}</p>
+            </div>
+
+            <div class="info-block">
+                <h3><i class="fas fa-tasks"></i> Chuẩn đầu ra (CLOs)</h3>
+                <ul class="clo-list">
+                    {% for clo in s.clos %}
+                    <li><i class="fas fa-check-circle"></i> {{ clo }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="side-col">
+            <div class="widget-box">
+                <h4>Điều kiện tiên quyết</h4>
+                {% if s.prerequisites %}
+                    <div class="pre-list">
+                        {% for pre in s.prerequisites %}
+                            <div class="pre-item">{{ pre }}</div>
+                        {% endfor %}
+                    </div>
+                    <p class="hint-text">* Cần hoàn thành các môn này trước.</p>
+                {% else %}
+                    <p class="text-muted">Không có môn tiên quyết.</p>
+                {% endif %}
+            </div>
+
+            <div class="login-prompt">
+                <h4>Bạn là sinh viên trường?</h4>
+                <p>Đăng nhập để nhận thông báo cập nhật, tài liệu học tập và lộ trình chi tiết.</p>
+                <a href="/login" class="btn-signin">Đăng nhập ngay</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

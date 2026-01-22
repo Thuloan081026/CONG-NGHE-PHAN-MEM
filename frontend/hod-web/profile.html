@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - HoD - SMD System</title>
+  <link rel="shortcut icon" href="./img/svg/logo.svg" type="image/x-icon">
+  <link rel="stylesheet" href="./css/style.min.css">
+  <style>
+    .profile-container { max-width: 900px; margin: 0 auto; }
+    .profile-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 30px; border-radius: 12px; margin-bottom: 30px; }
+    .profile-avatar { width: 120px; height: 120px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: bold; color: #667eea; margin-bottom: 20px; }
+    .profile-card { background: white; border-radius: 12px; padding: 30px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .profile-card h3 { margin: 0 0 20px 0; padding-bottom: 15px; border-bottom: 2px solid #f0f0f0; color: #333; font-size: 18px; }
+    .info-row { display: grid; grid-template-columns: 200px 1fr; gap: 15px; padding: 15px 0; border-bottom: 1px solid #f5f5f5; }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { font-weight: 600; color: #666; }
+    .info-value { color: #333; }
+    .role-badge { display: inline-block; background: #667eea; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .edit-btn { background: #667eea; color: white; border: none; padding: 10px 24px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s; }
+    .edit-btn:hover { background: #5568d3; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3); }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+    .stat-box { background: white; border-radius: 12px; padding: 24px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .stat-number { font-size: 36px; font-weight: bold; color: #667eea; margin-bottom: 8px; }
+    .stat-label { color: #666; font-size: 14px; }
+  </style>
+</head>
+
+<body>
+  <div class="layer"></div>
+  <a class="skip-link sr-only" href="#skip-target">Skip to content</a>
+  <div class="page-flex">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-start">
+        <div class="sidebar-head">
+          <a href="/hod-web/dashboard.html" class="logo-wrapper" title="Home">
+            <span class="sr-only">Home</span>
+            <div class="logo-text">
+              <span class="logo-title">SMD System</span>
+              <span class="logo-subtitle">Head of Department</span>
+            </div>
+          </a>
+          <button class="sidebar-toggle transparent-btn" title="Menu" type="button">
+            <span class="sr-only">Toggle menu</span>
+            <span class="icon menu-toggle" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="sidebar-body">
+          <ul class="sidebar-body-menu">
+            <li>
+              <a href="dashboard.html"><span class="icon home" aria-hidden="true"></span>Dashboard</a>
+            </li>
+            <li>
+              <a class="show-cat-btn" href="##">
+                <span class="icon document" aria-hidden="true"></span>Syllabus Review
+                <span class="category__btn transparent-btn" title="Open list">
+                  <span class="sr-only">Open list</span>
+                  <span class="icon arrow-down" aria-hidden="true"></span>
+                </span>
+              </a>
+              <ul class="cat-sub-menu">
+                <li><a href="syllabus-pending.html">Pending Review</a></li>
+                <li><a href="syllabus-search.html">Search & Compare</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="collaborative-review.html">
+                <span class="icon message" aria-hidden="true"></span>Collaborative Review
+              </a>
+            </li>
+            <li>
+              <a href="syllabus-search.html">
+                <span class="icon search" aria-hidden="true"></span>Search & Analysis
+              </a>
+            </li>
+            <li>
+              <a class="active" href="profile.html">
+                <span class="icon user" aria-hidden="true"></span>My Profile
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <a href="##" class="sidebar-user">
+          <span class="sidebar-user-img"><span class="icon user" aria-hidden="true"></span></span>
+          <div class="sidebar-user-info">
+            <span class="sidebar-user__title" id="sidebar-username">Loading...</span>
+            <span class="sidebar-user__subtitle" id="sidebar-role">HoD</span>
+          </div>
+        </a>
+        <a href="#" onclick="handleLogout()" class="sidebar-user">
+          <span class="sidebar-user-img"><span class="icon logout" aria-hidden="true"></span></span>
+          <div class="sidebar-user-info">
+            <span class="sidebar-user__title">Logout</span>
+          </div>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main users chart-page" id="skip-target">
+      <div class="container">
+        <h2 class="main-title">My Profile</h2>
+        
+        <div class="profile-container">
+          <!-- Profile Header -->
+          <div class="profile-header">
+            <div class="profile-avatar" id="avatar">H</div>
+            <h1 id="profile-name">Loading...</h1>
+            <p id="profile-email">Loading...</p>
+            <span class="role-badge" id="profile-role-badge">HEAD OF DEPARTMENT</span>
+          </div>
+
+          <!-- Statistics -->
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="stat-number" id="stat-reviewed">0</div>
+              <div class="stat-label">Syllabuses Reviewed</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number" id="stat-pending">0</div>
+              <div class="stat-label">Pending Review</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number" id="stat-collaborative">0</div>
+              <div class="stat-label">Collaborative Sessions</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number" id="stat-experience">0</div>
+              <div class="stat-label">Years Experience</div>
+            </div>
+          </div>
+
+          <!-- Personal Information -->
+          <div class="profile-card">
+            <h3>📋 Personal Information</h3>
+            <div class="info-row">
+              <div class="info-label">Full Name:</div>
+              <div class="info-value" id="info-fullname">Loading...</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Email:</div>
+              <div class="info-value" id="info-email">Loading...</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Role:</div>
+              <div class="info-value" id="info-role">Loading...</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Department:</div>
+              <div class="info-value" id="info-department">Loading...</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Employee ID:</div>
+              <div class="info-value" id="info-employee-id">N/A</div>
+            </div>
+          </div>
+
+          <!-- Academic Information -->
+          <div class="profile-card">
+            <h3>🎓 Academic Information</h3>
+            <div class="info-row">
+              <div class="info-label">Degree:</div>
+              <div class="info-value" id="info-degree">N/A</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Title:</div>
+              <div class="info-value" id="info-title">N/A</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Specialization:</div>
+              <div class="info-value" id="info-specialization">N/A</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Years of Experience:</div>
+              <div class="info-value" id="info-experience">N/A</div>
+            </div>
+          </div>
+
+          <!-- Contact Information -->
+          <div class="profile-card">
+            <h3>📞 Contact Information</h3>
+            <div class="info-row">
+              <div class="info-label">Phone:</div>
+              <div class="info-value" id="info-phone">N/A</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Office Location:</div>
+              <div class="info-value" id="info-office">N/A</div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div style="text-align: center; margin-top: 30px;">
+            <button class="edit-btn" onclick="alert('Edit profile feature coming soon!')">
+              ✏️ Edit Profile
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="./plugins/chart.min.js"></script>
+  <script src="./js/script.js"></script>
+  <script>
+    const API_URL = 'http://localhost:8000';
+    let currentUser = null;
+
+    // Check authentication
+    window.addEventListener('DOMContentLoaded', async () => {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        window.location.href = '/index.html';
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/users/me`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+          currentUser = await response.json();
+          displayUserProfile(currentUser);
+          await loadStatistics();
+        } else {
+          localStorage.clear();
+          window.location.href = '/index.html';
+        }
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        localStorage.clear();
+        window.location.href = '/index.html';
+      }
+    });
+
+    function displayUserProfile(user) {
+      // Header
+      const initials = user.full_name ? user.full_name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2) : 'H';
+      document.getElementById('avatar').textContent = initials;
+      document.getElementById('profile-name').textContent = user.full_name || 'Unknown';
+      document.getElementById('profile-email').textContent = user.email || '';
+
+      // Sidebar
+      document.getElementById('sidebar-username').textContent = user.full_name || 'Unknown';
+      document.getElementById('sidebar-role').textContent = (user.role || 'hod').toUpperCase();
+
+      // Personal Information
+      document.getElementById('info-fullname').textContent = user.full_name || 'N/A';
+      document.getElementById('info-email').textContent = user.email || 'N/A';
+      document.getElementById('info-role').textContent = getRoleDisplayName(user.role);
+      document.getElementById('info-department').textContent = user.department || 'Computer Science';
+      document.getElementById('info-employee-id').textContent = user.employee_id || 'N/A';
+
+      // Academic Information
+      document.getElementById('info-degree').textContent = user.degree || 'N/A';
+      document.getElementById('info-title').textContent = user.title || 'N/A';
+      document.getElementById('info-specialization').textContent = user.specialization || 'N/A';
+      document.getElementById('info-experience').textContent = user.years_experience ? `${user.years_experience} years` : 'N/A';
+      document.getElementById('stat-experience').textContent = user.years_experience || '0';
+
+      // Contact Information
+      document.getElementById('info-phone').textContent = user.phone || 'N/A';
+      document.getElementById('info-office').textContent = user.office_location || 'N/A';
+    }
+
+    function getRoleDisplayName(role) {
+      const roleMap = {
+        'admin': 'Administrator',
+        'hod': 'Head of Department',
+        'lecturer': 'Lecturer',
+        'academic_affairs': 'Academic Affairs Officer',
+        'student': 'Student'
+      };
+      return roleMap[role] || role;
+    }
+
+    async function loadStatistics() {
+      const token = localStorage.getItem('access_token');
+      
+      try {
+        // Load syllabuses to count reviewed and pending
+        const syllabusResponse = await fetch(`${API_URL}/syllabuses/`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (syllabusResponse.ok) {
+          const syllabuses = await syllabusResponse.json();
+          
+          // Count reviewed (approved or rejected by HoD)
+          const reviewed = syllabuses.filter(s => 
+            s.status === 'approved' || s.status === 'rejected' || s.status === 'completed'
+          ).length;
+          
+          // Count pending HoD review
+          const pending = syllabuses.filter(s => 
+            s.status === 'pending_hod_review' || s.status === 'pending_review'
+          ).length;
+
+          document.getElementById('stat-reviewed').textContent = reviewed;
+          document.getElementById('stat-pending').textContent = pending;
+        }
+      } catch (error) {
+        console.error('Failed to load statistics:', error);
+      }
+
+      // Mock collaborative sessions count
+      document.getElementById('stat-collaborative').textContent = '3';
+    }
+
+    function handleLogout() {
+      if (confirm('Are you sure you want to logout?')) {
+        localStorage.clear();
+        window.location.href = '/index.html';
+      }
+    }
+  </script>
+</body>
+</html>

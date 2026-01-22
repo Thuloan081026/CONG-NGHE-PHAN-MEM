@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pending Syllabuses - HoD | SMD System</title>
+  <link rel="shortcut icon" href="./img/svg/logo.svg" type="image/x-icon">
+  <link rel="stylesheet" href="./css/style.min.css">
+  <style>
+    .container { max-width: 1400px; margin: 0 auto; }
+    .page-header { background: #fff; padding: 25px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .filter-bar { background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 10px; align-items: center; }
+    .filter-bar select, .filter-bar input { padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; }
+    .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    .btn-primary { background: #007bff; color: #fff; }
+    .syllabus-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
+    .syllabus-card { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s; border-left: 4px solid #ffc107; }
+    .syllabus-card:hover { transform: translateY(-4px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .syllabus-card.urgent { border-left-color: #dc3545; }
+    .card-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px; }
+    .card-title { font-size: 16px; font-weight: bold; margin: 0; color: #333; }
+    .priority-badge { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; }
+    .priority-high { background: #dc3545; color: #fff; }
+    .priority-medium { background: #ffc107; color: #000; }
+    .priority-low { background: #28a745; color: #fff; }
+    .card-info { margin-bottom: 10px; font-size: 13px; color: #666; }
+    .card-info strong { color: #333; }
+    .card-footer { display: flex; gap: 8px; margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; }
+    .btn-review { background: #007bff; color: #fff; flex: 1; }
+    .btn-view { background: #6c757d; color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="layer"></div>
+  <div class="page-flex">
+    <aside class="sidebar">
+      <div class="sidebar-start">
+        <div class="sidebar-head">
+          <a href="/hod-web/dashboard.html" class="logo-wrapper">
+            <div class="logo-text">
+              <span class="logo-title">SMD System</span>
+              <span class="logo-subtitle">HoD Portal</span>
+            </div>
+          </a>
+        </div>
+        <div class="sidebar-body">
+          <ul class="sidebar-body-menu">
+            <li><a href="dashboard.html"><span class="icon home"></span>Dashboard</a></li>
+            <li><a class="active" href="syllabus-pending.html"><span class="icon document"></span>Review Queue</a></li>
+            <li><a href="collaborative-review.html"><span class="icon message"></span>Collaborative Review</a></li>
+            <li><a href="syllabus-search.html"><span class="icon folder"></span>Lookup & Analysis</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main-wrapper">
+      <nav class="main-nav--bg">
+        <div class="container main-nav">
+          <div class="main-nav-start">
+            <h1>📋 Pending Review Queue</h1>
+          </div>
+          <div class="main-nav-end">
+            <div class="nav-user-wrapper">
+              <button class="nav-user-btn dropdown-btn" type="button">
+                <span class="nav-user-img">
+                  <img src="./img/avatar/avatar-illustrated-01.png" alt="User">
+                </span>
+              </button>
+              <ul class="users-item-dropdown nav-user-dropdown dropdown">
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <main class="main users chart-page">
+        <div class="container">
+          <div class="page-header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h2 style="margin: 0 0 5px 0;">Syllabuses Awaiting Your Review</h2>
+                <p style="margin: 0; color: #666;">Review and approve syllabuses submitted by department lecturers</p>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 32px; font-weight: bold; color: #007bff;" id="pending-count">0</div>
+                <div style="font-size: 12px; color: #999;">Pending Reviews</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-bar">
+            <span style="font-weight: bold; color: #666;">Filter:</span>
+            <select id="filter-priority" onchange="applyFilters()">
+              <option value="">All Priorities</option>
+              <option value="high">High Priority</option>
+              <option value="medium">Medium Priority</option>
+              <option value="low">Low Priority</option>
+            </select>
+            <select id="filter-sort" onchange="applyFilters()">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="priority">By Priority</option>
+            </select>
+            <input type="text" id="filter-search" placeholder="Search by code or name..." onkeyup="applyFilters()" style="flex: 1;">
+            <button class="btn btn-primary" onclick="applyFilters()">Apply</button>
+          </div>
+
+          <div class="syllabus-grid" id="syllabus-grid">
+            <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #999;">
+              Loading pending syllabuses...
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer class="footer">
+        <div class="container footer--flex">
+          <div class="footer-start">
+            <p>© SMD System 2026</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script src="./plugins/feather.min.js"></script>
+  <script src="./js/script.js"></script>
+  <script>
+    const API_BASE_URL = 'http://localhost:8000';
+    const token = localStorage.getItem('access_token');
+    let allSyllabuses = [];
+
+    if (!token) {
+      window.location.href = '/index.html';
+    }
+
+    async function loadPendingSyllabuses() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/syllabus/pending`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) throw new Error('Failed to load syllabuses');
+
+        allSyllabuses = await response.json();
+        
+        // Calculate priority based on days pending
+        allSyllabuses = allSyllabuses.map(s => {
+          const daysPending = Math.floor((new Date() - new Date(s.created_at)) / (1000 * 60 * 60 * 24));
+          let priority = 'low';
+          if (daysPending > 7) priority = 'high';
+          else if (daysPending > 3) priority = 'medium';
+          return { ...s, daysPending, priority };
+        });
+
+        document.getElementById('pending-count').textContent = allSyllabuses.length;
+        displaySyllabuses(allSyllabuses);
+
+      } catch (error) {
+        console.error('Error loading syllabuses:', error);
+        document.getElementById('syllabus-grid').innerHTML = 
+          '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #dc3545;">Error loading syllabuses</div>';
+      }
+    }
+
+    function displaySyllabuses(syllabuses) {
+      const grid = document.getElementById('syllabus-grid');
+
+      if (syllabuses.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #999;">✅ No pending syllabuses. Great work!</div>';
+        return;
+      }
+
+      grid.innerHTML = syllabuses.map(s => {
+        const priorityClass = `priority-${s.priority}`;
+        const cardClass = s.priority === 'high' ? 'urgent' : '';
+        
+        return `
+          <div class="syllabus-card ${cardClass}">
+            <div class="card-header">
+              <h3 class="card-title">${s.subject_code || 'N/A'}</h3>
+              <span class="priority-badge ${priorityClass}">${s.priority.toUpperCase()}</span>
+            </div>
+
+            <div class="card-info">
+              <strong>Subject:</strong> ${s.subject_name || 'Untitled'}
+            </div>
+
+            <div class="card-info">
+              <strong>Lecturer:</strong> ${s.lecturer_name || 'Unknown'}
+            </div>
+
+            <div class="card-info">
+              <strong>Submitted:</strong> ${new Date(s.created_at).toLocaleDateString('vi-VN')}
+              <span style="color: ${s.priority === 'high' ? '#dc3545' : '#666'}; font-weight: bold;">
+                (${s.daysPending} days ago)
+              </span>
+            </div>
+
+            <div class="card-info">
+              <strong>Version:</strong> ${s.version || 'v1.0'}
+            </div>
+
+            <div class="card-info">
+              <strong>Credits:</strong> ${s.credits || 'N/A'}
+            </div>
+
+            <div class="card-footer">
+              <button class="btn btn-review" onclick="reviewSyllabus(${s.id})">
+                ✓ Review Now
+              </button>
+              <button class="btn btn-view" onclick="quickView(${s.id})">
+                👁️
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function applyFilters() {
+      const priority = document.getElementById('filter-priority').value;
+      const sort = document.getElementById('filter-sort').value;
+      const search = document.getElementById('filter-search').value.toLowerCase();
+
+      let filtered = [...allSyllabuses];
+
+      // Filter by priority
+      if (priority) {
+        filtered = filtered.filter(s => s.priority === priority);
+      }
+
+      // Filter by search
+      if (search) {
+        filtered = filtered.filter(s => 
+          (s.subject_code || '').toLowerCase().includes(search) ||
+          (s.subject_name || '').toLowerCase().includes(search) ||
+          (s.lecturer_name || '').toLowerCase().includes(search)
+        );
+      }
+
+      // Sort
+      if (sort === 'newest') {
+        filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      } else if (sort === 'oldest') {
+        filtered.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+      } else if (sort === 'priority') {
+        const priorityOrder = { high: 0, medium: 1, low: 2 };
+        filtered.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+      }
+
+      displaySyllabuses(filtered);
+    }
+
+    function reviewSyllabus(id) {
+      window.location.href = `syllabus-review.html?id=${id}`;
+    }
+
+    function quickView(id) {
+      window.open(`syllabus-view.html?id=${id}`, '_blank');
+    }
+
+    function logout() {
+      localStorage.removeItem('access_token');
+      window.location.href = '/index.html';
+    }
+
+    // Initialize
+    loadPendingSyllabuses();
+
+    // Auto refresh every 60 seconds
+    setInterval(loadPendingSyllabuses, 60000);
+  </script>
+</body>
+</html>

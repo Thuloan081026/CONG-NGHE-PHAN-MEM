@@ -10,6 +10,9 @@ from .base import BaseRepository
 class SyllabusRepository(BaseRepository[Syllabus]):
     """Repository for Syllabus CRUD operations"""
 
+    def __init__(self):
+        super().__init__(Syllabus)
+
     def get_by_code(self, db: Session, subject_code: str) -> Optional[Syllabus]:
         """Get syllabus by subject code"""
         return db.query(Syllabus).filter(Syllabus.subject_code == subject_code).first()
@@ -146,6 +149,9 @@ class SyllabusRepository(BaseRepository[Syllabus]):
 
 class SyllabusVersionRepository(BaseRepository[SyllabusVersion]):
     """Repository for Syllabus Version (version control)"""
+
+    def __init__(self):
+        super().__init__(SyllabusVersion)
 
     def get_by_id(self, db: Session, version_id: int) -> Optional[SyllabusVersion]:
         """Get version by ID"""

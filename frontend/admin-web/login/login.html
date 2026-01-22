@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login - SMD</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+<div class="login-box">
+    <h2>Admin Login</h2>
+
+    <form onsubmit="return validateAdmin()">
+        <label>Username</label>
+        <input type="text" id="adminUser" required>
+
+        <label>Password</label>
+        <input type="password" id="adminPass" required minlength="6">
+
+        <p id="adminError" class="error"></p>
+
+        <button type="submit">Login</button>
+    </form>
+</div>
+
+<script src="login.js"></script>
+</body>
+</html>

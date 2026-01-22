@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Import tài khoản - SMD Admin</title>
+  <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
+  <link rel="stylesheet" href="../assets/css/styles.min.css" />
+</head>
+<body>
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    
+    <aside class="left-sidebar">
+      <div>
+        <div class="brand-logo d-flex align-items-center justify-content-between">
+          <a href="./dashboard.html" class="text-nowrap logo-img">
+            <h3 class="text-primary fw-bold mb-0">🎓 SMD System</h3>
+          </a>
+          <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+            <i class="ti ti-x fs-8"></i>
+          </div>
+        </div>
+        
+        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+          <ul id="sidebarnav">
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">ADMIN PANEL</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./dashboard.html" aria-expanded="false">
+                <span><i class="ti ti-layout-dashboard"></i></span>
+                <span class="hide-menu">Dashboard</span>
+              </a>
+            </li>
+            
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">USER MANAGEMENT</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./users-list.html" aria-expanded="false">
+                <span><i class="ti ti-users"></i></span>
+                <span class="hide-menu">User List</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./users-create.html" aria-expanded="false">
+                <span><i class="ti ti-user-plus"></i></span>
+                <span class="hide-menu">Create User</span>
+              </a>
+            </li>
+            <li class="sidebar-item active">
+              <a class="sidebar-link" href="./users-import.html" aria-expanded="false">
+                <span><i class="ti ti-file-upload"></i></span>
+                <span class="hide-menu">Import Users</span>
+              </a>
+            </li>
+            
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">KHOA</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./departments-list.html" aria-expanded="false">
+                <span><i class="ti ti-building"></i></span>
+                <span class="hide-menu">Danh sách khoa</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./departments-create.html" aria-expanded="false">
+                <span><i class="ti ti-building-plus"></i></span>
+                <span class="hide-menu">Tạo khoa mới</span>
+              </a>
+            </li>
+            
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./profile.html" aria-expanded="false">
+                <span><i class="ti ti-user-circle"></i></span>
+                <span class="hide-menu">Profile</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="javascript:void(0)" onclick="logout()" aria-expanded="false">
+                <span><i class="ti ti-logout"></i></span>
+                <span class="hide-menu">Logout</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </aside>
+    
+    <div class="body-wrapper">
+      <header class="app-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <ul class="navbar-nav">
+            <li class="nav-item d-block d-xl-none">
+              <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
+                <i class="ti ti-menu-2"></i>
+              </a>
+            </li>
+          </ul>
+          <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+              <li class="nav-item dropdown">
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <img src="../assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+                  <div class="message-body">
+                    <a href="./profile.html" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-user fs-6"></i>
+                      <p class="mb-0 fs-3">Profile</p>
+                    </a>
+                    <a href="javascript:void(0)" onclick="logout()" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      
+      <div class="container-fluid">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h5 class="card-title fw-semibold mb-0">Import tài khoản từ Excel</h5>
+              <a href="./users-list.html" class="btn btn-outline-secondary btn-sm">
+                <i class="ti ti-arrow-left"></i> Quay lại danh sách
+              </a>
+            </div>
+            
+            <div id="alertBox"></div>
+            
+            <!-- Instructions -->
+            <div class="alert alert-info">
+              <h6 class="alert-heading"><i class="ti ti-info-circle"></i> Hướng dẫn:</h6>
+              <ol class="mb-0">
+                <li>Tải file mẫu Excel bằng nút bên dưới</li>
+                <li>Điền thông tin người dùng vào file Excel theo định dạng mẫu</li>
+                <li>Các cột bắt buộc: <strong>email, full_name, password, role</strong></li>
+                <li>Các cột tùy chọn: employee_id, degree, title, department, và các trường khác</li>
+                <li>Upload file Excel đã điền thông tin</li>
+                <li>Hệ thống sẽ tự động tạo tài khoản cho tất cả người dùng trong file</li>
+              </ol>
+            </div>
+            
+            <!-- Download Template -->
+            <div class="card bg-light mb-4">
+              <div class="card-body">
+                <h6 class="card-title"><i class="ti ti-download"></i> Tải file mẫu</h6>
+                <p class="text-muted mb-3">Tải file Excel mẫu với định dạng đúng để import dữ liệu</p>
+                <button onclick="downloadTemplate()" class="btn btn-success">
+                  <i class="ti ti-file-download"></i> Tải file mẫu Excel
+                </button>
+              </div>
+            </div>
+            
+            <!-- Upload File -->
+            <div class="card">
+              <div class="card-body">
+                <h6 class="card-title"><i class="ti ti-upload"></i> Upload file Excel</h6>
+                <p class="text-muted">Chọn file Excel (.xlsx hoặc .xls) để import</p>
+                
+                <form id="importForm">
+                  <div class="mb-3">
+                    <input type="file" class="form-control" id="excelFile" accept=".xlsx,.xls" required>
+                    <small class="text-muted">Chỉ chấp nhận file .xlsx hoặc .xls</small>
+                  </div>
+                  
+                  <button type="submit" class="btn btn-primary" id="uploadBtn">
+                    <i class="ti ti-upload"></i> Import tài khoản
+                  </button>
+                </form>
+              </div>
+            </div>
+            
+            <!-- Import Results -->
+            <div id="resultsSection" class="card mt-4" style="display: none;">
+              <div class="card-body">
+                <h6 class="card-title"><i class="ti ti-report"></i> Kết quả import</h6>
+                <div id="resultsContent"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/sidebarmenu.js"></script>
+  <script src="../assets/js/app.min.js"></script>
+  <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+  
+  <script>
+    const API_BASE_URL = 'http://127.0.0.1:8000';
+    
+    function checkAuth() {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        window.location.href = 'http://localhost:3000';
+        return false;
+      }
+      return token;
+    }
+    
+    function logout() {
+      localStorage.clear();
+      sessionStorage.setItem('from_logout', 'true');
+      window.location.href = 'http://localhost:3000';
+    }
+    
+    function showAlert(message, type) {
+      const alertBox = document.getElementById('alertBox');
+      alertBox.innerHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      `;
+      setTimeout(() => alertBox.innerHTML = '', 10000);
+    }
+    
+    async function downloadTemplate() {
+      const token = checkAuth();
+      if (!token) return;
+      
+      try {
+        const response = await fetch(`${API_BASE_URL}/users/import/template`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (response.ok) {
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'user_import_template.xlsx';
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+          showAlert('Tải file mẫu thành công!', 'success');
+        } else if (response.status === 401) {
+          showAlert('Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại!', 'danger');
+          setTimeout(() => {
+            localStorage.clear();
+            window.location.href = 'http://localhost:3000';
+          }, 2000);
+        } else {
+          const error = await response.json();
+          showAlert(error.detail || 'Không thể tải file mẫu', 'danger');
+        }
+      } catch (error) {
+        console.error('Error downloading template:', error);
+        showAlert('Lỗi kết nối đến server', 'danger');
+      }
+    }
+    
+    document.getElementById('importForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const token = checkAuth();
+      if (!token) return;
+      
+      const fileInput = document.getElementById('excelFile');
+      const uploadBtn = document.getElementById('uploadBtn');
+      
+      if (!fileInput.files[0]) {
+        showAlert('Vui lòng chọn file Excel', 'warning');
+        return;
+      }
+      
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+      
+      uploadBtn.disabled = true;
+      uploadBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang import...';
+      
+      try {
+        const response = await fetch(`${API_BASE_URL}/users/import/import`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          showAlert(result.message, 'success');
+          displayResults(result);
+          fileInput.value = '';
+        } else {
+          showAlert(result.detail || 'Import thất bại', 'danger');
+        }
+      } catch (error) {
+        console.error('Error importing users:', error);
+        showAlert('Lỗi kết nối đến server', 'danger');
+      } finally {
+        uploadBtn.disabled = false;
+        uploadBtn.innerHTML = '<i class="ti ti-upload"></i> Import tài khoản';
+      }
+    });
+    
+    function displayResults(result) {
+      const resultsSection = document.getElementById('resultsSection');
+      const resultsContent = document.getElementById('resultsContent');
+      
+      let html = `
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <div class="card bg-primary text-white">
+              <div class="card-body">
+                <h3>${result.total_rows}</h3>
+                <p class="mb-0">Tổng số dòng</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card bg-success text-white">
+              <div class="card-body">
+                <h3>${result.success}</h3>
+                <p class="mb-0">Thành công</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card bg-danger text-white">
+              <div class="card-body">
+                <h3>${result.failed}</h3>
+                <p class="mb-0">Thất bại</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      if (result.failed_users && result.failed_users.length > 0) {
+        html += `
+          <h6 class="text-danger mt-4">Chi tiết lỗi:</h6>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Dòng</th>
+                  <th>Email</th>
+                  <th>Lý do</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${result.failed_users.map(user => `
+                  <tr>
+                    <td>${user.row}</td>
+                    <td>${user.email}</td>
+                    <td>${user.reason}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+      
+      resultsContent.innerHTML = html;
+      resultsSection.style.display = 'block';
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      checkAuth();
+    });
+  </script>
+</body>
+</html>
