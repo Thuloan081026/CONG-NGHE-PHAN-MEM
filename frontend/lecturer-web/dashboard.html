@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <title>Lecturer Dashboard - SMD System</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!-- Favicon icon -->
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="assets/icon/icofont/css/icofont.css">
+    <!-- Themify -->
+    <link rel="stylesheet" type="text/css" href="assets/icon/themify-icons/themify-icons.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-theme.min.css">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+    <!-- Main Styles -->
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/menu.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/color/color-1.css" id="color" />
+    <link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
+    
+    <!-- Custom Dashboard Styles -->
+    <link rel="stylesheet" type="text/css" href="assets/css/lecturer-dashboard.css">
+</head>
+
+<body class="sidebar-mini fixed">
+
+    <!-- HƯỚNG DẪN ĐÃ BỊ XÓA THEO YÊU CẦU -->
+    <!-- Pre-loader start -->
+    <div class="loader-bg">
+        <div class="loader-bar"></div>
+    </div>
+    <!-- Pre-loader end -->
+
+    <div class="wrapper">
+        <!-- Navbar-->
+        <header class="main-header-top hidden-print">
+            <a href="dashboard.html" class="logo">
+                <h4 style="color: white; margin: 0; padding: 10px;">SMD - Lecturer</h4>
+            </a>
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#!" data-toggle="offcanvas" class="sidebar-toggle"></a>
+                
+                <!-- Navbar Right Menu-->
+                <div class="navbar-custom-menu f-right">
+                    <ul class="top-nav">
+                        <!-- Notifications -->
+                        <li class="dropdown notification-menu">
+                            <a href="#!" data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">
+                                <i class="icon-bell"></i>
+                                <span class="badge badge-danger header-badge">0</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="not-head">You have <b class="text-primary">0</b> new notifications.</li>
+                                <li class="not-footer">
+                                    <a href="notifications.html">See all notifications.</a>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                        <!-- User Menu-->
+                        <li class="dropdown">
+                            <a href="#!" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle drop icon-circle drop-image">
+                                <span><i class="ti-user"></i></span>
+                                <span id="userName">Lecturer</span> <i class="icofont icofont-simple-down"></i>
+                            </a>
+                            <ul class="dropdown-menu settings-menu">
+                                <li><a href="profile.html"><i class="icon-user"></i> Profile</a></li>
+                                <li><a href="#" onclick="logout()"><i class="icon-logout"></i> Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        
+        <!-- Side-Nav-->
+        <aside class="main-sidebar hidden-print">
+            <section class="sidebar" id="sidebar-scroll">
+                <!-- Sidebar Menu-->
+                <ul class="sidebar-menu">
+                    <li class="nav-level"><i class="ti-layout-grid2"></i> Navigation</li>
+                    <li class="active">
+                        <a class="waves-effect waves-dark" href="dashboard.html">
+                            <i class="ti-dashboard"></i><span> Dashboard</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-level"><i class="ti-files"></i> Syllabus Management</li>
+                    <li class="treeview">
+                        <a class="waves-effect waves-dark" href="#!">
+                            <i class="ti-book"></i><span> My Syllabuses</span>
+                            <span class="badge badge-primary" style="margin-left: 10px;">12</span>
+                            <i class="ti-angle-down" style="float: right; margin-top: 5px;"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a class="waves-effect waves-dark" href="syllabus-list.html"><i class="ti-list"></i> View All</a></li>
+                            <li><a class="waves-effect waves-dark" href="syllabus-create.html"><i class="ti-plus"></i> Create New</a></li>
+                            <li><a class="waves-effect waves-dark" href="syllabus-versions.html"><i class="ti-layout-tab"></i> Version History</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-level"><i class="ti-comments"></i> Collaboration</li>
+                    <li>
+                        <a class="waves-effect waves-dark" href="comments-feedback.html">
+                            <i class="ti-comment-alt"></i><span> Reviews & Feedback</span>
+                            <span class="badge badge-warning" style="margin-left: 5px;">3</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark" href="search-reference.html">
+                            <i class="ti-search"></i><span> Search References</span>
+                            <span class="badge badge-success" style="margin-left: 5px;">NEW</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-level"><i class="ti-settings"></i> Settings</li>
+                    <li>
+                        <a class="waves-effect waves-dark" href="profile.html">
+                            <i class="ti-user"></i><span> My Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark" href="notifications.html">
+                            <i class="ti-bell"></i><span> Notifications</span>
+                            <span class="badge badge-danger" style="margin-left: 5px;">5</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-level"><i class="ti-power-off"></i> Account</li>
+                    <li>
+                        <a class="waves-effect waves-dark" href="#!" onclick="logout()" style="color: #f44336;">
+                            <i class="ti-power-off"></i><span> Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        
+        <div class="content-wrapper">
+            <!-- Container-fluid starts -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="main-header">
+                        <h4>Lecturer Dashboard</h4>
+                    </div>
+                </div>
+                
+                <!-- Welcome Message -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="welcome-box">
+                            <h4>👋 Welcome back, <span id="welcomeName">Lecturer</span>!</h4>
+                            <p>Here's your syllabus overview and recent activities</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Statistics Cards -->
+                <div class="row dashboard-header">
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="card dashboard-product stat-card stat-primary">
+                            <i class="ti-files stat-icon"></i>
+                            <div class="stat-label">Đề tài đề xuất</div>
+                            <div class="stat-number" id="totalSyllabuses">08</div>
+                            <div class="stat-description">Đang chờ duyệt HoD</div>
+                            <div class="stat-details">
+                                <span class="badge badge-light">3 mới</span>
+                                <span class="badge badge-light">5 cập nhật</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="card dashboard-product stat-card stat-accent">
+                            <i class="ti-calendar stat-icon"></i>
+                            <div class="stat-label">Lịch Review sắp tới</div>
+                            <div class="stat-number" id="reviewSyllabuses">04</div>
+                            <div class="stat-description">Trong tuần này</div>
+                            <div class="stat-details">
+                                <span class="badge badge-light">Thứ 3: 2 buổi</span>
+                                <span class="badge badge-light">Thứ 5: 2 buổi</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="card dashboard-product stat-card stat-secondary">
+                            <i class="ti-check-box stat-icon"></i>
+                            <div class="stat-label">Đề tài hoàn thành</div>
+                            <div class="stat-number" id="draftSyllabuses">22</div>
+                            <div class="stat-description">Đã phê duyệt</div>
+                            <div class="stat-details">
+                                <span class="badge badge-light">HK1: 12</span>
+                                <span class="badge badge-light">HK2: 10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Activity & Quick Actions -->
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-header-text"><i class="ti-files"></i> My Recent Syllabuses</h5>
+                                <div class="card-header-right">
+                                    <a href="syllabus-list.html" class="btn btn-sm btn-primary-gradient">
+                                        <i class="ti-eye"></i> View All
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-block" style="padding: 0;">
+                                <div id="recentSyllabuses">
+                                    <div class="recent-item">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <div style="flex: 1;">
+                                                <div class="recent-item-title">CS101 - Data Structures</div>
+                                                <div class="recent-item-meta">
+                                                    <i class="ti-book"></i> 3 credits
+                                                    <span style="margin: 0 8px;">•</span>
+                                                    <i class="ti-calendar"></i> Jan 12, 2026
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <span class="status-badge status-published">Published</span>
+                                            </div>
+                                        </div>
+                                        <div style="margin-top: 10px;">
+                                            <a href="#" class="btn btn-sm btn-outline-primary" style="margin-right: 5px;">
+                                                <i class="ti-eye"></i> View
+                                            </a>
+                                            <a href="#" class="btn btn-sm btn-primary">
+                                                <i class="ti-pencil"></i> Edit
+                                            </a>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="recent-item">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <div style="flex: 1;">
+                                                <div class="recent-item-title">CS201 - Database Management</div>
+                                                <div class="recent-item-meta">
+                                                    <i class="ti-book"></i> 4 credits
+                                                    <span style="margin: 0 8px;">•</span>
+                                                    <i class="ti-calendar"></i> Jan 10, 2026
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <span class="status-badge status-in_review">In Review</span>
+                                            </div>
+                                        </div>
+                                        <div style="margin-top: 10px;">
+                                            <a href="#" class="btn btn-sm btn-outline-primary" style="margin-right: 5px;">
+                                                <i class="ti-eye"></i> View
+                                            </a>
+                                            <a href="#" class="btn btn-sm btn-primary">
+                                                <i class="ti-pencil"></i> Edit
+                                            </a>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="recent-item">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <div style="flex: 1;">
+                                                <div class="recent-item-title">CS301 - Web Development</div>
+                                                <div class="recent-item-meta">
+                                                    <i class="ti-book"></i> 3 credits
+                                                    <span style="margin: 0 8px;">•</span>
+                                                    <i class="ti-calendar"></i> Jan 08, 2026
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <span class="status-badge status-approved">Approved</span>
+                                            </div>
+                                        </div>
+                                        <div style="margin-top: 10px;">
+                                            <a href="#" class="btn btn-sm btn-outline-primary" style="margin-right: 5px;">
+                                                <i class="ti-eye"></i> View
+                                            </a>
+                                            <a href="#" class="btn btn-sm btn-primary">
+                                                <i class="ti-pencil"></i> Edit
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-header-text"><i class="ti-layout-grid2"></i> Quick Actions</h5>
+                            </div>
+                            <div class="card-block">
+                                <a href="syllabus-create.html" class="btn btn-primary-gradient btn-block btn-action mb-3" onclick="window.location.assign('syllabus-create.html'); return false;">
+                                    <i class="ti-plus"></i> Create New Syllabus
+                                </a>
+                                <a href="syllabus-list.html" class="btn btn-outline-primary btn-block btn-action mb-3" onclick="window.location.assign('syllabus-list.html'); return false;">
+                                    <i class="ti-files"></i> View All Syllabuses
+                                </a>
+                                <a href="syllabus-versions.html" class="btn btn-outline-success btn-block btn-action mb-3" onclick="window.location.assign('syllabus-versions.html'); return false;">
+                                    <i class="ti-layout-tab"></i> Version History
+                                </a>
+                                <a href="collaborative-review.html" class="btn btn-outline-info btn-block btn-action mb-3" onclick="window.location.assign('collaborative-review.html'); return false;">
+                                    <i class="ti-comment"></i> Collaborative Review
+                                </a>
+                                <a href="notifications.html" class="btn btn-outline-warning btn-block btn-action" onclick="window.location.assign('notifications.html'); return false;">
+                                    <i class="ti-bell"></i> View Notifications
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Container-fluid ends -->
+        </div>
+    </div>
+
+    <!-- Required Jquery - CDN Fallback -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/tether/dist/js/tether.min.js"></script>
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Scrollbar JS-->
+    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <script src="assets/plugins/jquery.nicescroll/jquery.nicescroll.min.js"></script>
+    <!--classic JS-->
+    <script src="assets/plugins/classie/classie.js"></script>
+    <!-- Custom js -->
+    <script type="text/javascript" src="assets/js/main.min.js"></script>
+    <script src="assets/js/menu.min.js"></script>
+    <script>
+const API_URL = 'http://localhost:8000';
+const token = localStorage.getItem('access_token');
+let userData = null;
+
+/* ================= AUTH ================= */
+async function initAuth() {
+    if (!token) redirectLogin();
+
+    try {
+        const res = await fetch(`${API_URL}/users/me`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        if (!res.ok) throw new Error('Unauthenticated');
+
+        userData = await res.json();
+        if (userData.role !== 'lecturer') redirectLogin();
+
+        const name = userData.full_name || userData.email || 'Lecturer';
+        document.querySelectorAll('#userName').forEach(e => e.textContent = name);
+        document.getElementById('welcomeName').textContent = name;
+
+        fetchNotifications();
+        fetchDashboard();
+
+    } catch (e) {
+        console.error(e);
+        redirectLogin();
+    }
+}
+
+function redirectLogin() {
+    alert('⚠️ Lecturer login required');
+    localStorage.clear();
+    window.location.href = 'home.html';
+}
+
+/* ================= DASHBOARD ================= */
+async function fetchDashboard() {
+    try {
+        const res = await fetch(`${API_URL}/lecturer/dashboard`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        if (!res.ok) throw new Error('Dashboard API error');
+
+        const data = await res.json();
+
+        // SET NUMBERS (KHÔNG animate để tránh reset)
+        document.getElementById('totalSyllabuses').textContent = data.pending ?? 0;
+        document.getElementById('reviewSyllabuses').textContent = data.review ?? 0;
+        document.getElementById('draftSyllabuses').textContent = data.approved ?? 0;
+
+        renderRecent(data.recent || []);
+    } catch (e) {
+        console.error(e);
+        showError();
+    }
+}
+
+function renderRecent(items) {
+    const container = document.getElementById('recentSyllabuses');
+
+    if (!items.length) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <i class="ti-files"></i>
+                <p>No syllabuses yet</p>
+            </div>`;
+        return;
+    }
+
+    container.innerHTML = items.map(s => `
+        <div class="recent-item">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <div class="recent-item-title">${s.subject_code} - ${s.subject_name}</div>
+                    <div class="recent-item-meta">
+                        <i class="ti-book"></i> ${s.credits} credits
+                        • <i class="ti-calendar"></i>
+                        ${new Date(s.updated_at).toLocaleDateString()}
+                    </div>
+                </div>
+                <span class="status-badge status-${s.status}">${s.status.toUpperCase()}</span>
+            </div>
+            <div class="mt-2">
+                <a href="syllabus-view.html?id=${s.id}" class="btn btn-sm btn-outline-primary">View</a>
+                <a href="syllabus-edit.html?id=${s.id}" class="btn btn-sm btn-primary">Edit</a>
+            </div>
+        </div>
+    `).join('');
+}
+
+/* ================= NOTIFICATIONS ================= */
+async function fetchNotifications() {
+    try {
+        const res = await fetch(`${API_URL}/notifications?skip=0&limit=10`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        if (!res.ok) return;
+
+        const data = await res.json();
+        const unread = (data.items || []).filter(n => !n.is_read).length;
+        document.querySelectorAll('.header-badge').forEach(b => b.textContent = unread);
+    } catch {}
+}
+
+/* ================= LOGOUT ================= */
+function logout() {
+    if (confirm('Logout?')) {
+        localStorage.clear();
+        window.location.href = 'home.html';
+    }
+}
+
+/* ================= INIT ================= */
+document.addEventListener('DOMContentLoaded', initAuth);
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* ========= MOCK NOTIFICATION DATA ========= */
+    const notifications = [
+        { id: 1, text: "New syllabus submitted for review", read: false },
+        { id: 2, text: "Reviewer left feedback on CS101", read: false },
+        { id: 3, text: "Syllabus approved successfully", read: false },
+        { id: 4, text: "New review meeting scheduled", read: true },
+        { id: 5, text: "Version history updated", read: true }
+    ];
+
+    const unreadCount = notifications.filter(n => !n.read).length;
+
+    /* ========= FIX BADGE (ICON 🔔) ========= */
+    const bellBadge = document.querySelector(".notification-badge");
+    if (bellBadge) {
+        bellBadge.innerText = unreadCount;
+        bellBadge.style.display = unreadCount > 0 ? "inline-block" : "none";
+    }
+
+    /* ========= FIX POPUP TEXT ========= */
+    const popupText = document.querySelector(".notification-dropdown p");
+    if (popupText) {
+        popupText.innerHTML = `You have <b>${unreadCount}</b> new notifications.`;
+    }
+
+});
+</script>
+
+</body>
+</html>
