@@ -1,6 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File
 from sqlalchemy.orm import Session
 from typing import List, Optional
+import os
+import shutil
+from pathlib import Path
 
 from ...core.database import get_db
 from ...core.deps import get_current_user, require_roles
@@ -87,6 +90,41 @@ def list_my_syllabuses(
 
 
 @router.get(
+    "/pending",
+    response_model=SyllabusListOut,
+    summary="List pending syllabuses for HoD review",
+    description="Lấy danh sách giáo trình đang chờ HoD review (chỉ HoD và admin)"
+)
+def list_pending_for_hod(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=1000),
+    current_user: User = Depends(require_roles("hod", "admin")),
+    db: Session = Depends(get_db)
+):
+    """
+    List syllabuses pending HoD review.
+    Only HoD and admin can access this endpoint.
+    """
+    from ...models.syllabus import Syllabus
+    
+    # Query syllabuses with status pending_hod_review or submitted
+    query = db.query(Syllabus).filter(
+        Syllabus.status.in_(['pending_hod_review', 'submitted', 'pending_review'])
+    )
+    
+    total = query.count()
+    items = query.offset(skip).limit(limit).all()
+    
+    return SyllabusListOut(
+        total=total,
+        count=len(items),
+        page=skip // limit + 1,
+        page_size=limit,
+        items=items
+    )
+
+
+@router.get(
     "/published",
     response_model=SyllabusListOut,
     summary="List published syllabuses",
@@ -143,6 +181,88 @@ def search_syllabuses(
         page_size=limit,
         items=items
     )
+
+
+# ==================== FILE UPLOAD ENDPOINT (MUST BE BEFORE /{syllabus_id}) ====================
+
+@router.post("/{syllabus_id}/upload-files")
+async def upload_syllabus_files(
+    syllabus_id: int,
+    current_user: User = Depends(require_roles("lecturer", "hod", "admin")),
+    db: Session = Depends(get_db),
+    textbook_files: List[UploadFile] = File(default=None),
+    reference_files: List[UploadFile] = File(default=None),
+    learning_material_files: List[UploadFile] = File(default=None),
+    course_files: List[UploadFile] = File(default=None)
+):
+    """Upload files for syllabus"""
+    print(f"[DEBUG] Upload endpoint called for syllabus_id: {syllabus_id}")
+    print(f"[DEBUG] textbook_files: {textbook_files}")
+    print(f"[DEBUG] reference_files: {reference_files}")
+    print(f"[DEBUG] learning_material_files: {learning_material_files}")
+    print(f"[DEBUG] course_files: {course_files}")
+    
+    from ...models.syllabus import Syllabus
+    syllabus = db.query(Syllabus).filter(Syllabus.id == syllabus_id).first()
+    if not syllabus:
+        raise HTTPException(status_code=404, detail="Syllabus not found")
+    
+    if syllabus.created_by != current_user.id and current_user.role not in ["hod", "admin"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    base_dir = Path("data/syllabuses") / str(syllabus_id)
+    base_dir.mkdir(parents=True, exist_ok=True)
+    
+    uploaded_files = {"textbooks": [], "references": [], "materials": [], "course_files": []}
+    
+    if textbook_files:
+        textbook_dir = base_dir / "textbooks"
+        textbook_dir.mkdir(exist_ok=True)
+        for file in textbook_files:
+            if file.filename:
+                file_path = textbook_dir / file.filename
+                with open(file_path, "wb") as buffer:
+                    shutil.copyfileobj(file.file, buffer)
+                uploaded_files["textbooks"].append(str(file_path))
+    
+    if reference_files:
+        ref_dir = base_dir / "references"
+        ref_dir.mkdir(exist_ok=True)
+        for file in reference_files:
+            if file.filename:
+                file_path = ref_dir / file.filename
+                with open(file_path, "wb") as buffer:
+                    shutil.copyfileobj(file.file, buffer)
+                uploaded_files["references"].append(str(file_path))
+    
+    if learning_material_files:
+        material_dir = base_dir / "materials"
+        material_dir.mkdir(exist_ok=True)
+        for file in learning_material_files:
+            if file.filename:
+                file_path = material_dir / file.filename
+                with open(file_path, "wb") as buffer:
+                    shutil.copyfileobj(file.file, buffer)
+                uploaded_files["materials"].append(str(file_path))
+    
+    if course_files:
+        course_dir = base_dir / "course_files"
+        course_dir.mkdir(exist_ok=True)
+        for file in course_files:
+            if file.filename:
+                file_path = course_dir / file.filename
+                with open(file_path, "wb") as buffer:
+                    shutil.copyfileobj(file.file, buffer)
+                uploaded_files["course_files"].append(str(file_path))
+    
+    if not syllabus.file_metadata:
+        syllabus.file_metadata = {}
+    syllabus.file_metadata["uploaded_files"] = uploaded_files
+    print(f"[DEBUG] Saving to DB - uploaded_files: {uploaded_files}")
+    db.commit()
+    print(f"[DEBUG] Committed to database")
+    
+    return {"message": "Files uploaded successfully", "syllabus_id": syllabus_id, "uploaded_files": uploaded_files}
 
 
 @router.get(
