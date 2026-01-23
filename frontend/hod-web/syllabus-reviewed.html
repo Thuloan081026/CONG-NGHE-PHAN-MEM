@@ -246,34 +246,127 @@
           allSyllabuses = (data.items || []).filter(s => 
             s.status === 'approved' || s.status === 'rejected' || s.status === 'completed'
           );
+          
+          // If no reviewed syllabuses from API, use mock data
+          if (allSyllabuses.length === 0) {
+            allSyllabuses = getMockReviewedSyllabuses();
+            console.log('No reviewed syllabuses from API, using mock data');
+          }
         } else {
           allSyllabuses = getMockReviewedSyllabuses();
+          console.log('API error, using mock data');
         }
       } catch (error) {
-        console.log('Using mock data');
+        console.log('API not available, using mock data', error);
         allSyllabuses = getMockReviewedSyllabuses();
       }
 
       filteredSyllabuses = [...allSyllabuses];
       updateStatistics();
       renderSyllabuses();
+      console.log(`Loaded ${allSyllabuses.length} reviewed syllabuses`);
     }
 
     function getMockReviewedSyllabuses() {
+      const now = new Date();
       return [
         {
           id: 6,
-          subject_code: 'CS402',
-          subject_name: 'Computer Networks',
+          subject_code: 'CSC401',
+          subject_name: 'Trí tuệ Nhân tạo',
           credits: 3,
           status: 'approved',
           department: 'Computer Science',
           semester: 1,
           created_by: 4,
-          created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10).toISOString(),
-          reviewed_date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(),
+          created_at: new Date(now - 1000 * 60 * 60 * 24 * 15).toISOString(),
+          reviewed_date: new Date(now - 1000 * 60 * 60 * 24 * 8).toISOString(),
           reviewer_name: 'Dr. Nguyen Van A',
-          review_comment: 'Excellent syllabus. Well structured and comprehensive.'
+          review_comment: 'Giáo trình xuất sắc. Nội dung được cấu trúc tốt và toàn diện.'
+        },
+        {
+          id: 7,
+          subject_code: 'CSC303',
+          subject_name: 'Mạng máy tính',
+          credits: 3,
+          status: 'approved',
+          department: 'Computer Science',
+          semester: 1,
+          created_by: 5,
+          created_at: new Date(now - 1000 * 60 * 60 * 24 * 20).toISOString(),
+          reviewed_date: new Date(now - 1000 * 60 * 60 * 24 * 5).toISOString(),
+          reviewer_name: 'Dr. Nguyen Van A',
+          review_comment: 'Phê duyệt. Nội dung phù hợp với chuẩn đầu ra.'
+        },
+        {
+          id: 8,
+          subject_code: 'MAT201',
+          subject_name: 'Toán rời rạc',
+          credits: 4,
+          status: 'approved',
+          department: 'Computer Science',
+          semester: 1,
+          created_by: 6,
+          created_at: new Date(now - 1000 * 60 * 60 * 24 * 25).toISOString(),
+          reviewed_date: new Date(now - 1000 * 60 * 60 * 24 * 12).toISOString(),
+          reviewer_name: 'Dr. Nguyen Van A',
+          review_comment: 'Giáo trình tốt, đã được cập nhật theo yêu cầu.'
+        },
+        {
+          id: 9,
+          subject_code: 'SWE201',
+          subject_name: 'Kiểm thử Phần mềm',
+          credits: 3,
+          status: 'rejected',
+          department: 'Computer Science',
+          semester: 2,
+          created_by: 7,
+          created_at: new Date(now - 1000 * 60 * 60 * 24 * 18).toISOString(),
+          reviewed_date: new Date(now - 1000 * 60 * 60 * 24 * 7).toISOString(),
+          reviewer_name: 'Dr. Nguyen Van A',
+          review_comment: 'Từ chối. Nội dung chưa đầy đủ, thiếu phần CLO và assessment methods.'
+        },
+        {
+          id: 10,
+          subject_code: 'CSC505',
+          subject_name: 'Học máy nâng cao',
+          credits: 3,
+          status: 'rejected',
+          department: 'Computer Science',
+          semester: 2,
+          created_by: 8,
+          created_at: new Date(now - 1000 * 60 * 60 * 24 * 12).toISOString(),
+          reviewed_date: new Date(now - 1000 * 60 * 60 * 24 * 4).toISOString(),
+          reviewer_name: 'Dr. Nguyen Van A',
+          review_comment: 'Cần bổ sung thêm tài liệu tham khảo và chi tiết hơn về đánh giá.'
+        },
+        {
+          id: 11,
+          subject_code: 'CSC301',
+          subject_name: 'Cấu trúc Dữ liệu và Giải thuật',
+          credits: 3,
+          status: 'completed',
+          department: 'Computer Science',
+          semester: 1,
+          created_by: 4,
+          created_at: new Date(now - 1000 * 60 * 60 * 24 * 30).toISOString(),
+          reviewed_date: new Date(now - 1000 * 60 * 60 * 24 * 20).toISOString(),
+          reviewer_name: 'Dr. Nguyen Van A',
+          review_comment: 'Đã hoàn thành review và gửi lên Admin để xuất bản.'
+        },
+        {
+          id: 12,
+          subject_code: 'CSC205',
+          subject_name: 'Lập trình Hướng đối tượng',
+          credits: 3,
+          status: 'completed',
+          department: 'Computer Science',
+          semester: 1,
+          created_by: 5,
+          created_at: new Date(now - 1000 * 60 * 60 * 24 * 28).toISOString(),
+          reviewed_date: new Date(now - 1000 * 60 * 60 * 24 * 18).toISOString(),
+          reviewer_name: 'Dr. Nguyen Van A',
+          review_comment: 'Review hoàn tất. Giáo trình đạt chuẩn và đã gửi xuất bản.'
         }
       ];
     }
