@@ -14,11 +14,13 @@ from ...schemas.syllabus_schema import (
     SyllabusStatusUpdate, CLOPLOMappingUpdate
 )
 from ...services.syllabus_service import SyllabusService, SyllabusVersionService
+from ...services.notification_service import NotificationService
 
 
 router = APIRouter(prefix="/syllabus", tags=["syllabus"])
 syllabus_service = SyllabusService()
 version_service = SyllabusVersionService()
+notification_service = NotificationService()
 
 
 # ==================== SYLLABUS CRUD ENDPOINTS ====================
@@ -365,7 +367,7 @@ def delete_syllabus(
 def update_status(
     syllabus_id: int,
     status_update: SyllabusStatusUpdate,
-    current_user: User = Depends(require_roles("lecturer", "hod", "admin")),
+    current_user: User = Depends(require_roles("lecturer", "hod", "admin", "academic_affairs")),
     db: Session = Depends(get_db)
 ):
     """
@@ -382,7 +384,47 @@ def update_status(
     - Lecturer có thể submit giáo trình của mình
     - HOD/Admin có thể approve/publish
     """
-    return syllabus_service.update_syllabus_status(db, syllabus_id, status_update.status)
+    syllabus = syllabus_service.update_syllabus_status(
+        db, syllabus_id, status_update.status
+    )
+
+    if not syllabus:
+        raise HTTPException(status_code=404, detail="Syllabus not found")
+
+    subject = syllabus.subject_name
+
+    # ===== FE-05: AUTO NOTIFICATION =====
+    if status_update.status == "submitted":
+        # Thông báo cho HOD
+        notification_service.notify_role(
+            db,
+            role="hod",
+            message=f"Syllabus '{subject}' đã được gửi để duyệt"
+        )
+
+    elif status_update.status == "under_review":
+        # Thông báo cho người tạo
+        notification_service.create_notification(
+            db=db,
+            user_id=syllabus.created_by,
+            message=f"Syllabus '{subject}' đang được Phòng Đào tạo xem xét"
+        )
+
+    elif status_update.status == "approved":
+        notification_service.create_notification(
+            db=db,
+            user_id=syllabus.created_by,
+            message=f"Syllabus '{subject}' đã được phê duyệt"
+        )
+
+    elif status_update.status == "rejected":
+        notification_service.create_notification(
+            db=db,
+            user_id=syllabus.created_by,
+            message=f"Syllabus '{subject}' bị từ chối và cần chỉnh sửa"
+        )
+
+    return syllabus
 
 
 @router.post(
@@ -403,7 +445,27 @@ def publish_syllabus(
     - Giáo trình phải có trạng thái "approved"
     - Chỉ HOD/Admin có thể publish
     """
-    return syllabus_service.publish_syllabus(db, syllabus_id)
+    syllabus = syllabus_service.publish_syllabus(db, syllabus_id)
+
+    if not syllabus:
+        raise HTTPException(status_code=404, detail="Syllabus not found")
+
+    # Thông báo cho người tạo khi được publish
+    notification_service.create_notification(
+        db=db,
+        user_id=syllabus.created_by,
+        message=f"Syllabus '{syllabus.subject_name}' đã được xuất bản"
+    )
+
+    # Thông báo cho tất cả người follow
+    notification_service.notify_followers(
+        db,
+        syllabus.id,
+        f"Syllabus '{syllabus.subject_name}' vừa được xuất bản"
+    )
+
+    return syllabus
+
 
 
 # ==================== CLO/PLO MAPPING ENDPOINTS ====================
