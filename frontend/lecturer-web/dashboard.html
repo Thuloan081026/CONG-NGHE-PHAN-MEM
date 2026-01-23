@@ -100,7 +100,6 @@
                         <ul class="treeview-menu">
                             <li><a class="waves-effect waves-dark" href="syllabus-list.html"><i class="ti-list"></i> View All</a></li>
                             <li><a class="waves-effect waves-dark" href="syllabus-create.html"><i class="ti-plus"></i> Create New</a></li>
-                            <li><a class="waves-effect waves-dark" href="syllabus-versions.html"><i class="ti-layout-tab"></i> Version History</a></li>
                         </ul>
                     </li>
                     
@@ -162,42 +161,39 @@
                 
                 <!-- Statistics Cards -->
                 <div class="row dashboard-header">
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="card dashboard-product stat-card stat-primary">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card dashboard-product stat-card">
                             <i class="ti-files stat-icon"></i>
-                            <div class="stat-label">Đề tài đề xuất</div>
-                            <div class="stat-number" id="totalSyllabuses">08</div>
-                            <div class="stat-description">Đang chờ duyệt HoD</div>
-                            <div class="stat-details">
-                                <span class="badge badge-light">3 mới</span>
-                                <span class="badge badge-light">5 cập nhật</span>
-                            </div>
+                            <div class="stat-label">Total Syllabuses</div>
+                            <div class="stat-number" id="totalSyllabuses">0</div>
+                            <div class="stat-description">All time created</div>
                         </div>
                     </div>
                     
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="card dashboard-product stat-card stat-accent">
-                            <i class="ti-calendar stat-icon"></i>
-                            <div class="stat-label">Lịch Review sắp tới</div>
-                            <div class="stat-number" id="reviewSyllabuses">04</div>
-                            <div class="stat-description">Trong tuần này</div>
-                            <div class="stat-details">
-                                <span class="badge badge-light">Thứ 3: 2 buổi</span>
-                                <span class="badge badge-light">Thứ 5: 2 buổi</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="card dashboard-product stat-card stat-secondary">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card dashboard-product stat-card success">
                             <i class="ti-check-box stat-icon"></i>
-                            <div class="stat-label">Đề tài hoàn thành</div>
-                            <div class="stat-number" id="draftSyllabuses">22</div>
-                            <div class="stat-description">Đã phê duyệt</div>
-                            <div class="stat-details">
-                                <span class="badge badge-light">HK1: 12</span>
-                                <span class="badge badge-light">HK2: 10</span>
-                            </div>
+                            <div class="stat-label">Published</div>
+                            <div class="stat-number" id="publishedSyllabuses">0</div>
+                            <div class="stat-description">Live syllabuses</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card dashboard-product stat-card warning">
+                            <i class="ti-clipboard stat-icon"></i>
+                            <div class="stat-label">In Review</div>
+                            <div class="stat-number" id="reviewSyllabuses">0</div>
+                            <div class="stat-description">Awaiting approval</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card dashboard-product stat-card info">
+                            <i class="ti-pencil-alt stat-icon"></i>
+                            <div class="stat-label">Draft</div>
+                            <div class="stat-number" id="draftSyllabuses">0</div>
+                            <div class="stat-description">Work in progress</div>
                         </div>
                     </div>
                 </div>
@@ -216,76 +212,9 @@
                             </div>
                             <div class="card-block" style="padding: 0;">
                                 <div id="recentSyllabuses">
-                                    <div class="recent-item">
-                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                            <div style="flex: 1;">
-                                                <div class="recent-item-title">CS101 - Data Structures</div>
-                                                <div class="recent-item-meta">
-                                                    <i class="ti-book"></i> 3 credits
-                                                    <span style="margin: 0 8px;">•</span>
-                                                    <i class="ti-calendar"></i> Jan 12, 2026
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <span class="status-badge status-published">Published</span>
-                                            </div>
-                                        </div>
-                                        <div style="margin-top: 10px;">
-                                            <a href="#" class="btn btn-sm btn-outline-primary" style="margin-right: 5px;">
-                                                <i class="ti-eye"></i> View
-                                            </a>
-                                            <a href="#" class="btn btn-sm btn-primary">
-                                                <i class="ti-pencil"></i> Edit
-                                            </a>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="recent-item">
-                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                            <div style="flex: 1;">
-                                                <div class="recent-item-title">CS201 - Database Management</div>
-                                                <div class="recent-item-meta">
-                                                    <i class="ti-book"></i> 4 credits
-                                                    <span style="margin: 0 8px;">•</span>
-                                                    <i class="ti-calendar"></i> Jan 10, 2026
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <span class="status-badge status-in_review">In Review</span>
-                                            </div>
-                                        </div>
-                                        <div style="margin-top: 10px;">
-                                            <a href="#" class="btn btn-sm btn-outline-primary" style="margin-right: 5px;">
-                                                <i class="ti-eye"></i> View
-                                            </a>
-                                            <a href="#" class="btn btn-sm btn-primary">
-                                                <i class="ti-pencil"></i> Edit
-                                            </a>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="recent-item">
-                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                            <div style="flex: 1;">
-                                                <div class="recent-item-title">CS301 - Web Development</div>
-                                                <div class="recent-item-meta">
-                                                    <i class="ti-book"></i> 3 credits
-                                                    <span style="margin: 0 8px;">•</span>
-                                                    <i class="ti-calendar"></i> Jan 08, 2026
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <span class="status-badge status-approved">Approved</span>
-                                            </div>
-                                        </div>
-                                        <div style="margin-top: 10px;">
-                                            <a href="#" class="btn btn-sm btn-outline-primary" style="margin-right: 5px;">
-                                                <i class="ti-eye"></i> View
-                                            </a>
-                                            <a href="#" class="btn btn-sm btn-primary">
-                                                <i class="ti-pencil"></i> Edit
-                                            </a>
-                                        </div>
+                                    <div class="loading-spinner">
+                                        <div class="spinner"></div>
+                                        <p style="color: #999;">Loading syllabuses...</p>
                                     </div>
                                 </div>
                             </div>
@@ -304,14 +233,11 @@
                                 <a href="syllabus-list.html" class="btn btn-outline-primary btn-block btn-action mb-3" onclick="window.location.assign('syllabus-list.html'); return false;">
                                     <i class="ti-files"></i> View All Syllabuses
                                 </a>
-                                <a href="syllabus-versions.html" class="btn btn-outline-success btn-block btn-action mb-3" onclick="window.location.assign('syllabus-versions.html'); return false;">
-                                    <i class="ti-layout-tab"></i> Version History
+                                <a href="comments-feedback.html" class="btn btn-outline-info btn-block btn-action mb-3" onclick="window.location.assign('comments-feedback.html'); return false;">
+                                    <i class="ti-comment"></i> Reviews & Feedback
                                 </a>
-                                <a href="collaborative-review.html" class="btn btn-outline-info btn-block btn-action mb-3" onclick="window.location.assign('collaborative-review.html'); return false;">
-                                    <i class="ti-comment"></i> Collaborative Review
-                                </a>
-                                <a href="notifications.html" class="btn btn-outline-warning btn-block btn-action" onclick="window.location.assign('notifications.html'); return false;">
-                                    <i class="ti-bell"></i> View Notifications
+                                <a href="search-reference.html" class="btn btn-outline-success btn-block btn-action" onclick="window.location.assign('search-reference.html'); return false;">
+                                    <i class="ti-search"></i> Search References
                                 </a>
                             </div>
                         </div>
@@ -337,153 +263,300 @@
     <script type="text/javascript" src="assets/js/main.min.js"></script>
     <script src="assets/js/menu.min.js"></script>
     <script>
-const API_URL = 'http://localhost:8000';
-const token = localStorage.getItem('access_token');
-let userData = null;
+        const API_URL = 'http://localhost:8000';
 
-/* ================= AUTH ================= */
-async function initAuth() {
-    if (!token) redirectLogin();
+        // Authentication helper: get token, refresh user from /users/me
+        const token = localStorage.getItem('access_token');
+        let userData = null;
 
-    try {
-        const res = await fetch(`${API_URL}/users/me`, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+        async function fetchCurrentUser() {
+            if (!token) return null;
+            try {
+                const res = await fetch(`${API_URL}/users/me`, { headers: { 'Authorization': `Bearer ${token}` } });
+                if (!res.ok) throw new Error('Not authenticated');
+                const u = await res.json();
+                localStorage.setItem('user_data', JSON.stringify(u));
+                return u;
+            } catch (err) {
+                console.warn('Could not fetch current user:', err);
+                return null;
+            }
+        }
 
-        if (!res.ok) throw new Error('Unauthenticated');
+        // Try to refresh user info from backend, then validate role
+        (async () => {
+            userData = await fetchCurrentUser() || JSON.parse(localStorage.getItem('user_data') || 'null');
+            if (!token || !userData || userData.role !== 'lecturer') {
+                alert('⚠️ Access denied! Lecturer login required.');
+                window.location.href = 'http://localhost:3000/index.html';
+                return;
+            }
+            // update UI name if present
+            const userNameText = userData.full_name || userData.email || 'Lecturer';
+            document.querySelectorAll('#userName').forEach(el => el.textContent = userNameText);
+            if (document.getElementById('welcomeName')) document.getElementById('welcomeName').textContent = userNameText;
 
-        userData = await res.json();
-        if (userData.role !== 'lecturer') redirectLogin();
+            // load notifications after auth
+            fetchNotifications();
+        })();
 
-        const name = userData.full_name || userData.email || 'Lecturer';
-        document.querySelectorAll('#userName').forEach(e => e.textContent = name);
-        document.getElementById('welcomeName').textContent = name;
+        // Update user name
+        const userName = userData?.full_name || userData?.email || 'Lecturer';
+        document.querySelectorAll('#userName').forEach(el => el.textContent = userName);
+        if (document.getElementById('welcomeName')) {
+            document.getElementById('welcomeName').textContent = userName;
+        }
 
-        fetchNotifications();
-        fetchDashboard();
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.clear();
+                window.location.href = 'home.html';
+            }
+        }
 
-    } catch (e) {
-        console.error(e);
-        redirectLogin();
-    }
-}
+        // Notifications
+        async function fetchNotifications() {
+            try {
+                const res = await fetch(`${API_URL}/notifications?skip=0&limit=10`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!res.ok) {
+                    console.warn('Failed to load notifications', res.status);
+                    return;
+                }
+                const data = await res.json();
+                const items = data.items || [];
+                const unreadCount = items.filter(i => !i.is_read).length;
+                document.querySelectorAll('.header-badge').forEach(el => el.textContent = unreadCount);
 
-function redirectLogin() {
-    alert('⚠️ Lecturer login required');
-    localStorage.clear();
-    window.location.href = 'home.html';
-}
+                // Populate dropdown
+                const dropdown = document.querySelector('.notification-menu .dropdown-menu');
+                if (dropdown) {
+                    let html = `<li class="not-head">You have <b class="text-primary">${unreadCount}</b> new notifications.</li>`;
+                    items.slice(0,5).forEach(n => {
+                        html += `<li><a href="#!">${n.title || n.message || 'Notification'}</a></li>`;
+                    });
+                    html += `<li class="not-footer"><a href="notifications.html">See all notifications.</a></li>`;
+                    dropdown.innerHTML = html;
+                }
+            } catch (err) {
+                console.error('Notifications error:', err);
+            }
+        }
 
-/* ================= DASHBOARD ================= */
-async function fetchDashboard() {
-    try {
-        const res = await fetch(`${API_URL}/lecturer/dashboard`, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+        // Animate numbers
+        function animateNumber(element, target) {
+            if (!element) return;
+            let current = 0;
+            const increment = target / 30;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 30);
+        }
 
-        if (!res.ok) throw new Error('Dashboard API error');
+        // Fetch dashboard data
+        async function fetchDashboardData() {
+            console.log('Starting to fetch dashboard data...');
+            console.log('API URL:', API_URL);
+            console.log('Token:', token ? 'Token exists' : 'No token');
+            
+            try {
+                console.log('Calling API...');
+                const response = await fetch(`${API_URL}/syllabus/`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-        const data = await res.json();
+                console.log('Response status:', response.status);
+                console.log('Response ok:', response.ok);
 
-        // SET NUMBERS (KHÔNG animate để tránh reset)
-        document.getElementById('totalSyllabuses').textContent = data.pending ?? 0;
-        document.getElementById('reviewSyllabuses').textContent = data.review ?? 0;
-        document.getElementById('draftSyllabuses').textContent = data.approved ?? 0;
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Data received:', data);
+                    const syllabuses = Array.isArray(data) ? data : (data.items || data.syllabuses || []);
+                    console.log('Syllabuses count:', syllabuses.length);
+                    
+                    // Calculate statistics
+                    const total = syllabuses.length;
+                    const published = syllabuses.filter(s => s.status === 'published').length;
+                    const inReview = syllabuses.filter(s => ['in_review', 'submitted', 'hod_approved'].includes(s.status)).length;
+                    const draft = syllabuses.filter(s => s.status === 'draft').length;
+                    
+                    // Animate stat numbers
+                    animateNumber(document.getElementById('totalSyllabuses'), total);
+                    animateNumber(document.getElementById('publishedSyllabuses'), published);
+                    animateNumber(document.getElementById('reviewSyllabuses'), inReview);
+                    animateNumber(document.getElementById('draftSyllabuses'), draft);
+                    
+                    // Sort by updated date (newest first)
+                    syllabuses.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+                    
+                    // Display recent syllabuses (top 5)
+                    displayRecentSyllabuses(syllabuses.slice(0, 5));
+                } else if (response.status === 500) {
+                    console.warn('Backend validation error (500), showing empty dashboard');
+                    showEmptyDashboard();
+                } else if (response.status === 401) {
+                    console.error('Unauthorized (401) - redirecting to login');
+                    alert('Session expired. Please login again.');
+                    localStorage.clear();
+                    window.location.href = 'home.html';
+                } else {
+                    console.error('Failed to fetch syllabuses:', response.status);
+                    const errorText = await response.text();
+                    console.error('Error response:', errorText);
+                    showErrorState();
+                }
+            } catch (error) {
+                console.error('Error fetching dashboard data:', error);
+                console.error('Error details:', error.message);
+                showErrorState();
+            }
+        }
 
-        renderRecent(data.recent || []);
-    } catch (e) {
-        console.error(e);
-        showError();
-    }
-}
-
-function renderRecent(items) {
-    const container = document.getElementById('recentSyllabuses');
-
-    if (!items.length) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <i class="ti-files"></i>
-                <p>No syllabuses yet</p>
-            </div>`;
-        return;
-    }
-
-    container.innerHTML = items.map(s => `
-        <div class="recent-item">
-            <div class="d-flex justify-content-between">
-                <div>
-                    <div class="recent-item-title">${s.subject_code} - ${s.subject_name}</div>
-                    <div class="recent-item-meta">
-                        <i class="ti-book"></i> ${s.credits} credits
-                        • <i class="ti-calendar"></i>
-                        ${new Date(s.updated_at).toLocaleDateString()}
+        // Display recent syllabuses
+        function displayRecentSyllabuses(syllabuses) {
+            const container = document.getElementById('recentSyllabuses');
+            
+            if (syllabuses.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="ti-files"></i>
+                        <p>No syllabuses yet. Start creating!</p>
+                        <a href="syllabus-create.html" class="btn btn-primary btn-sm mt-3">
+                            <i class="ti-plus"></i> Create First Syllabus
+                        </a>
                     </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            syllabuses.forEach((syllabus, index) => {
+                const statusClass = `status-${syllabus.status}`;
+                const statusLabel = syllabus.status.replace(/_/g, ' ').toUpperCase();
+                const updatedDate = new Date(syllabus.updated_at).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+                
+                const subjectCode = syllabus.subject_code || syllabus.course_code || 'N/A';
+                const subjectName = syllabus.subject_name || syllabus.course_name || 'Untitled';
+                const credits = syllabus.credits || '-';
+                
+                html += `
+                    <div class="recent-item" style="animation: slideIn 0.3s ease ${index * 0.1}s both;">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div style="flex: 1;">
+                                <div class="recent-item-title">${subjectCode} - ${subjectName}</div>
+                                <div class="recent-item-meta">
+                                    <i class="ti-book"></i> ${credits} credits
+                                    <span style="margin: 0 8px;">•</span>
+                                    <i class="ti-calendar"></i> ${updatedDate}
+                                </div>
+                            </div>
+                            <div>
+                                <span class="status-badge ${statusClass}">${statusLabel}</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <a href="syllabus-view.html?id=${syllabus.id}" class="btn btn-sm btn-outline-primary" style="margin-right: 5px;">
+                                <i class="ti-eye"></i> View
+                            </a>
+                            <a href="syllabus-edit.html?id=${syllabus.id}" class="btn btn-sm btn-primary">
+                                <i class="ti-pencil"></i> Edit
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // Show empty dashboard
+        function showEmptyDashboard() {
+            document.getElementById('totalSyllabuses').textContent = '0';
+            document.getElementById('publishedSyllabuses').textContent = '0';
+            document.getElementById('reviewSyllabuses').textContent = '0';
+            document.getElementById('draftSyllabuses').textContent = '0';
+            
+            document.getElementById('recentSyllabuses').innerHTML = `
+                <div class="empty-state">
+                    <i class="ti-files"></i>
+                    <p>No syllabuses yet. Start creating!</p>
+                    <a href="syllabus-create.html" class="btn btn-primary btn-sm mt-3">
+                        <i class="ti-plus"></i> Create First Syllabus
+                    </a>
                 </div>
-                <span class="status-badge status-${s.status}">${s.status.toUpperCase()}</span>
-            </div>
-            <div class="mt-2">
-                <a href="syllabus-view.html?id=${s.id}" class="btn btn-sm btn-outline-primary">View</a>
-                <a href="syllabus-edit.html?id=${s.id}" class="btn btn-sm btn-primary">Edit</a>
-            </div>
-        </div>
-    `).join('');
-}
+            `;
+        }
 
-/* ================= NOTIFICATIONS ================= */
-async function fetchNotifications() {
-    try {
-        const res = await fetch(`${API_URL}/notifications?skip=0&limit=10`, {
-            headers: { Authorization: `Bearer ${token}` }
+        // Show error state
+        function showErrorState() {
+            document.getElementById('recentSyllabuses').innerHTML = `
+                <div class="empty-state">
+                    <i class="ti-alert" style="color: #f5576c;"></i>
+                    <p>Unable to load data. Please try again.</p>
+                    <button onclick="fetchDashboardData()" class="btn btn-primary btn-sm mt-3">
+                        <i class="ti-reload"></i> Retry
+                    </button>
+                </div>
+            `;
+        }
+
+        // Animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateX(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Load data on page load
+        $(document).ready(function() {
+            console.log('Dashboard loaded successfully');
+            fetchDashboardData();
         });
-        if (!res.ok) return;
-
-        const data = await res.json();
-        const unread = (data.items || []).filter(n => !n.is_read).length;
-        document.querySelectorAll('.header-badge').forEach(b => b.textContent = unread);
-    } catch {}
-}
-
-/* ================= LOGOUT ================= */
-function logout() {
-    if (confirm('Logout?')) {
-        localStorage.clear();
-        window.location.href = 'home.html';
-    }
-}
-
-/* ================= INIT ================= */
-document.addEventListener('DOMContentLoaded', initAuth);
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    /* ========= MOCK NOTIFICATION DATA ========= */
-    const notifications = [
-        { id: 1, text: "New syllabus submitted for review", read: false },
-        { id: 2, text: "Reviewer left feedback on CS101", read: false },
-        { id: 3, text: "Syllabus approved successfully", read: false },
-        { id: 4, text: "New review meeting scheduled", read: true },
-        { id: 5, text: "Version history updated", read: true }
-    ];
-
-    const unreadCount = notifications.filter(n => !n.read).length;
-
-    /* ========= FIX BADGE (ICON 🔔) ========= */
-    const bellBadge = document.querySelector(".notification-badge");
-    if (bellBadge) {
-        bellBadge.innerText = unreadCount;
-        bellBadge.style.display = unreadCount > 0 ? "inline-block" : "none";
-    }
-
-    /* ========= FIX POPUP TEXT ========= */
-    const popupText = document.querySelector(".notification-dropdown p");
-    if (popupText) {
-        popupText.innerHTML = `You have <b>${unreadCount}</b> new notifications.`;
-    }
-
-});
-</script>
-
+    </script>
+    <script>
+        // Ensure links to .html pages navigate reliably even if other JS interferes
+        document.addEventListener('click', function (ev) {
+            try {
+                const a = ev.target.closest && ev.target.closest('a');
+                if (!a) return;
+                const href = a.getAttribute('href');
+                if (!href) return;
+                // Ignore in-page anchors and toggle placeholders
+                if (href.startsWith('#')) return;
+                // If link points to an HTML file or to a relative path, navigate using assign
+                if (href.endsWith('.html') || href.includes('/')) {
+                    ev.preventDefault();
+                    // Use assign to preserve history
+                    window.location.assign(href);
+                }
+            } catch (e) {
+                console.warn('Navigation helper error', e);
+            }
+        }, false);
+    </script>
 </body>
 </html>

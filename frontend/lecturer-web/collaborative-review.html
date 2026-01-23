@@ -1,441 +1,97 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <title>Tham gia Collaborative Review - SMD System</title>
+    <title>Collaborative Review - SMD System</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="assets/icon/icofont/css/icofont.css">
     <link rel="stylesheet" type="text/css" href="assets/icon/themify-icons/themify-icons.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-theme.min.css">
     <link rel="stylesheet" type="text/css" href="assets/plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/main.css">
     <link rel="stylesheet" type="text/css" href="assets/css/menu.css">
     <link rel="stylesheet" type="text/css" href="assets/css/color/color-1.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/lecturer-dashboard.css">
     <style>
-        .review-request-card { border: 1px solid #e0e0e0; border-radius: 10px; margin-bottom: 20px; transition: all 0.3s ease; }
-        .review-request-card:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
-        .review-header { background: #f8f9fa; padding: 15px; border-radius: 10px 10px 0 0; }
-        .reviewer-badge { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; font-size: 18px; }
-        .priority-high { background: #f5576c; }
-        .priority-medium { background: #ffc107; }
-        .priority-low { background: #28a745; }
-        .comment-thread { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 15px; }
-        .comment-item { background: white; padding: 12px; border-radius: 6px; margin-bottom: 10px; border-left: 4px solid #667eea; }
-        .comment-meta { font-size: 12px; color: #999; margin-bottom: 5px; }
-        .review-status { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-        .status-pending { background: #fff3cd; color: #856404; }
-        .status-reviewed { background: #d4edda; color: #155724; }
-        .status-approved { background: #cce5ff; color: #004085; }
+        .review-card { border-left: 4px solid #667eea; margin-bottom: 20px; }
+        .reviewer-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
     </style>
 </head>
-
-<body class="sidebar-mini fixed">
-    <div class="loader-bg"><div class="loader-bar"></div></div>
-
-    <div class="wrapper">
-        <header class="main-header-top hidden-print">
-            <a href="dashboard.html" class="logo"><h4 style="color: white; margin: 0; padding: 10px;">SMD - Lecturer</h4></a>
-            <nav class="navbar navbar-static-top">
-                <a href="#!" data-toggle="offcanvas" class="sidebar-toggle"></a>
-                <div class="navbar-custom-menu f-right">
-                    <ul class="top-nav">
-                        <li class="dropdown">
-                            <a href="#!" data-toggle="dropdown" role="button" class="dropdown-toggle">
-                                <span><i class="ti-user"></i></span>
-                                <span id="userName">Lecturer</span> <i class="icofont icofont-simple-down"></i>
-                            </a>
-                            <ul class="dropdown-menu settings-menu">
-                                <li><a href="profile.html"><i class="icon-user"></i> Profile</a></li>
-                                <li><a href="#" onclick="logout()"><i class="icon-logout"></i> Logout</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
-        
-        <aside class="main-sidebar hidden-print">
-            <section class="sidebar">
-                <ul class="sidebar-menu">
-                    <li class="nav-level"><i class="ti-layout-grid2"></i> Điều hướng</li>
-                    <li><a href="dashboard.html"><i class="ti-dashboard"></i><span> Dashboard</span></a></li>
-                    <li class="nav-level"><i class="ti-files"></i> Quản lý Đề cương</li>
-                    <li><a href="syllabus-create.html"><i class="ti-plus"></i><span> Tạo Đề cương</span></a></li>
-                    <li><a href="syllabus-list.html"><i class="ti-list"></i><span> Danh sách Đề cương</span></a></li>
-                    <li><a href="syllabus-versions.html"><i class="ti-layout-tab"></i><span> Quản lý Phiên bản</span></a></li>
-                    <li class="nav-level"><i class="ti-comments"></i> Cộng tác</li>
-                    <li class="active"><a href="collaborative-review.html"><i class="ti-comment-alt"></i><span> Collaborative Review</span></a></li>
-                    <li><a href="comments-feedback.html"><i class="ti-comment"></i><span> Phản hồi & Bình luận</span></a></li>
-                </ul>
-            </section>
-        </aside>
-        
-        <div class="content-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header" style="display: flex; align-items: center; gap: 15px;">
-                                <a href="dashboard.html" class="btn btn-outline-primary btn-sm" style="display: flex; align-items: center; gap: 5px;">
-                                    <i class="ti-angle-left"></i> Quay lại
-                                </a>
-                                <div>
-                                    <h5 style="margin: 0;"><i class="ti-comment-alt"></i> Tham gia Collaborative Review</h5>
-                                    <p class="text-muted mb-0" style="font-size: 13px;">Đưa ra nhận xét về Syllabus của đồng nghiệp và xem phản hồi từ HoD</p>
-                                </div>
-                            </div>
-                        </div>
+<body>
+    <div class="theme-loader"><div class="ball-scale"><div class='contain'><div class="ring"><div class="frame"></div></div><div class="ring"><div class="frame"></div></div><div class="ring"><div class="frame"></div></div></div></div></div>
+    <div id="pcoded" class="pcoded"><div class="pcoded-overlay-box"></div><div class="pcoded-container navbar-wrapper">
+    <nav class="navbar header-navbar pcoded-header"><div class="navbar-wrapper"><div class="navbar-logo"><a class="mobile-menu" id="mobile-collapse" href="#!"><i class="ti-menu"></i></a><a href="dashboard.html"><h4 style="color: white; margin: 0; padding: 10px;">SMD - Lecturer</h4></a><a class="mobile-options"><i class="ti-more"></i></a></div><div class="navbar-container container-fluid"><ul class="nav-right"><li class="user-profile header-notification"><a href="#!"><i class="ti-user"></i><span id="userName">Lecturer</span></a><ul class="show-notification profile-notification"><li><a href="#!" onclick="logout()"><i class="ti-layout-sidebar-left"></i> Logout</a></li></ul></li></ul></div></div></nav>
+    <div class="pcoded-main-container"><div class="pcoded-wrapper">
+    <nav class="pcoded-navbar"><div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div><div class="pcoded-inner-navbar main-menu"><ul class="pcoded-item pcoded-left-item"><li><a href="dashboard.html"><span class="pcoded-micon"><i class="ti-home"></i></span><span class="pcoded-mtext">Dashboard</span></a></li><li class="pcoded-hasmenu"><a href="javascript:void(0)"><span class="pcoded-micon"><i class="ti-files"></i></span><span class="pcoded-mtext">Syllabus Management</span></a><ul class="pcoded-submenu"><li><a href="syllabus-list.html">My Syllabuses</a></li><li><a href="syllabus-create.html">Create New</a></li></ul></li><li class="active"><a href="collaborative-review.html"><span class="pcoded-micon"><i class="ti-comments"></i></span><span class="pcoded-mtext">Collaborative Review</span></a></li><li><a href="comments-feedback.html"><span class="pcoded-micon"><i class="ti-comment"></i></span><span class="pcoded-mtext">Comments & Feedback</span></a></li><li><a href="search-reference.html"><span class="pcoded-micon"><i class="ti-search"></i></span><span class="pcoded-mtext">Search & Reference</span></a></li></ul></div></nav>
+    <div class="pcoded-content"><div class="pcoded-inner-content"><div class="main-body"><div class="page-wrapper">
+    <div class="page-header"><div class="row align-items-end"><div class="col-lg-8"><div class="page-header-title"><div class="d-inline"><h4>Collaborative Review</h4><span>Review syllabuses from your colleagues</span></div></div></div><div class="col-lg-4"><div class="page-header-breadcrumb"><ul class="breadcrumb-title"><li class="breadcrumb-item"><a href="dashboard.html"><i class="ti-home"></i></a></li><li class="breadcrumb-item active">Collaborative Review</li></ul></div></div></div></div>
+    <div class="page-body"><div class="row">
+        <div class="col-md-4">
+            <div class="card"><div class="card-block text-center">
+                <h2 class="text-primary">5</h2>
+                <p class="mb-0">Pending Reviews</p>
+            </div></div>
+        </div>
+        <div class="col-md-4">
+            <div class="card"><div class="card-block text-center">
+                <h2 class="text-success">12</h2>
+                <p class="mb-0">Completed Reviews</p>
+            </div></div>
+        </div>
+        <div class="col-md-4">
+            <div class="card"><div class="card-block text-center">
+                <h2 class="text-info">8</h2>
+                <p class="mb-0">My Syllabuses in Review</p>
+            </div></div>
+        </div>
+        <div class="col-sm-12"><div class="card"><div class="card-header"><h5>Syllabuses Awaiting Your Review</h5></div><div class="card-block">
+        <div class="review-card card">
+            <div class="card-block">
+                <div class="d-flex align-items-start">
+                    <div class="reviewer-avatar mr-3">JD</div>
+                    <div class="flex-grow-1">
+                        <h6 class="mb-1">CS201 - Data Structures and Algorithms</h6>
+                        <small class="text-muted">Requested by: Dr. John Doe | Department: Computer Science</small>
+                        <p class="mt-2 mb-2">Please review the CLO-PLO mapping and provide feedback on the assessment methods.</p>
+                        <small><i class="ti-time"></i> Requested: 2 days ago</small>
                     </div>
-                </div>
-
-                <!-- Stats Cards -->
-                <div class="row dashboard-header">
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card dashboard-product stat-card warning">
-                            <i class="ti-alert stat-icon"></i>
-                            <div class="stat-label">Chờ xem xét</div>
-                            <div class="stat-number" id="pendingCount">5</div>
-                            <div class="stat-description">Của bạn</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card dashboard-product stat-card success">
-                            <i class="ti-check stat-icon"></i>
-                            <div class="stat-label">Đã xem xét</div>
-                            <div class="stat-number" id="completedCount">12</div>
-                            <div class="stat-description">Từ đồng nghiệp</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card dashboard-product stat-card info">
-                            <i class="ti-comment-alt stat-icon"></i>
-                            <div class="stat-label">Bình luận</div>
-                            <div class="stat-number" id="commentsCount">24</div>
-                            <div class="stat-description">Trong quá trình review</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card dashboard-product stat-card">
-                            <i class="ti-files stat-icon"></i>
-                            <div class="stat-label">Của tôi đang review</div>
-                            <div class="stat-number" id="myReviewingCount">8</div>
-                            <div class="stat-description">Chờ HoD phê duyệt</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tabs: Requests for You & Your Syllabuses -->
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <ul class="nav nav-tabs" role="tablist">
-                                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#reviewRequests"><i class="ti-eye"></i> Yêu cầu xem xét cho tôi (5)</a></li>
-                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#mySyllabuses"><i class="ti-files"></i> Đề cương của tôi (8)</a></li>
-                                </ul>
-                            </div>
-                            
-                            <div class="card-block">
-                                <!-- Tab 1: Review Requests -->
-                                <div id="reviewRequests" class="tab-pane fade show active">
-                                    <p class="text-muted mb-4">Các Syllabus từ đồng nghiệp đang chờ nhận xét của bạn</p>
-                                    
-                                    <!-- Filter -->
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <input type="text" class="form-control" placeholder="Tìm kiếm mã hoặc tên môn học..." id="searchSyllabus" onkeyup="filterReviews()">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <select class="form-control" id="filterPriority" onchange="filterReviews()">
-                                                <option value="">-- Ưu tiên --</option>
-                                                <option value="high">Cao</option>
-                                                <option value="medium">Trung bình</option>
-                                                <option value="low">Thấp</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <select class="form-control" id="filterStatus" onchange="filterReviews()">
-                                                <option value="">-- Trạng thái --</option>
-                                                <option value="pending">Chưa xem</option>
-                                                <option value="reviewed">Đã xem</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Review Cards -->
-                                    <div id="reviewList"></div>
-                                </div>
-
-                                <!-- Tab 2: My Syllabuses in Review -->
-                                <div id="mySyllabuses" class="tab-pane fade">
-                                    <p class="text-muted mb-4">Đề cương của bạn đang được xem xét bởi các giảng viên khác và HoD</p>
-                                    
-                                    <!-- Filter -->
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <input type="text" class="form-control" placeholder="Tìm kiếm..." id="searchMySyllabus" onkeyup="filterMySyllabuses()">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <select class="form-control" id="filterMyStatus" onchange="filterMySyllabuses()">
-                                                <option value="">-- Trạng thái --</option>
-                                                <option value="reviewing">Đang review</option>
-                                                <option value="hod_review">Chờ HoD</option>
-                                                <option value="approved">Đã phê duyệt</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- My Syllabus Cards -->
-                                    <div id="mySyllabusList"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <a href="#" class="btn btn-sm btn-primary"><i class="ti-eye"></i> Review</a>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Review Modal -->
-    <div class="modal fade" id="reviewModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Xem xét Syllabus</h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div id="reviewContent"></div>
-                    
-                    <div class="mt-4">
-                        <h6>Nhận xét của bạn:</h6>
-                        <textarea id="reviewComment" class="form-control" rows="4" placeholder="Nhập nhận xét chi tiết..."></textarea>
-                        <div class="mt-2">
-                            <label><strong>Loại nhận xét:</strong></label>
-                            <div>
-                                <input type="radio" name="reviewType" value="suggestion"> Góp ý
-                                <input type="radio" name="reviewType" value="concern"> Vấn đề cần sửa
-                                <input type="radio" name="reviewType" value="approved" checked> Phê duyệt
-                            </div>
-                        </div>
+        <div class="review-card card">
+            <div class="card-block">
+                <div class="d-flex align-items-start">
+                    <div class="reviewer-avatar mr-3" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">MS</div>
+                    <div class="flex-grow-1">
+                        <h6 class="mb-1">IT301 - Database Management Systems</h6>
+                        <small class="text-muted">Requested by: Prof. Mary Smith | Department: Information Technology</small>
+                        <p class="mt-2 mb-2">Need feedback on the practical lab sessions and textbook selection.</p>
+                        <small><i class="ti-time"></i> Requested: 5 days ago</small>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" onclick="submitReview()">Gửi nhận xét</button>
+                    <a href="#" class="btn btn-sm btn-primary"><i class="ti-eye"></i> Review</a>
                 </div>
             </div>
         </div>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        </div></div></div>
+    </div></div>
+    </div></div></div></div></div>
+    </div></div></div></div>
+    <script src="assets/plugins/Jquery/jquery.min.js"></script>
     <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
-    <script type="text/javascript" src="assets/js/main.min.js"></script>
-    <script src="assets/js/menu.min.js"></script>
-    
+    <script src="assets/js/modernizr-custom.js"></script>
+    <script src="assets/js/menu.js"></script>
+    <script src="assets/js/common-pages.min.js"></script>
     <script>
-        const API_URL = 'http://localhost:8000';
-        const token = localStorage.getItem('access_token');
-        let allReviewRequests = [];
-        let allMySyllabuses = [];
-        let currentSyllabusId = null;
-
-        (async () => {
-            if (!token) {
-                alert('⚠️ Vui lòng đăng nhập');
-                window.location.href = 'home.html';
-                return;
-            }
-            
-            const userData = JSON.parse(localStorage.getItem('user_data') || 'null');
-            if (userData) {
-                document.querySelectorAll('#userName').forEach(el => el.textContent = userData.full_name || userData.email || 'Lecturer');
-            }
-            
-            loadReviewRequests();
-            loadMySyllabuses();
-        })();
-
-        async function loadReviewRequests() {
-            try {
-                const res = await fetch(`${API_URL}/syllabus/review-requests`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                if (res.ok) {
-                    allReviewRequests = await res.json();
-                    renderReviewRequests();
-                }
-            } catch (err) {
-                console.error('Error loading review requests:', err);
-            }
+        const token = localStorage.getItem('token');
+        if (!token || localStorage.getItem('userRole') !== 'lecturer') {
+            alert('⚠️ Access denied! Please login first.');
+            window.location.href = 'home.html';
         }
-
-        async function loadMySyllabuses() {
-            try {
-                const res = await fetch(`${API_URL}/syllabus/?status=reviewing&status=hod_review`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                if (res.ok) {
-                    allMySyllabuses = await res.json();
-                    renderMySyllabuses();
-                }
-            } catch (err) {
-                console.error('Error loading syllabuses:', err);
-            }
-        }
-
-        function renderReviewRequests() {
-            const list = document.getElementById('reviewList');
-            list.innerHTML = '';
-            
-            allReviewRequests.forEach(req => {
-                const priorityClass = `priority-${req.priority || 'low'}`;
-                const statusClass = `status-${req.status || 'pending'}`;
-                const statusLabel = req.status === 'reviewed' ? 'Đã xem' : 'Chờ xem';
-                
-                const html = `
-                    <div class="review-request-card">
-                        <div class="review-header">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-                                    <div class="reviewer-badge ${priorityClass}">
-                                        ${req.requester_name ? req.requester_name.charAt(0).toUpperCase() : '?'}
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <h6 class="mb-1">${req.subject_code} - ${req.subject_name}</h6>
-                                    <small class="text-muted">Yêu cầu từ: ${req.requester_name} | ${req.department}</small>
-                                </div>
-                                <div class="col-auto">
-                                    <span class="review-status ${statusClass}">${statusLabel}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-block" style="padding: 15px;">
-                            <p class="mb-2"><strong>Yêu cầu:</strong> ${req.request_note || 'Vui lòng xem xét đề cương'}</p>
-                            <small class="text-muted"><i class="ti-time"></i> Yêu cầu: ${new Date(req.created_at).toLocaleDateString('vi-VN')}</small>
-                            
-                            <div class="mt-3">
-                                <button onclick="openReviewModal('${req.id}')" class="btn btn-sm btn-primary">
-                                    <i class="ti-eye"></i> Xem xét
-                                </button>
-                                <a href="syllabus-view.html?id=${req.id}" class="btn btn-sm btn-outline-primary">
-                                    <i class="ti-new-window"></i> Chi tiết
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                list.innerHTML += html;
-            });
-            
-            if (allReviewRequests.length === 0) {
-                list.innerHTML = '<div class="alert alert-info"><i class="ti-info-alt"></i> Không có yêu cầu xem xét nào</div>';
-            }
-        }
-
-        function renderMySyllabuses() {
-            const list = document.getElementById('mySyllabusList');
-            list.innerHTML = '';
-            
-            allMySyllabuses.forEach(syl => {
-                const reviewers = syl.reviewers || [];
-                const html = `
-                    <div class="review-request-card">
-                        <div class="review-header">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <h6 class="mb-1">${syl.subject_code} - ${syl.subject_name}</h6>
-                                    <small class="text-muted">Trạng thái: ${syl.status}</small>
-                                </div>
-                                <div class="col-auto">
-                                    <span class="review-status status-${syl.status}">${syl.status}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-block" style="padding: 15px;">
-                            <h6 class="mb-2">Đang được xem xét bởi:</h6>
-                            <div style="margin-bottom: 10px;">
-                                ${reviewers.map(r => `<span class="badge badge-primary">${r.name}</span>`).join(' ')}
-                            </div>
-                            
-                            <div id="comments-${syl.id}" class="comment-thread"></div>
-                            
-                            <div class="mt-3">
-                                <textarea class="form-control form-control-sm mb-2" placeholder="Trả lời những bình luận..."></textarea>
-                                <button onclick="replyToComments('${syl.id}')" class="btn btn-sm btn-success">
-                                    <i class="ti-comment"></i> Trả lời
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                list.innerHTML += html;
-            });
-            
-            if (allMySyllabuses.length === 0) {
-                list.innerHTML = '<div class="alert alert-info"><i class="ti-info-alt"></i> Không có đề cương nào đang được review</div>';
-            }
-        }
-
-        function openReviewModal(syllabusId) {
-            currentSyllabusId = syllabusId;
-            const req = allReviewRequests.find(r => r.id === syllabusId);
-            if (req) {
-                document.getElementById('reviewContent').innerHTML = `
-                    <div class="card bg-light">
-                        <div class="card-body">
-                            <h6>${req.subject_code} - ${req.subject_name}</h6>
-                            <p class="text-muted">${req.description}</p>
-                            <p><strong>CLOs:</strong> ${JSON.stringify(req.clos || []).substring(0, 100)}...</p>
-                            <p><strong>PLOs:</strong> ${JSON.stringify(req.plos || []).substring(0, 100)}...</p>
-                        </div>
-                    </div>
-                `;
-            }
-            $('#reviewModal').modal('show');
-        }
-
-        function submitReview() {
-            const comment = document.getElementById('reviewComment').value;
-            const reviewType = document.querySelector('input[name="reviewType"]:checked').value;
-            
-            if (!comment.trim()) {
-                alert('Vui lòng nhập nhận xét');
-                return;
-            }
-            
-            // Simulate submission
-            alert('✓ Nhận xét đã được gửi thành công');
-            $('#reviewModal').modal('hide');
-            loadReviewRequests();
-        }
-
-        function filterReviews() {
-            // Implement filter logic
-            console.log('Filter reviews');
-        }
-
-        function filterMySyllabuses() {
-            // Implement filter logic
-            console.log('Filter my syllabuses');
-        }
-
-        function replyToComments(syllabusId) {
-            alert('✓ Trả lời đã được gửi');
-        }
-
-        function logout() {
-            if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
-                localStorage.clear();
-                window.location.href = 'home.html';
-            }
-        }
+        document.getElementById('userName').textContent = localStorage.getItem('userName') || 'Lecturer';
+        function logout() { localStorage.clear(); window.location.href = 'home.html'; }
     </script>
 </body>
 </html>
