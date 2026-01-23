@@ -1,0 +1,36 @@
+body {
+    font-family: Arial;
+    background: #f4f6f8;
+}
+
+.login-box {
+    width: 320px;
+    margin: 100px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 6px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin: 6px 0 12px;
+}
+
+input:invalid {
+    border: 2px solid red;
+}
+
+input:valid {
+    border: 2px solid green;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+}

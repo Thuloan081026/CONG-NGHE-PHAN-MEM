@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <title>My Syllabuses - SMD System</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!-- Favicon icon -->
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="assets/icon/icofont/css/icofont.css">
+    <!-- Themify -->
+    <link rel="stylesheet" type="text/css" href="assets/icon/themify-icons/themify-icons.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+    <!-- Main Styles -->
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/menu.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/color/color-1.css" id="color" />
+    <link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/lecturer-dashboard.css">
+</head>
+
+<body class="sidebar-mini fixed">
+    <div class="loader-bg">
+        <div class="loader-bar"></div>
+    </div>
+
+    <div class="wrapper">
+        <header class="main-header-top hidden-print">
+            <a href="dashboard.html" class="logo">
+                <h4 style="color: white; margin: 0; padding: 10px;">SMD - Lecturer</h4>
+            </a>
+            <nav class="navbar navbar-static-top">
+                <a href="#!" data-toggle="offcanvas" class="sidebar-toggle"></a>
+                <div class="navbar-custom-menu f-right">
+                    <ul class="top-nav">
+                        <li class="dropdown">
+                            <a href="#!" data-toggle="dropdown" role="button" class="dropdown-toggle">
+                                <span><i class="ti-user"></i></span>
+                                <span id="userName">Lecturer</span> <i class="icofont icofont-simple-down"></i>
+                            </a>
+                            <ul class="dropdown-menu settings-menu">
+                                <li><a href="profile.html"><i class="icon-user"></i> Profile</a></li>
+                                <li><a href="#" onclick="logout()"><i class="icon-logout"></i> Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        
+        <aside class="main-sidebar hidden-print">
+            <section class="sidebar">
+                <ul class="sidebar-menu">
+                    <li class="nav-level">--- Navigation</li>
+                    <li><a href="dashboard.html"><i class="icon-speedometer"></i><span> Dashboard</span></a></li>
+                    <li class="nav-level">--- Syllabus Management</li>
+                    <li><a href="syllabus-create.html"><i class="icon-plus"></i><span> Create Syllabus</span></a></li>
+                    <li class="active"><a href="syllabus-list.html"><i class="icon-docs"></i><span> My Syllabuses</span></a></li>
+                </ul>
+            </section>
+        </aside>
+        
+        <div class="content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between;">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <a href="dashboard.html" class="btn btn-outline-primary btn-sm" style="display: flex; align-items: center; gap: 5px;">
+                                        <i class="ti-angle-left"></i> Quay lại
+                                    </a>
+                                    <h5 style="margin: 0;"><i class="ti-list"></i> My Syllabuses</h5>
+                                </div>
+                                <div class="card-header-right">
+                                    <a href="syllabus-create.html" class="btn btn-primary btn-sm">
+                                        <i class="ti-plus"></i> Create New
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <!-- Filters -->
+                                <div class="row mb-3">
+                                    <div class="col-md-3">
+                                        <select class="form-control" id="filterStatus">
+                                            <option value="">All Status</option>
+                                            <option value="draft">Draft</option>
+                                            <option value="submitted">Submitted</option>
+                                            <option value="under_review">Under Review</option>
+                                            <option value="approved">Approved</option>
+                                            <option value="published">Published</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-control" id="filterSemester">
+                                            <option value="">All Semesters</option>
+                                            <option value="1">Semester 1</option>
+                                            <option value="2">Semester 2</option>
+                                            <option value="3">Semester 3</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" id="searchBox" placeholder="Search by code or name...">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-info btn-block" onclick="loadSyllabuses()">
+                                            <i class="ti-filter"></i> Apply Filters
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Syllabuses Table -->
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Subject Code</th>
+                                                <th>Subject Name</th>
+                                                <th>Credits</th>
+                                                <th>Semester</th>
+                                                <th>Status</th>
+                                                <th>Updated</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="syllabusTableBody">
+                                            <tr>
+                                                <td>CS101</td>
+                                                <td>Data Structures</td>
+                                                <td>3</td>
+                                                <td>HK1 2025-2026</td>
+                                                <td><span class="badge badge-success">Published</span></td>
+                                                <td>Jan 12, 2026</td>
+                                                <td>
+                                                    <a href="syllabus-view.html?id=1" class="btn btn-xs btn-primary"><i class="ti-eye"></i> View</a>
+                                                    <a href="syllabus-edit.html?id=1" class="btn btn-xs btn-info"><i class="ti-pencil"></i> Edit</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>CS201</td>
+                                                <td>Database Management</td>
+                                                <td>4</td>
+                                                <td>HK1 2025-2026</td>
+                                                <td><span class="badge badge-warning">In Review</span></td>
+                                                <td>Jan 10, 2026</td>
+                                                <td>
+                                                    <a href="syllabus-view.html?id=2" class="btn btn-xs btn-primary"><i class="ti-eye"></i> View</a>
+                                                    <a href="syllabus-edit.html?id=2" class="btn btn-xs btn-info"><i class="ti-pencil"></i> Edit</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>CS301</td>
+                                                <td>Web Development</td>
+                                                <td>3</td>
+                                                <td>HK2 2025-2026</td>
+                                                <td><span class="badge badge-success">Approved</span></td>
+                                                <td>Jan 08, 2026</td>
+                                                <td>
+                                                    <a href="syllabus-view.html?id=3" class="btn btn-xs btn-primary"><i class="ti-eye"></i> View</a>
+                                                    <a href="syllabus-edit.html?id=3" class="btn btn-xs btn-info"><i class="ti-pencil"></i> Edit</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>CS401</td>
+                                                <td>Advanced Programming</td>
+                                                <td>4</td>
+                                                <td>HK1 2025-2026</td>
+                                                <td><span class="badge badge-info">Draft</span></td>
+                                                <td>Jan 05, 2026</td>
+                                                <td>
+                                                    <a href="syllabus-view.html?id=4" class="btn btn-xs btn-primary"><i class="ti-eye"></i> View</a>
+                                                    <a href="syllabus-edit.html?id=4" class="btn btn-xs btn-info"><i class="ti-pencil"></i> Edit</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>CS501</td>
+                                                <td>Machine Learning</td>
+                                                <td>3</td>
+                                                <td>HK2 2025-2026</td>
+                                                <td><span class="badge badge-success">Published</span></td>
+                                                <td>Jan 01, 2026</td>
+                                                <td>
+                                                    <a href="syllabus-view.html?id=5" class="btn btn-xs btn-primary"><i class="ti-eye"></i> View</a>
+                                                    <a href="syllabus-edit.html?id=5" class="btn btn-xs btn-info"><i class="ti-pencil"></i> Edit</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Pagination -->
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <p id="paginationInfo">Showing 1 to 5 of 5 syllabuses</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <nav>
+                                            <ul class="pagination justify-content-end" id="pagination"></ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Tether (BẮT BUỘC cho Bootstrap 4) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.7/js/tether.min.js"></script>
+
+    <!-- Bootstrap JS -->
+<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+
+<script>
+const API_URL = 'http://localhost:8000';
+const token = localStorage.getItem('access_token');
+let currentPage = 1;
+const pageSize = 10;
+
+/* ================= INIT ================= */
+document.addEventListener('DOMContentLoaded', async () => {
+    $('.loader-bg').fadeOut();
+    $('.sidebar-toggle').on('click', () => {
+        $('body').toggleClass('sidebar-collapse');
+    });
+
+    // if (!token) return redirectLogin();
+    // await loadUser();
+    // await loadSyllabuses(1); // ❌ TẠM TẮT
+});
+
+
+/* ================= AUTH ================= */
+async function loadUser() {
+    try {
+        const res = await fetch(`${API_URL}/users/me`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        if (!res.ok) throw new Error('Unauthorized');
+
+        const user = await res.json();
+        $('#userName').text(user.full_name || user.email || 'Lecturer');
+    } catch {
+        redirectLogin();
+    }
+}
+
+function redirectLogin() {
+    localStorage.clear();
+    window.location.href = 'login1.html';
+}
+
+/* ================= LOAD SYLLABUS ================= */
+async function loadSyllabuses(page = 1) {
+    currentPage = page;
+
+    const status = $('#filterStatus').val();
+    const semester = $('#filterSemester').val();
+
+    let url = `${API_URL}/syllabus?skip=${(page - 1) * pageSize}&limit=${pageSize}`;
+    if (status) url += `&status=${status}`;
+    if (semester) url += `&semester=${semester}`;
+
+    try {
+        const res = await fetch(url, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        if (!res.ok) throw new Error();
+
+        const data = await res.json();
+        renderTable(data.items || []);
+        renderPagination(data.items?.length || 0, page);
+    } catch (e) {
+        console.error(e);
+        renderEmpty();
+    }
+}
+
+/* ================= RENDER TABLE ================= */
+function renderTable(items) {
+    const tbody = $('#syllabusTableBody');
+
+    if (!items.length) return renderEmpty();
+
+    tbody.html(items.map(s => `
+        <tr>
+            <td><strong>${s.subject_code}</strong></td>
+            <td>${s.subject_name}</td>
+            <td>${s.credits}</td>
+            <td>${s.semester || ''}</td>
+            <td>
+                <span class="badge badge-${statusColor(s.status)}">
+                    ${s.status.replace('_',' ').toUpperCase()}
+                </span>
+            </td>
+            <td>${new Date(s.updated_at).toLocaleDateString()}</td>
+            <td>
+                <a href="syllabus-view.html?id=${s.id}" class="btn btn-xs btn-primary">
+                    <i class="ti-eye"></i> View
+                </a>
+                <a href="syllabus-edit.html?id=${s.id}" class="btn btn-xs btn-info">
+                    <i class="ti-pencil"></i> Edit
+                </a>
+            </td>
+        </tr>
+    `).join(''));
+
+    $('#paginationInfo').text(`Showing ${items.length} syllabuses`);
+}
+
+function renderEmpty() {
+    $('#syllabusTableBody').html(`
+        <tr>
+            <td colspan="7" class="text-center text-muted">
+                No syllabuses found
+            </td>
+        </tr>
+    `);
+    $('#paginationInfo').text('');
+}
+
+/* ================= PAGINATION ================= */
+function renderPagination(count, page) {
+    $('#pagination').html(`
+        <li class="page-item ${page === 1 ? 'disabled' : ''}">
+            <a class="page-link" href="#" onclick="loadSyllabuses(${page - 1});return false;">Previous</a>
+        </li>
+        <li class="page-item active">
+            <a class="page-link">${page}</a>
+        </li>
+        <li class="page-item ${count < pageSize ? 'disabled' : ''}">
+            <a class="page-link" href="#" onclick="loadSyllabuses(${page + 1});return false;">Next</a>
+        </li>
+    `);
+}
+
+/* ================= UTILS ================= */
+function statusColor(s) {
+    return {
+        draft: 'secondary',
+        submitted: 'info',
+        under_review: 'warning',
+        approved: 'success',
+        published: 'primary'
+    }[s] || 'secondary';
+}
+
+function logout() {
+    if (confirm('Logout?')) {
+        localStorage.clear();
+        window.location.href = 'login1.html';
+    }
+}
+
+$(document).ready(function () {
+    console.log("✅ Page loaded");
+    // loadSyllabuses(1); // ❌ TẠM TẮT
+});
+
+</script>
+</body>
+</html>

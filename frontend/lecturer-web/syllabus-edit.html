@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Redirecting…</title>
+    <script>
+        // Read ?id= and redirect to the create page which supports edit mode
+        (function(){
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const id = params.get('id');
+                if (id) {
+                    // Use replace so back button doesn't keep redirect page
+                    window.location.replace(`syllabus-create.html?id=${id}`);
+                } else {
+                    // If no id, go to create page
+                    window.location.replace('syllabus-create.html');
+                }
+            } catch (e) {
+                console.error('Redirect failed', e);
+                window.location.href = 'syllabus-create.html';
+            }
+        })();
+    </script>
+</head>
+<body>
+    Redirecting to edit form…
+</body>
+</html>

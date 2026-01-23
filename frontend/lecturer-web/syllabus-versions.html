@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <title>Quản lý Phiên bản Đề cương - SMD System</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="assets/icon/icofont/css/icofont.css">
+    <link rel="stylesheet" type="text/css" href="assets/icon/themify-icons/themify-icons.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/menu.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/color/color-1.css" id="color" />
+    <link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/lecturer-dashboard.css">
+    
+    <style>
+        .version-list { list-style: none; padding: 0; }
+        .version-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .version-item:hover {
+            background: #e7f3ff;
+            border-color: #667eea;
+        }
+        .version-item.active {
+            background: #e7f3ff;
+            border-color: #667eea;
+            border-left: 4px solid #667eea;
+        }
+        .version-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+        .badge-current { background: #667eea; color: white; }
+        .badge-draft { background: #ffc107; color: #000; }
+        .badge-submitted { background: #17a2b8; color: white; }
+        .badge-approved { background: #28a745; color: white; }
+        .diff-section { margin: 20px 0; }
+        .diff-header { background: #667eea; color: white; padding: 10px; border-radius: 6px; margin-bottom: 10px; font-weight: 600; }
+        .diff-added { background: #d4edda; color: #155724; padding: 10px; margin: 5px 0; border-left: 4px solid #28a745; }
+        .diff-removed { background: #f8d7da; color: #721c24; padding: 10px; margin: 5px 0; border-left: 4px solid #f5576c; }
+        .diff-unchanged { background: #fff; padding: 10px; margin: 5px 0; border-left: 4px solid #ccc; }
+    </style>
+</head>
+
+<body class="sidebar-mini fixed">
+    <div class="loader-bg"><div class="loader-bar"></div></div>
+
+    <div class="wrapper">
+        <header class="main-header-top hidden-print">
+            <a href="dashboard.html" class="logo"><h4 style="color: white; margin: 0; padding: 10px;">SMD - Lecturer</h4></a>
+            <nav class="navbar navbar-static-top">
+                <a href="#!" data-toggle="offcanvas" class="sidebar-toggle"></a>
+                <div class="navbar-custom-menu f-right">
+                    <ul class="top-nav">
+                        <li class="dropdown">
+                            <a href="#!" data-toggle="dropdown" role="button" class="dropdown-toggle">
+                                <span><i class="ti-user"></i></span>
+                                <span id="userName">Lecturer</span> <i class="icofont icofont-simple-down"></i>
+                            </a>
+                            <ul class="dropdown-menu settings-menu">
+                                <li><a href="profile.html"><i class="icon-user"></i> Profile</a></li>
+                                <li><a href="#" onclick="logout()"><i class="icon-logout"></i> Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        
+        <aside class="main-sidebar hidden-print">
+            <section class="sidebar">
+                <ul class="sidebar-menu">
+                    <li class="nav-level"><i class="ti-layout-grid2"></i> Điều hướng</li>
+                    <li><a href="dashboard.html"><i class="ti-dashboard"></i><span> Dashboard</span></a></li>
+                    <li class="nav-level"><i class="ti-files"></i> Quản lý Đề cương</li>
+                    <li><a href="syllabus-create.html"><i class="ti-plus"></i><span> Tạo Đề cương</span></a></li>
+                    <li><a href="syllabus-list.html"><i class="ti-list"></i><span> Danh sách Đề cương</span></a></li>
+                    <li class="active"><a href="syllabus-versions.html"><i class="ti-layout-tab"></i><span> Quản lý Phiên bản</span></a></li>
+                </ul>
+            </section>
+        </aside>
+        
+        <div class="content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header" style="display: flex; align-items: center; gap: 15px;">
+                                <a href="dashboard.html" class="btn btn-outline-primary btn-sm" style="display: flex; align-items: center; gap: 5px;">
+                                    <i class="ti-angle-left"></i> Quay lại
+                                </a>
+                                <div>
+                                    <h5 style="margin: 0;"><i class="ti-layout-tab"></i> Quản lý Phiên bản & So sánh</h5>
+                                    <p class="text-muted mb-0" style="font-size: 13px;">Xem lịch sử, so sánh các phiên bản và gửi lên HoD</p>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <!-- Syllabus Selection -->
+                                <div class="form-group">
+                                    <label>Chọn Đề cương:</label>
+                                    <select id="syllabusSelect" class="form-control" onchange="loadVersions()">
+                                        <option value="">-- Chọn đề cương --</option>
+                                        <option value="1">CS101 - Data Structures</option>
+                                        <option value="2">CS201 - Database Management</option>
+                                        <option value="3">CS301 - Web Development</option>
+                                        <option value="4">CS401 - Advanced Programming</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="row mt-4">
+                                    <!-- Version History -->
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h6><i class="ti-timeline"></i> Lịch sử Phiên bản</h6>
+                                            </div>
+                                            <div class="card-block">
+                                                <ul class="version-list">
+                                                    <li class="version-item active">
+                                                        <div style="font-weight: 600; color: #333; margin-bottom: 5px;">V4.2 (Hiện tại)</div>
+                                                        <div style="font-size: 12px; color: #666;"><i class="ti-calendar"></i> Jan 12, 2026</div>
+                                                        <div style="margin-top: 5px;"><span class="version-badge badge-current">Current</span></div>
+                                                    </li>
+                                                    <li class="version-item">
+                                                        <div style="font-weight: 600; color: #333; margin-bottom: 5px;">V4.1</div>
+                                                        <div style="font-size: 12px; color: #666;"><i class="ti-calendar"></i> Jan 08, 2026</div>
+                                                        <div style="margin-top: 5px;"><span class="version-badge badge-submitted">Submitted</span></div>
+                                                    </li>
+                                                    <li class="version-item">
+                                                        <div style="font-weight: 600; color: #333; margin-bottom: 5px;">V4.0</div>
+                                                        <div style="font-size: 12px; color: #666;"><i class="ti-calendar"></i> Jan 01, 2026</div>
+                                                        <div style="margin-top: 5px;"><span class="version-badge badge-approved">Approved</span></div>
+                                                    </li>
+                                                    <li class="version-item">
+                                                        <div style="font-weight: 600; color: #333; margin-bottom: 5px;">V3.9</div>
+                                                        <div style="font-size: 12px; color: #666;"><i class="ti-calendar"></i> Dec 25, 2025</div>
+                                                        <div style="margin-top: 5px;"><span class="version-badge badge-draft">Draft</span></div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Version Details & Diff -->
+                                    <div class="col-md-8">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h6><i class="ti-split-v"></i> So sánh Phiên bản</h6>
+                                                <p class="text-muted mb-0">Chọn 2 phiên bản để xem sự thay đổi</p>
+                                            </div>
+                                            <div class="card-block">
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label>Phiên bản cũ:</label>
+                                                        <select id="versionFrom" class="form-control" onchange="updateDiff()">
+                                                            <option value="">-- Chọn --</option>
+                                                            <option value="4.1">V4.1 (Jan 08, 2026)</option>
+                                                            <option value="4.0">V4.0 (Jan 01, 2026)</option>
+                                                            <option value="3.9">V3.9 (Dec 25, 2025)</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>Phiên bản mới:</label>
+                                                        <select id="versionTo" class="form-control" onchange="updateDiff()">
+                                                            <option value="">-- Chọn --</option>
+                                                            <option value="4.2" selected>V4.2 (Jan 12, 2026 - Hiện tại)</option>
+                                                            <option value="4.1">V4.1 (Jan 08, 2026)</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div id="diffContainer">
+                                                    <div class="diff-section">
+                                                        <div class="diff-header">✏️ Thay đổi Nội dung</div>
+                                                        <div class="diff-added"><strong>Thêm:</strong> Cập nhật CLO mục 2.1, thêm 2 mục học tập mới</div>
+                                                        <div class="diff-added"><strong>Thêm:</strong> Bổ sung 3 tài liệu tham khảo mới: Advanced Web Design, RESTful APIs, Microservices</div>
+                                                        <div class="diff-removed"><strong>Xóa:</strong> Mục 3.2 (cũ) - không còn cần thiết</div>
+                                                        <div class="diff-unchanged"><strong>Không thay đổi:</strong> Mục cơ bản, mục tiêu khóa học, tiêu chí đánh giá</div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="mt-3">
+                                                    <button onclick="submitForApproval()" class="btn btn-success btn-sm">
+                                                        <i class="ti-upload"></i> Gửi lên HoD để phê duyệt
+                                                    </button>
+                                                    <button onclick="restoreVersion()" class="btn btn-warning btn-sm">
+                                                        <i class="ti-reload"></i> Khôi phục phiên bản
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/js/main.min.js"></script>
+    <script src="assets/js/menu.min.js"></script>
+    
+    <script>
+        const API_URL = 'http://localhost:8000';
+        const token = localStorage.getItem('access_token');
+        let allSyllabuses = [];
+        let allVersions = [];
+        
+        // Initialize
+        (async () => {
+            if (!token) {
+                alert('⚠️ Vui lòng đăng nhập trước');
+                window.location.href = 'home.html';
+                return;
+            }
+            
+            const userData = JSON.parse(localStorage.getItem('user_data') || 'null');
+            if (userData) {
+                document.querySelectorAll('#userName').forEach(el => el.textContent = userData.full_name || userData.email || 'Lecturer');
+            }
+            
+            await loadSyllabuses();
+        })();
+        
+        async function loadSyllabuses() {
+            try {
+                const res = await fetch(`${API_URL}/syllabus/`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    allSyllabuses = await res.json();
+                    const select = document.getElementById('syllabusSelect');
+                    select.innerHTML = '<option value="">-- Chọn đề cương --</option>';
+                    allSyllabuses.forEach(s => {
+                        const subjectCode = s.subject_code || s.course_code || 'N/A';
+                        const subjectName = s.subject_name || s.course_name || 'Untitled';
+                        select.innerHTML += `<option value="${s.id}">${subjectCode} - ${subjectName}</option>`;
+                    });
+                }
+            } catch (err) {
+                console.error('Error loading syllabuses:', err);
+            }
+        }
+        
+        async function loadVersions() {
+            const syllabusId = document.getElementById('syllabusSelect').value;
+            if (!syllabusId) return;
+            
+            try {
+                const res = await fetch(`${API_URL}/syllabus/${syllabusId}/versions`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    allVersions = await res.json();
+                    renderVersionList();
+                    populateVersionSelects();
+                } else {
+                    console.error('Failed to load versions');
+                }
+            } catch (err) {
+                console.error('Error loading versions:', err);
+            }
+        }
+        
+        function renderVersionList() {
+            const list = document.getElementById('versionList');
+            list.innerHTML = '';
+            allVersions.forEach((v, idx) => {
+                const isCurrent = v.is_current;
+                const html = `
+                    <li class="version-item ${isCurrent ? 'active' : ''}" onclick="selectVersion('${v.id}')">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>v${allVersions.length - idx}</strong>
+                                <span class="version-badge ${isCurrent ? 'badge-current' : 'badge-' + v.status}">${isCurrent ? 'Hiện tại' : v.status || 'Draft'}</span>
+                            </div>
+                        </div>
+                        <small class="text-muted">${new Date(v.created_at).toLocaleDateString('vi-VN')}</small>
+                        <p style="margin: 5px 0 0 0; font-size: 12px;">${v.change_summary || 'No summary'}</p>
+                    </li>
+                `;
+                list.innerHTML += html;
+            });
+        }
+        
+        function populateVersionSelects() {
+            ['versionFrom', 'versionTo'].forEach(selectId => {
+                const select = document.getElementById(selectId);
+                select.innerHTML = '';
+                allVersions.forEach((v, idx) => {
+                    select.innerHTML += `<option value="${idx}">v${allVersions.length - idx} (${new Date(v.created_at).toLocaleDateString('vi-VN')})</option>`;
+                });
+            });
+        }
+        
+        async function updateDiff() {
+            const fromIdx = parseInt(document.getElementById('versionFrom').value);
+            const toIdx = parseInt(document.getElementById('versionTo').value);
+            
+            if (isNaN(fromIdx) || isNaN(toIdx) || fromIdx === toIdx) {
+                document.getElementById('diffContainer').innerHTML = '<p class="text-muted">Chọn hai phiên bản khác nhau</p>';
+                return;
+            }
+            
+            // Simple diff: show changes per section
+            const vFrom = allVersions[fromIdx];
+            const vTo = allVersions[toIdx];
+            
+            let diffHtml = '';
+            const fields = ['subject_code', 'subject_name', 'credits', 'description', 'clos', 'plos', 'content', 'teaching_methods', 'assessment_methods', 'textbooks'];
+            
+            fields.forEach(field => {
+                const from = vFrom[field] || '';
+                const to = vTo[field] || '';
+                if (JSON.stringify(from) !== JSON.stringify(to)) {
+                    diffHtml += `
+                        <div class="diff-section">
+                            <div class="diff-header">${field.replace(/_/g, ' ').toUpperCase()}</div>
+                            <div class="diff-removed"><strong>Cũ:</strong><br>${JSON.stringify(from)}</div>
+                            <div class="diff-added"><strong>Mới:</strong><br>${JSON.stringify(to)}</div>
+                        </div>
+                    `;
+                }
+            });
+            
+            if (!diffHtml) {
+                diffHtml = '<p class="alert alert-info">Không có thay đổi giữa hai phiên bản</p>';
+            }
+            
+            document.getElementById('diffContainer').innerHTML = diffHtml;
+        }
+        
+        function selectVersion(versionId) {
+            // Highlight selected version
+            document.querySelectorAll('.version-item').forEach(el => el.classList.remove('active'));
+            event.target.closest('.version-item').classList.add('active');
+        }
+        
+        async function submitForApproval() {
+            const syllabusId = document.getElementById('syllabusSelect').value;
+            if (!syllabusId) {
+                alert('Vui lòng chọn đề cương');
+                return;
+            }
+            
+            if (confirm('Gửi đề cương lên HoD để phê duyệt?')) {
+                try {
+                    const res = await fetch(`${API_URL}/syllabus/${syllabusId}/submit`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ status: 'submitted' })
+                    });
+                    
+                    if (res.ok) {
+                        alert('✓ Đã gửi thành công');
+                        loadVersions();
+                    } else {
+                        alert('❌ Gửi thất bại');
+                    }
+                } catch (err) {
+                    alert('Lỗi: ' + err.message);
+                }
+            }
+        }
+        
+        async function restoreVersion() {
+            const fromIdx = parseInt(document.getElementById('versionFrom').value);
+            if (isNaN(fromIdx)) {
+                alert('Chọn phiên bản để khôi phục');
+                return;
+            }
+            
+            if (confirm('Khôi phục phiên bản này? Dữ liệu hiện tại sẽ thành phiên bản mới.')) {
+                alert('✓ Khôi phục thành công');
+                loadVersions();
+            }
+        }
+        
+        function logout() {
+            if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+                localStorage.clear();
+                window.location.href = 'home.html';
+            }
+        }
+    </script>
+</body>
+</html>

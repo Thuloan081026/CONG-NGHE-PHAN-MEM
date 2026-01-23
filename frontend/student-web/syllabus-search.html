@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Tìm kiếm Giáo trình - SMD System</title>
+  <link href="img/logo/logo.png" rel="icon">
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="css/ruang-admin.min.css" rel="stylesheet">
+  <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.html">
+        <div class="sidebar-brand-icon">
+          <img src="img/logo/logo.png" style="max-width: 40px;">
+        </div>
+        <div class="sidebar-brand-text mx-3">SMD Student</div>
+      </a>
+      <hr class="sidebar-divider my-0">
+      <li class="nav-item">
+        <a class="nav-link" href="dashboard.html">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dashboard</span></a>
+      </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">Syllabus</div>
+      <li class="nav-item active">
+        <a class="nav-link" href="syllabus-search.html">
+          <i class="fas fa-fw fa-search"></i>
+          <span>Tìm kiếm Giáo trình</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="my-subscriptions.html">
+          <i class="fas fa-fw fa-star"></i>
+          <span>Giáo trình theo dõi</span>
+        </a>
+      </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">Account</div>
+      <li class="nav-item">
+        <a class="nav-link" href="profile.html">
+          <i class="fas fa-fw fa-user"></i>
+          <span>Thông tin cá nhân</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" onclick="handleLogout()">
+          <i class="fas fa-fw fa-sign-out-alt"></i>
+          <span>Đăng xuất</span>
+        </a>
+      </li>
+    </ul>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <!-- TopBar -->
+        <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+          <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown">
+                <img class="img-profile rounded-circle" src="img/logo/logo.png" style="max-width: 60px">
+                <span class="ml-2 d-none d-lg-inline text-white small" id="userFullName">Student</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
+                <a class="dropdown-item" href="profile.html">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Profile
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" onclick="handleLogout()">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Logout
+                </a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Container Fluid-->
+        <div class="container-fluid" id="container-wrapper">
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Tìm kiếm Giáo trình</h1>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="dashboard.html">Home</a></li>
+              <li class="breadcrumb-item active">Tìm kiếm Giáo trình</li>
+            </ol>
+          </div>
+
+          <!-- Search Filters -->
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Bộ lọc tìm kiếm</h6>
+                </div>
+                <div class="card-body">
+                  <form id="searchForm">
+                    <div class="row">
+                      <div class="col-md-4 mb-3">
+                        <label>Mã môn học / Tên môn học</label>
+                        <input type="text" class="form-control" id="searchKeyword" placeholder="Nhập mã hoặc tên môn học...">
+                      </div>
+                      <div class="col-md-3 mb-3">
+                        <label>Chuyên ngành</label>
+                        <select class="form-control" id="filterMajor">
+                          <option value="">Tất cả</option>
+                          <option value="cs">Công nghệ Thông tin</option>
+                          <option value="se">Kỹ thuật Phần mềm</option>
+                          <option value="it">Hệ thống Thông tin</option>
+                          <option value="ai">Trí tuệ Nhân tạo</option>
+                        </select>
+                      </div>
+                      <div class="col-md-3 mb-3">
+                        <label>Học kỳ</label>
+                        <select class="form-control" id="filterSemester">
+                          <option value="">Tất cả</option>
+                          <option value="1">Học kỳ 1</option>
+                          <option value="2">Học kỳ 2</option>
+                          <option value="3">Học kỳ 3</option>
+                          <option value="4">Học kỳ 4</option>
+                          <option value="5">Học kỳ 5</option>
+                          <option value="6">Học kỳ 6</option>
+                          <option value="7">Học kỳ 7</option>
+                          <option value="8">Học kỳ 8</option>
+                        </select>
+                      </div>
+                      <div class="col-md-2 mb-3">
+                        <label>&nbsp;</label>
+                        <button type="submit" class="btn btn-primary btn-block">
+                          <i class="fas fa-search"></i> Tìm kiếm
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search Results -->
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Kết quả tìm kiếm</h6>
+                  <span class="text-muted" id="resultCount">Tìm thấy 13 giáo trình</span>
+                </div>
+                <div class="table-responsive p-3">
+                  <table class="table align-items-center table-flush table-hover" id="syllabusTable">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Mã môn</th>
+                        <th>Tên môn học</th>
+                        <th>Tín chỉ</th>
+                        <th>Giảng viên</th>
+                        <th>Chuyên ngành</th>
+                        <th>Học kỳ</th>
+                        <th>Hành động</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>CS101</strong></td>
+                        <td>Nhập môn lập trình</td>
+                        <td><span class="badge badge-primary">3</span></td>
+                        <td>TS. Nguyễn Văn A</td>
+                        <td>CNTT</td>
+                        <td>1</td>
+                        <td>
+                          <a href="syllabus-detail.html?id=CS101" class="btn btn-sm btn-primary">
+                            <i class="fas fa-eye"></i> Xem
+                          </a>
+                          <button class="btn btn-sm btn-outline-warning" onclick="toggleSubscribe('CS101')">
+                            <i class="far fa-star"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><strong>CS102</strong></td>
+                        <td>Lập trình hướng đối tượng</td>
+                        <td><span class="badge badge-primary">3</span></td>
+                        <td>ThS. Phạm Văn D</td>
+                        <td>CNTT</td>
+                        <td>2</td>
+                        <td>
+                          <a href="syllabus-detail.html?id=CS102" class="btn btn-sm btn-primary">
+                            <i class="fas fa-eye"></i> Xem
+                          </a>
+                          <button class="btn btn-sm btn-outline-warning" onclick="toggleSubscribe('CS102')">
+                            <i class="far fa-star"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><strong>CS201</strong></td>
+                        <td>Cấu trúc dữ liệu và giải thuật</td>
+                        <td><span class="badge badge-primary">4</span></td>
+                        <td>TS. Lê Văn C</td>
+                        <td>CNTT</td>
+                        <td>3</td>
+                        <td>
+                          <a href="syllabus-detail.html?id=CS201" class="btn btn-sm btn-primary">
+                            <i class="fas fa-eye"></i> Xem
+                          </a>
+                          <button class="btn btn-sm btn-warning" onclick="toggleSubscribe('CS201')">
+                            <i class="fas fa-star"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><strong>CS301</strong></td>
+                        <td>Cơ sở dữ liệu</td>
+                        <td><span class="badge badge-primary">3</span></td>
+                        <td>TS. Nguyễn Văn A</td>
+                        <td>CNTT</td>
+                        <td>4</td>
+                        <td>
+                          <a href="syllabus-detail.html?id=CS301" class="btn btn-sm btn-primary">
+                            <i class="fas fa-eye"></i> Xem
+                          </a>
+                          <button class="btn btn-sm btn-warning" onclick="toggleSubscribe('CS301')">
+                            <i class="fas fa-star"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><strong>CS302</strong></td>
+                        <td>Hệ điều hành</td>
+                        <td><span class="badge badge-primary">3</span></td>
+                        <td>TS. Trần Thị B</td>
+                        <td>CNTT</td>
+                        <td>4</td>
+                        <td>
+                          <a href="syllabus-detail.html?id=CS302" class="btn btn-sm btn-primary">
+                            <i class="fas fa-eye"></i> Xem
+                          </a>
+                          <button class="btn btn-sm btn-outline-warning" onclick="toggleSubscribe('CS302')">
+                            <i class="far fa-star"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><strong>CS303</strong></td>
+                        <td>Mạng máy tính</td>
+                        <td><span class="badge badge-primary">3</span></td>
+                        <td>TS. Hoàng Thị E</td>
+                        <td>CNTT</td>
+                        <td>5</td>
+                        <td>
+                          <a href="syllabus-detail.html?id=CS303" class="btn btn-sm btn-primary">
+                            <i class="fas fa-eye"></i> Xem
+                          </a>
+                          <button class="btn btn-sm btn-warning" onclick="toggleSubscribe('CS303')">
+                            <i class="fas fa-star"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><strong>CS401</strong></td>
+                        <td>Trí tuệ nhân tạo</td>
+                        <td><span class="badge badge-primary">4</span></td>
+                        <td>TS. Trần Thị B</td>
+                        <td>AI</td>
+                        <td>6</td>
+                        <td>
+                          <a href="syllabus-detail.html?id=CS401" class="btn btn-sm btn-primary">
+                            <i class="fas fa-eye"></i> Xem
+                          </a>
+                          <button class="btn btn-sm btn-outline-warning" onclick="toggleSubscribe('CS401')">
+                            <i class="far fa-star"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><strong>CS402</strong></td>
+                        <td>Học máy</td>
+                        <td><span class="badge badge-primary">4</span></td>
+                        <td>TS. Lê Văn C</td>
+                        <td>AI</td>
+                        <td>7</td>
+                        <td>
+                          <a href="syllabus-detail.html?id=CS402" class="btn btn-sm btn-primary">
+                            <i class="fas fa-eye"></i> Xem
+                          </a>
+                          <button class="btn btn-sm btn-outline-warning" onclick="toggleSubscribe('CS402')">
+                            <i class="far fa-star"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Logout -->
+          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Đăng xuất?</h5>
+                  <button class="close" type="button" data-dismiss="modal">
+                    <span>&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">Bạn có chắc chắn muốn đăng xuất?</div>
+                <div class="modal-footer">
+                  <button class="btn btn-outline-primary" type="button" data-dismiss="modal">Hủy</button>
+                  <button class="btn btn-primary" onclick="confirmLogout()">Đăng xuất</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - SMD System</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="js/ruang-admin.min.js"></script>
+  <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+  <script>
+    const API_BASE_URL = 'http://localhost:8000';
+    
+    // Store all syllabus data
+    const allSyllabuses = [
+      { id: 'CS101', name: 'Nhập môn lập trình', credits: 3, lecturer: 'TS. Nguyễn Văn A', major: 'CNTT', semester: 1 },
+      { id: 'CS102', name: 'Lập trình hướng đối tượng', credits: 3, lecturer: 'ThS. Phạm Văn D', major: 'CNTT', semester: 2 },
+      { id: 'CS201', name: 'Cấu trúc dữ liệu và giải thuật', credits: 4, lecturer: 'TS. Lê Văn C', major: 'CNTT', semester: 3 },
+      { id: 'CS301', name: 'Cơ sở dữ liệu', credits: 3, lecturer: 'TS. Nguyễn Văn A', major: 'CNTT', semester: 4 },
+      { id: 'CS302', name: 'Hệ điều hành', credits: 3, lecturer: 'TS. Trần Thị B', major: 'CNTT', semester: 4 },
+      { id: 'CS303', name: 'Mạng máy tính', credits: 3, lecturer: 'TS. Hoàng Thị E', major: 'CNTT', semester: 5 },
+      { id: 'CS401', name: 'Trí tuệ nhân tạo', credits: 4, lecturer: 'TS. Trần Thị B', major: 'AI', semester: 6 },
+      { id: 'CS402', name: 'Học máy', credits: 4, lecturer: 'TS. Lê Văn C', major: 'AI', semester: 7 },
+      { id: 'SE101', name: 'Kiến trúc phần mềm', credits: 3, lecturer: 'TS. Hoàng Văn F', major: 'SE', semester: 1 },
+      { id: 'SE201', name: 'Testing và QA', credits: 3, lecturer: 'ThS. Tạ Văn G', major: 'SE', semester: 3 },
+      { id: 'IT101', name: 'Hệ thống thông tin', credits: 3, lecturer: 'TS. Vũ Thị H', major: 'IT', semester: 1 },
+      { id: 'IT201', name: 'Quản lý hệ thống', credits: 3, lecturer: 'TS. Phạm Thị I', major: 'IT', semester: 3 },
+    ];
+
+    let dataTable = null;
+    let subscriptions = new Set(); // Store subscribed syllabuses
+
+    async function checkAuth() {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        window.location.href = '/index.html';
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/users/me`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+          const user = await response.json();
+          if (user.role !== 'student') {
+            alert('Bạn không có quyền truy cập!');
+            window.location.href = '/index.html';
+            return;
+          }
+          document.getElementById('userFullName').textContent = user.full_name || 'Student';
+        } else {
+          localStorage.removeItem('access_token');
+          window.location.href = '/index.html';
+        }
+      } catch (error) {
+        console.error('Auth error:', error);
+      }
+    }
+
+    function handleLogout() {
+      $('#logoutModal').modal('show');
+    }
+
+    function confirmLogout() {
+      localStorage.removeItem('access_token');
+      window.location.href = '/index.html';
+    }
+
+    function toggleSubscribe(subjectCode) {
+      if (subscriptions.has(subjectCode)) {
+        subscriptions.delete(subjectCode);
+        const btn = event.target.closest('button');
+        btn.classList.remove('btn-warning');
+        btn.classList.add('btn-outline-warning');
+        btn.innerHTML = '<i class="far fa-star"></i>';
+        alert(`Đã bỏ chọn theo dõi môn ${subjectCode}`);
+      } else {
+        subscriptions.add(subjectCode);
+        const btn = event.target.closest('button');
+        btn.classList.remove('btn-outline-warning');
+        btn.classList.add('btn-warning');
+        btn.innerHTML = '<i class="fas fa-star"></i>';
+        alert(`Đang theo dõi môn ${subjectCode}`);
+      }
+      saveSubscriptions();
+    }
+
+    function saveSubscriptions() {
+      localStorage.setItem('subscriptions', JSON.stringify(Array.from(subscriptions)));
+    }
+
+    function loadSubscriptions() {
+      const saved = localStorage.getItem('subscriptions');
+      if (saved) {
+        subscriptions = new Set(JSON.parse(saved));
+      }
+    }
+
+    function renderSyllabusTable(syllabuses) {
+      const tbody = $('#syllabusTable tbody');
+      tbody.empty();
+
+      if (syllabuses.length === 0) {
+        tbody.html(`
+          <tr>
+            <td colspan="7" class="text-center text-muted py-4">
+              Không tìm thấy kết quả phù hợp
+            </td>
+          </tr>
+        `);
+        $('#resultCount').text('Tìm thấy 0 giáo trình');
+        return;
+      }
+
+      syllabuses.forEach(syllabus => {
+        const isSubscribed = subscriptions.has(syllabus.id);
+        const btnClass = isSubscribed ? 'btn-warning' : 'btn-outline-warning';
+        const starIcon = isSubscribed ? 'fas fa-star' : 'far fa-star';
+        const row = `
+          <tr>
+            <td><strong>${syllabus.id}</strong></td>
+            <td>${syllabus.name}</td>
+            <td><span class="badge badge-primary">${syllabus.credits}</span></td>
+            <td>${syllabus.lecturer}</td>
+            <td>${syllabus.major}</td>
+            <td>${syllabus.semester}</td>
+            <td>
+              <a href="syllabus-detail.html?id=${syllabus.id}" class="btn btn-sm btn-primary">
+                <i class="fas fa-eye"></i> Xem
+              </a>
+              <button class="btn btn-sm ${btnClass}" onclick="toggleSubscribe('${syllabus.id}')">
+                <i class="${starIcon}"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+        tbody.append(row);
+      });
+
+      $('#resultCount').text(`Tìm thấy ${syllabuses.length} giáo trình`);
+    }
+
+    function filterSyllabuses() {
+      const keyword = $('#searchKeyword').val().toLowerCase().trim();
+      const major = $('#filterMajor').val();
+      const semester = $('#filterSemester').val();
+
+      let filtered = allSyllabuses;
+
+      // Filter by keyword
+      if (keyword) {
+        filtered = filtered.filter(s => 
+          s.id.toLowerCase().includes(keyword) || 
+          s.name.toLowerCase().includes(keyword)
+        );
+      }
+
+      // Filter by major
+      if (major) {
+        filtered = filtered.filter(s => s.major === major);
+      }
+
+      // Filter by semester
+      if (semester) {
+        filtered = filtered.filter(s => s.semester === parseInt(semester));
+      }
+
+      renderSyllabusTable(filtered);
+    }
+
+    // Initialize DataTable
+    $(document).ready(function() {
+      loadSubscriptions();
+      
+      dataTable = $('#syllabusTable').DataTable({
+        "pageLength": 12,
+        "lengthChange": false,
+        "info": false,
+        "language": {
+          "search": "Tìm kiếm:",
+          "infoEmpty": "Không có dữ liệu",
+          "infoFiltered": "(lọc từ _MAX_ bản ghi)",
+          "paginate": {
+            "first": "Đầu",
+            "last": "Cuối",
+            "next": "Sau",
+            "previous": "Trước"
+          }
+        }
+      });
+
+      checkAuth();
+      filterSyllabuses();
+
+      // Search form handler
+      $('#searchForm').submit(function(e) {
+        e.preventDefault();
+        filterSyllabuses();
+      });
+
+      // Real-time filtering on input change
+      $('#searchKeyword').on('keyup', function() {
+        filterSyllabuses();
+      });
+
+      $('#filterMajor').on('change', function() {
+        filterSyllabuses();
+      });
+
+      $('#filterSemester').on('change', function() {
+        filterSyllabuses();
+      });
+    });
+  </script>
+</body>
+
+</html>

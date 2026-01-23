@@ -4,8 +4,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    return 'Hello World! Server is running on port 5000'
+    return 'Hello World! Server is running on port 8000'
 
 if __name__ == '__main__':
     print("Starting minimal Flask server...")
-    app.run(host='127.0.0.1', port=5000, debug=False)
+    app.run(host='127.0.0.1', port=8000, debug=False)

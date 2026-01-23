@@ -1,7 +1,11 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from .core.database import engine, Base
 import traceback
+import os
+from pathlib import Path
 
 # Import all routers
 from .api.v1 import auth as auth_router
@@ -14,7 +18,11 @@ from .api.v1 import search as search_router
 from .api.v1 import ai as ai_router
 from .api.v1 import notification as notification_router
 from .api.v1 import settings as settings_router
-
+from .api.v1 import audit_logs as audit_logs_router
+from .api.v1 import admin as admin_router
+from .api.v1 import student as student_router
+from .api import departments as departments_router
+from .api import users_import as users_import_router
 
 Base.metadata.create_all(bind=engine)  # Create tables
 
@@ -22,6 +30,15 @@ Base.metadata.create_all(bind=engine)  # Create tables
 app = FastAPI(
     title="SMD Backend - Syllabus Management System",
     description="Backend API for Syllabus Management & Digitalization System"
+)
+
+# CORS Configuration for Frontend - Allow all for local development
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Global exception handler for debugging
@@ -55,3 +72,25 @@ app.include_router(search_router.router)
 app.include_router(ai_router.router)
 app.include_router(notification_router.router)
 app.include_router(settings_router.router)
+app.include_router(audit_logs_router.router)
+app.include_router(admin_router.router)
+app.include_router(student_router.router)
+app.include_router(departments_router.router, prefix="/departments", tags=["departments"])
+app.include_router(users_import_router.router, prefix="/users/import", tags=["users-import"])
+
+# Mount static files for uploaded syllabus files
+app.mount("/data", StaticFiles(directory="data"), name="data")
+
+# Serve frontend static files from the workspace so users can open the UI from backend origin
+try:
+    frontend_dir = str(Path(__file__).resolve().parents[2] / "frontend")
+    if os.path.isdir(frontend_dir):
+        app.mount("/ui", StaticFiles(directory=frontend_dir, html=True), name="frontend")
+    else:
+        print(f"[WARN] Frontend directory not found: {frontend_dir}")
+except Exception as _e:
+    print("[WARN] Could not mount frontend static files:", _e)
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "message": "Backend API is running"}
