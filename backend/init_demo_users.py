@@ -13,13 +13,13 @@ print("✅ Tables created")
 db = SessionLocal()
 
 try:
-    # Demo users
+    # Demo users với email @ut.edu.vn
     demo_users = [
-        {"email": "admin@hcmute.edu.vn", "full_name": "Admin User", "password": "admin123", "role": "admin"},
-        {"email": "lecturer1@hcmute.edu.vn", "full_name": "Lecturer User 1", "password": "lecturer123", "role": "lecturer"},
-        {"email": "hod.cs@hcmute.edu.vn", "full_name": "HOD Computer Science", "password": "hod123", "role": "hod"},
-        {"email": "aa@hcmute.edu.vn", "full_name": "Academic Affairs", "password": "aa123", "role": "academic_affairs"},
-        {"email": "student@test.com", "full_name": "Student User", "password": "student123", "role": "student"},
+        {"email": "admin@ut.edu.vn", "full_name": "Quản trị viên hệ thống", "password": "admin123", "role": "admin"},
+        {"email": "lecturer@ut.edu.vn", "full_name": "Giảng viên Demo", "password": "lecturer123", "role": "lecturer"},
+        {"email": "hod@ut.edu.vn", "full_name": "Trưởng khoa CNTT", "password": "hod123", "role": "hod"},
+        {"email": "aa@ut.edu.vn", "full_name": "Phòng Đào tạo", "password": "aa123", "role": "academic_affairs"},
+        {"email": "student@ut.edu.vn", "full_name": "Sinh viên Demo", "password": "student123", "role": "student"},
     ]
     
     print("\n👥 Creating demo users...")

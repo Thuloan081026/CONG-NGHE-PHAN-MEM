@@ -24,13 +24,61 @@ from .api.v1 import student as student_router
 from .api import departments as departments_router
 from .api import users_import as users_import_router
 
-Base.metadata.create_all(bind=engine)  # Create tables
-
+# Create all database tables
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="SMD Backend - Syllabus Management System",
     description="Backend API for Syllabus Management & Digitalization System"
 )
+
+# Startup event: Tự động tạo tài khoản demo khi khởi động
+@app.on_event("startup")
+async def startup_event():
+    """Khởi tạo dữ liệu demo khi server khởi động"""
+    from .core.database import SessionLocal
+    from .models.user import User
+    from .core.security import get_password_hash
+    
+    db = SessionLocal()
+    try:
+        # Kiểm tra xem đã có user nào chưa
+        user_count = db.query(User).count()
+        if user_count > 0:
+            print("✓ Đã có tài khoản trong hệ thống")
+            return
+        
+        # Danh sách tài khoản demo với email @ut.edu.vn
+        demo_users = [
+            {"email": "admin@ut.edu.vn", "full_name": "Quản trị viên hệ thống", "password": "admin123", "role": "admin"},
+            {"email": "lecturer@ut.edu.vn", "full_name": "Giảng viên Demo", "password": "lecturer123", "role": "lecturer"},
+            {"email": "hod@ut.edu.vn", "full_name": "Trưởng khoa CNTT", "password": "hod123", "role": "hod"},
+            {"email": "aa@ut.edu.vn", "full_name": "Phòng Đào tạo", "password": "aa123", "role": "academic_affairs"},
+            {"email": "student@ut.edu.vn", "full_name": "Sinh viên Demo", "password": "student123", "role": "student"},
+        ]
+        
+        print("\n👥 Đang tạo tài khoản demo...")
+        for user_data in demo_users:
+            # Kiểm tra từng user trước khi tạo
+            existing_user = db.query(User).filter(User.email == user_data["email"]).first()
+            if not existing_user:
+                user = User(
+                    email=user_data["email"],
+                    full_name=user_data["full_name"],
+                    hashed_password=get_password_hash(user_data["password"]),
+                    role=user_data["role"],
+                    is_active=True
+                )
+                db.add(user)
+                print(f"  ✅ {user_data['email']} / {user_data['password']}")
+        
+        db.commit()
+        print("✨ Tài khoản demo đã được tạo tự động!\n")
+    except Exception as e:
+        print(f"⚠️ Lỗi khi tạo tài khoản demo: {e}")
+        db.rollback()
+    finally:
+        db.close()
 
 # CORS Configuration for Frontend - Allow all for local development
 app.add_middleware(
