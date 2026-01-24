@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SMD Admin - System Administration</title>
+  <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
+  <link rel="stylesheet" href="../assets/css/styles.min.css" />
+  <link rel="stylesheet" href="../assets/css/smd-custom.css" />
+</head>
+
+<body>
+  <!--  Body Wrapper -->
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    <aside class="left-sidebar">
+      <!-- Sidebar scroll-->
+      <div>
+        <div class="brand-logo d-flex align-items-center justify-content-between">
+          <a href="./dashboard.html" class="text-nowrap logo-img">
+            <img src="../assets/images/logos/dark-logo.svg" width="180" alt="SMD Logo" />
+          </a>
+          <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+            <i class="ti ti-x fs-8"></i>
+          </div>
+        </div>
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+          <ul id="sidebarnav">
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">ADMIN PANEL</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link active" href="./dashboard.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-layout-dashboard"></i>
+                </span>
+                <span class="hide-menu">Dashboard</span>
+              </a>
+            </li>
+            
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">USER MANAGEMENT</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./users-list.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-users"></i>
+                </span>
+                <span class="hide-menu">User List</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./users-create.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-user-plus"></i>
+                </span>
+                <span class="hide-menu">Create User</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./users-import.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-file-upload"></i>
+                </span>
+                <span class="hide-menu">Import Users</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./roles-permissions.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-lock"></i>
+                </span>
+                <span class="hide-menu">Roles & Permissions</span>
+              </a>
+            </li>
+            
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">KHOA</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./departments-list.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-building"></i>
+                </span>
+                <span class="hide-menu">Danh sách khoa</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./departments-create.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-building-plus"></i>
+                </span>
+                <span class="hide-menu">Tạo khoa mới</span>
+              </a>
+            </li>
+            
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">SYSTEM SETTINGS</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./settings-general.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-settings"></i>
+                </span>
+                <span class="hide-menu">General Settings</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./settings-clo-plo.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-file-certificate"></i>
+                </span>
+                <span class="hide-menu">CLO/PLO Templates</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./settings-grading.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-star"></i>
+                </span>
+                <span class="hide-menu">Grading Scale</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./settings-workflow.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-git-branch"></i>
+                </span>
+                <span class="hide-menu">Workflow Rules</span>
+              </a>
+            </li>
+            
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">PUBLISHING</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./publishing-queue.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-clock"></i>
+                </span>
+                <span class="hide-menu">Publishing Queue</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./publishing-management.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-cloud-upload"></i>
+                </span>
+                <span class="hide-menu">Published Syllabus</span>
+              </a>
+            </li>
+            
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">MONITORING</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./audit-log.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-file-analytics"></i>
+                </span>
+                <span class="hide-menu">Audit Log & Reports</span>
+              </a>
+            </li>
+            
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">AUTH</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="javascript:void(0)" onclick="logout()" aria-expanded="false">
+                <span>
+                  <i class="ti ti-login"></i>
+                </span>
+                <span class="hide-menu">Logout</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <!-- End Sidebar navigation -->
+      </div>
+      <!-- End Sidebar scroll-->
+    </aside>
+    <!--  Sidebar End -->
+    
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+      <!--  Header Start -->
+      <header class="app-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <ul class="navbar-nav">
+            <li class="nav-item d-block d-xl-none">
+              <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
+                <i class="ti ti-menu-2"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-icon-hover" href="javascript:void(0)">
+                <i class="ti ti-bell-ringing"></i>
+                <div class="notification bg-primary rounded-circle"></div>
+              </a>
+            </li>
+          </ul>
+          <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+              <li class="nav-item dropdown">
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <img src="../assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+                  <div class="message-body">
+                    <a href="./profile.html" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-user fs-6"></i>
+                      <p class="mb-0 fs-3">My Profile</p>
+                    </a>
+                    <a href="./profile.html" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-mail fs-6"></i>
+                      <p class="mb-0 fs-3">My Account</p>
+                    </a>
+                    <a href="javascript:void(0)" onclick="logout()" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!--  Header End -->
+      
+      <div class="container-fluid">
+        <!--  Welcome Banner -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card bg-light-info shadow-none position-relative overflow-hidden">
+              <div class="card-body px-4 py-3">
+                <div class="row align-items-center">
+                  <div class="col-9">
+                    <h4 class="fw-semibold mb-8">Welcome to SMD Admin Panel</h4>
+                    <p class="mb-0">Syllabus Management and Digitalization System - University Administration Dashboard</p>
+                    <p class="mb-0 text-muted">Manage users, syllabuses, workflows, and system settings</p>
+                  </div>
+                  <div class="col-3">
+                    <div class="text-center mb-n5">
+                      <i class="ti ti-school fs-10 text-info"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!--  Row 1 -->
+        <div class="row">
+          <div class="col-lg-12 d-flex align-items-stretch">
+            <div class="card w-100">
+              <div class="card-body">
+                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                  <div class="mb-3 mb-sm-0">
+                    <h5 class="card-title fw-semibold">System Overview</h5>
+                    <p class="mb-0 text-muted">Real-time statistics from SMD database</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <!-- Total Users -->
+                  <div class="col-md-3">
+                    <div class="card border-0 zoom-in bg-light-primary shadow-none">
+                      <div class="card-body">
+                        <div class="text-center">
+                          <i class="ti ti-users fs-8 text-primary"></i>
+                          <h2 class="fw-bold mt-3 mb-0" id="totalUsers">0</h2>
+                          <p class="mb-0 text-dark">System Users</p>
+                          <p class="mb-0 text-muted small">All roles</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Total Syllabuses -->
+                  <div class="col-md-3">
+                    <div class="card border-0 zoom-in bg-light-success shadow-none">
+                      <div class="card-body">
+                        <div class="text-center">
+                          <i class="ti ti-book fs-8 text-success"></i>
+                          <h2 class="fw-bold mt-3 mb-0" id="totalSyllabuses">0</h2>
+                          <p class="mb-0 text-dark">Total Syllabuses</p>
+                          <p class="mb-0 text-muted small">All subjects</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Pending Review -->
+                  <div class="col-md-3">
+                    <div class="card border-0 zoom-in bg-light-warning shadow-none">
+                      <div class="card-body">
+                        <div class="text-center">
+                          <i class="ti ti-clock fs-8 text-warning"></i>
+                          <h2 class="fw-bold mt-3 mb-0" id="pendingReview">0</h2>
+                          <p class="mb-0 text-dark">Pending Review</p>
+                          <p class="mb-0 text-muted small">Awaiting approval</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Published -->
+                  <div class="col-md-3">
+                    <div class="card border-0 zoom-in bg-light-info shadow-none">
+                      <div class="card-body">
+                        <div class="text-center">
+                          <i class="ti ti-cloud-check fs-8 text-info"></i>
+                          <h2 class="fw-bold mt-3 mb-0" id="publishedCount">0</h2>
+                          <p class="mb-0 text-dark">Published</p>
+                          <p class="mb-0 text-muted small">Available to students</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!--  Row 2 -->
+        <div class="row">
+          <div class="col-lg-6 d-flex align-items-stretch">
+            <div class="card w-100">
+              <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                  <h5 class="card-title fw-semibold mb-0">Recent Users</h5>
+                  <a href="./users-list.html" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="table-responsive">
+                  <table class="table text-nowrap mb-0 align-middle">
+                    <thead class="text-dark fs-4">
+                      <tr>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Name</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Email</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Role</h6>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="recentUsersTable">
+                      <tr>
+                        <td colspan="3" class="text-center">Loading...</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-lg-6 d-flex align-items-stretch">
+            <div class="card w-100">
+              <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                  <h5 class="card-title fw-semibold mb-0">Recent Syllabuses</h5>
+                  <a href="./publishing-management.html" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="table-responsive">
+                  <table class="table text-nowrap mb-0 align-middle">
+                    <thead class="text-dark fs-4">
+                      <tr>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Code</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Name</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Status</h6>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="recentSyllabusesTable">
+                      <tr>
+                        <td colspan="3" class="text-center">Loading...</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Footer -->
+      <div class="py-6 px-6 text-center">
+        <p class="mb-0 fs-4">
+          <strong>SMD - Syllabus Management & Digitalization System</strong> 
+          <br>
+          <span class="text-muted">University Administration Panel | v1.0.0</span>
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/sidebarmenu.js"></script>
+  <script src="../assets/js/app.min.js"></script>
+  <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+  
+  <script>
+    // API Configuration
+    const API_BASE_URL = 'http://localhost:8000';
+    
+    // Load Dashboard Data from database
+    async function loadDashboardData() {
+      try {
+        // Get token from localStorage
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+          alert('Không tìm thấy access_token trong localStorage. Bạn cần đăng nhập lại!');
+          console.warn('No token found, redirecting to login');
+          window.location.href = '/index.html';
+          return;
+        }
+        // Validate current user and role
+        try {
+          const meRes = await fetch(`${API_BASE_URL}/users/me`, { headers: { 'Authorization': `Bearer ${token}` } });
+          if (!meRes.ok) {
+            const errorText = await meRes.text();
+            alert('Không xác thực được user! Status: ' + meRes.status + '\n' + errorText);
+            console.warn('Cannot validate user, status=', meRes.status, errorText);
+            // if unauthorized or forbidden, clear storage and redirect to login
+            localStorage.clear();
+            window.location.href = '/index.html';
+            return;
+          }
+          const me = await meRes.json();
+          if (me.role !== 'admin') {
+            alert('Bạn không có quyền truy cập trang quản trị. Vui lòng đăng nhập bằng tài khoản Admin.\nRole: ' + me.role);
+            window.location.href = '/index.html';
+            return;
+          }
+        } catch (err) {
+          alert('Lỗi xác thực user: ' + err);
+          console.error('Error validating user:', err);
+          localStorage.clear();
+          window.location.href = '/index.html';
+          return;
+        }
+        
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        };
+        
+        // Load dashboard stats from database
+        try {
+          console.log('Fetching dashboard stats...');
+          const statsResponse = await fetch(`${API_BASE_URL}/api/admin/dashboard/stats`, { headers });
+          console.log('Stats response status:', statsResponse.status);
+          
+          if (statsResponse.ok) {
+            const stats = await statsResponse.json();
+            console.log('Dashboard stats received:', stats);
+            
+            // Update statistics cards with real data from database
+            document.getElementById('totalUsers').textContent = stats.total_users || 0;
+            document.getElementById('totalSyllabuses').textContent = stats.total_syllabuses || 0;
+            document.getElementById('pendingReview').textContent = stats.pending_review || 0;
+            document.getElementById('publishedCount').textContent = stats.published || 0;
+            
+            console.log('Dashboard stats updated successfully');
+          } else {
+            const errorText = await statsResponse.text();
+            console.error('Failed to load dashboard stats:', statsResponse.status, errorText);
+            
+            // If 401 or 403, token expired or forbidden
+            if (statsResponse.status === 401 || statsResponse.status === 403) {
+              alert('Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại!');
+              localStorage.clear();
+              window.location.href = '/index.html';
+              return;
+            }
+          }
+        } catch (error) {
+          console.error('Error loading dashboard stats:', error);
+        }
+        
+        // Load recent users and syllabuses from database
+        await loadRecentData(headers);
+        
+      } catch (error) {
+        console.error('Error loading dashboard:', error);
+      }
+    }
+    
+    // Load recent users and syllabuses from database
+    async function loadRecentData(headers) {
+      const usersTable = document.getElementById('recentUsersTable');
+      const syllabusTable = document.getElementById('recentSyllabusesTable');
+      
+      try {
+        // Load recent users
+        console.log('Fetching recent users from database...');
+        const usersResponse = await fetch(`${API_BASE_URL}/api/admin/dashboard/recent-users?limit=5`, { headers });
+        console.log('Users response status:', usersResponse.status);
+        
+        if (usersResponse.ok) {
+          const recentUsers = await usersResponse.json();
+          console.log('Recent users loaded:', recentUsers);
+          
+          if (recentUsers && recentUsers.length > 0) {
+            usersTable.innerHTML = recentUsers.map(user => `
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="rounded-circle d-block bg-light-primary" style="width:40px;height:40px;line-height:40px;text-align:center;">
+                      <i class="ti ti-user text-primary"></i>
+                    </span>
+                    <p class="mb-0 fw-normal">${user.full_name || user.email}</p>
+                  </div>
+                </td>
+                <td><p class="mb-0 fw-normal">${user.email}</p></td>
+                <td><span class="badge bg-${getRoleBadgeClass(user.role)}">${formatRole(user.role)}</span></td>
+              </tr>
+            `).join('');
+          } else {
+            usersTable.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Chưa có người dùng</td></tr>';
+          }
+        } else {
+          const errorText = await usersResponse.text();
+          console.error('Failed to load users:', usersResponse.status, errorText);
+          usersTable.innerHTML = `<tr><td colspan="3" class="text-center text-danger">Lỗi tải dữ liệu: ${usersResponse.status}</td></tr>`;
+          if (usersResponse.status === 401 || usersResponse.status === 403) {
+            alert('Bạn không có quyền xem dữ liệu này. Vui lòng đăng nhập bằng tài khoản Admin.');
+            localStorage.clear();
+            window.location.href = '/index.html';
+            return;
+          }
+        }
+        
+        // Load recent syllabuses
+        console.log('Fetching recent syllabuses from database...');
+        const syllabusResponse = await fetch(`${API_BASE_URL}/api/admin/dashboard/recent-syllabuses?limit=5`, { headers });
+        console.log('Syllabus response status:', syllabusResponse.status);
+        
+        if (syllabusResponse.ok) {
+          const recentSyllabuses = await syllabusResponse.json();
+          console.log('Recent syllabuses loaded:', recentSyllabuses);
+          
+          if (recentSyllabuses && recentSyllabuses.length > 0) {
+            syllabusTable.innerHTML = recentSyllabuses.map(syl => `
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="rounded-circle d-block bg-light-success" style="width:40px;height:40px;line-height:40px;text-align:center;">
+                      <i class="ti ti-file-text text-success"></i>
+                    </span>
+                    <div>
+                      <p class="mb-0 fw-normal">${syl.subject_code}</p>
+                      <small class="text-muted">${syl.subject_name}</small>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="badge bg-${getStatusBadgeClass(syl.status)}">${formatStatus(syl.status)}</span></td>
+                <td><small class="text-muted">${syl.creator_name || 'N/A'}</small></td>
+              </tr>
+            `).join('');
+          } else {
+            syllabusTable.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Chưa có đề cương</td></tr>';
+          }
+        } else {
+          const errorText = await syllabusResponse.text();
+          console.error('Failed to load syllabuses:', syllabusResponse.status, errorText);
+          syllabusTable.innerHTML = `<tr><td colspan="3" class="text-center text-danger">Lỗi tải dữ liệu: ${syllabusResponse.status}</td></tr>`;
+          if (syllabusResponse.status === 401 || syllabusResponse.status === 403) {
+            alert('Bạn không có quyền xem dữ liệu này. Vui lòng đăng nhập bằng tài khoản Admin.');
+            localStorage.clear();
+            window.location.href = '/index.html';
+            return;
+          }
+        }
+        
+      } catch (error) {
+        console.error('Error loading recent data:', error);
+        usersTable.innerHTML = '<tr><td colspan="3" class="text-center text-danger">Lỗi kết nối: ' + error.message + '</td></tr>';
+        syllabusTable.innerHTML = '<tr><td colspan="3" class="text-center text-danger">Lỗi kết nối: ' + error.message + '</td></tr>';
+      }
+    }
+    
+    // Helper functions for formatting
+    function getRoleBadgeClass(role) {
+      const roleMap = {
+        'admin': 'admin',
+        'lecturer': 'lecturer',
+        'hod': 'hod',
+        'student': 'student',
+        'academic_affairs': 'academic-affairs'
+      };
+      return roleMap[role] || 'secondary';
+    }
+    
+    function formatRole(role) {
+      const roleNames = {
+        'admin': 'Admin',
+        'lecturer': 'Lecturer',
+        'hod': 'Head of Dept',
+        'student': 'Student',
+        'academic_affairs': 'Academic Affairs'
+      };
+      return roleNames[role] || role;
+    }
+    
+    function getStatusBadgeClass(status) {
+      const statusMap = {
+        'draft': 'bg-draft',
+        'submitted': 'bg-submitted',
+        'hod_approved': 'bg-hod-approved',
+        'published': 'bg-published',
+        'rejected': 'bg-rejected'
+      };
+      return statusMap[status] || 'bg-secondary';
+    }
+    
+    function formatStatus(status) {
+      const statusNames = {
+        'draft': 'Draft',
+        'submitted': 'Submitted',
+        'hod_approved': 'HOD Approved',
+        'published': 'Published',
+        'rejected': 'Rejected'
+      };
+      return statusNames[status] || status;
+    }
+    
+    function logout() {
+      localStorage.clear();
+      sessionStorage.setItem('from_logout', 'true');
+      window.location.href = '/index.html';
+    }
+    
+    // Load data on page load
+    document.addEventListener('DOMContentLoaded', loadDashboardData);
+  </script>
+</body>
+
+</html>

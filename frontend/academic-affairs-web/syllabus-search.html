@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Syllabus Search - Academic Affairs</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <link href="./assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="./assets/css/nucleo-svg.css" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <link id="pagestyle" href="./assets/css/soft-ui-dashboard.min.css?v=1.0.7" rel="stylesheet" />
+  <style>
+    .syllabus-card {
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+    .syllabus-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 26px -4px rgba(20, 20, 20, 0.15);
+    }
+    .search-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.04);
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body class="g-sidenav-show bg-gray-100">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3" id="sidenav-main">
+    <div class="sidenav-header">
+      <a class="navbar-brand m-0" href="dashboard.html">
+        <span class="ms-1 font-weight-bold">SMD - Academic Affairs</span>
+      </a>
+    </div>
+    <hr class="horizontal dark mt-0">
+    <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="dashboard.html">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="syllabus-approval.html">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-check-bold text-warning text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Syllabus Approval</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="syllabus-search.html">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-zoom-split-in text-info text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Syllabus Search</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="course-management.html">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-books text-info text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Course Management</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="plo-management.html">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-trophy text-success text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">PLO Management</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="notifications.html">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-bell-55 text-danger text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Notifications</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="profile.html">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Profile</span>
+          </a>
+        </li>
+        <li class="nav-item mt-3">
+          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account</h6>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="handleLogout()">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-button-power text-warning text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Logout</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+  
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur">
+      <div class="container-fluid py-1 px-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="dashboard.html">Academic Affairs</a></li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Syllabus Search</li>
+          </ol>
+          <h6 class="font-weight-bolder mb-0">Search & Analysis</h6>
+        </nav>
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center"></div>
+          <ul class="navbar-nav justify-content-end">
+            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                <div class="sidenav-toggler-inner">
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item px-3">
+              <a href="notifications.html" class="nav-link text-body p-0 position-relative">
+                <i class="fa fa-bell cursor-pointer"></i>
+                <span class="position-absolute top-5 start-100 translate-middle badge rounded-pill bg-danger border border-white small py-1 px-2">
+                  <span class="small">3</span>
+                </span>
+              </a>
+            </li>
+            <li class="nav-item px-3 d-flex align-items-center">
+              <a href="profile.html" class="nav-link text-body p-0">
+                <i class="fa fa-user me-sm-1"></i>
+                <span class="d-sm-inline d-none" id="userName">Academic Affairs</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid py-4">
+      
+      <!-- Search Box -->
+      <div class="search-box">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Search by Subject Code or Name</label>
+            <input type="text" class="form-control" id="searchInput" placeholder="Enter subject code or name...">
+          </div>
+          <div class="col-md-3 mb-3">
+            <label class="form-label">Department</label>
+            <select class="form-control" id="filterDepartment">
+              <option value="all">All Departments</option>
+              <option value="cs">Computer Science</option>
+              <option value="se">Software Engineering</option>
+              <option value="it">Information Technology</option>
+              <option value="is">Information Systems</option>
+            </select>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label class="form-label">Status</label>
+            <select class="form-control" id="filterStatus">
+              <option value="all">All Status</option>
+              <option value="approved">Approved</option>
+              <option value="pending">Pending Approval</option>
+              <option value="rejected">Rejected</option>
+              <option value="draft">Draft</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <label class="form-label">Semester</label>
+            <select class="form-control" id="filterSemester">
+              <option value="all">All Semesters</option>
+              <option value="1-2024">Semester 1, 2024</option>
+              <option value="2-2024">Semester 2, 2024</option>
+              <option value="1-2025">Semester 1, 2025</option>
+            </select>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label class="form-label">Lecturer</label>
+            <input type="text" class="form-control" id="filterLecturer" placeholder="Lecturer name...">
+          </div>
+          <div class="col-md-3 mb-3">
+            <label class="form-label">PLO Mapping</label>
+            <select class="form-control" id="filterPLO">
+              <option value="all">All</option>
+              <option value="complete">Complete (100%)</option>
+              <option value="incomplete">Incomplete</option>
+              <option value="none">No Mapping</option>
+            </select>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label class="form-label">&nbsp;</label>
+            <button class="btn btn-primary w-100" onclick="searchSyllabuses()">
+              <i class="ni ni-zoom-split-in me-2"></i>Search
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics Row -->
+      <div class="row mb-4">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Total Syllabuses</p>
+                    <h5 class="font-weight-bolder mb-0" id="totalCount">156</h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                    <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Approved</p>
+                    <h5 class="font-weight-bolder mb-0" id="approvedCount">128</h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-success shadow text-center border-radius-md">
+                    <i class="ni ni-check-bold text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Pending</p>
+                    <h5 class="font-weight-bolder mb-0" id="pendingCount">18</h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-warning shadow text-center border-radius-md">
+                    <i class="ni ni-time-alarm text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">PLO Compliance</p>
+                    <h5 class="font-weight-bolder mb-0" id="ploCompliance">92%</h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-info shadow text-center border-radius-md">
+                    <i class="ni ni-trophy text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header pb-0">
+              <div class="d-flex justify-content-between align-items-center">
+                <h6>Search Results</h6>
+                <div>
+                  <button class="btn btn-sm btn-outline-primary mb-0 me-2" onclick="exportResults()">
+                    <i class="ni ni-cloud-download-95"></i> Export
+                  </button>
+                  <button class="btn btn-sm btn-outline-secondary mb-0" onclick="printResults()">
+                    <i class="ni ni-single-copy-04"></i> Print
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body px-0 pt-0 pb-2">
+              <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Subject</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Lecturer</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Department</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Credits</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">PLO Mapping</th>
+                      <th class="text-secondary opacity-7"></th>
+                    </tr>
+                  </thead>
+                  <tbody id="resultsTable">
+                    <tr>
+                      <td>
+                        <div class="d-flex px-2 py-1">
+                          <div class="d-flex flex-column justify-content-center">
+                            <h6 class="mb-0 text-sm">CS301</h6>
+                            <p class="text-xs text-secondary mb-0">Database Systems</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <p class="text-xs font-weight-bold mb-0">Dr. Nguyen Van A</p>
+                      </td>
+                      <td class="align-middle text-center text-sm">
+                        <span class="badge badge-sm bg-gradient-info">Computer Science</span>
+                      </td>
+                      <td class="align-middle text-center">
+                        <span class="text-secondary text-xs font-weight-bold">3</span>
+                      </td>
+                      <td class="align-middle text-center">
+                        <span class="badge badge-sm bg-gradient-success">Approved</span>
+                      </td>
+                      <td class="align-middle text-center">
+                        <div class="progress-wrapper w-75 mx-auto">
+                          <div class="progress-info">
+                            <div class="progress-percentage">
+                              <span class="text-xs font-weight-bold">100%</span>
+                            </div>
+                          </div>
+                          <div class="progress">
+                            <div class="progress-bar bg-gradient-success w-100" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="align-middle">
+                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="View syllabus">
+                          View
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="d-flex px-2 py-1">
+                          <div class="d-flex flex-column justify-content-center">
+                            <h6 class="mb-0 text-sm">CS401</h6>
+                            <p class="text-xs text-secondary mb-0">Artificial Intelligence</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <p class="text-xs font-weight-bold mb-0">Dr. Tran Thi B</p>
+                      </td>
+                      <td class="align-middle text-center text-sm">
+                        <span class="badge badge-sm bg-gradient-info">Computer Science</span>
+                      </td>
+                      <td class="align-middle text-center">
+                        <span class="text-secondary text-xs font-weight-bold">3</span>
+                      </td>
+                      <td class="align-middle text-center">
+                        <span class="badge badge-sm bg-gradient-warning">Pending</span>
+                      </td>
+                      <td class="align-middle text-center">
+                        <div class="progress-wrapper w-75 mx-auto">
+                          <div class="progress-info">
+                            <div class="progress-percentage">
+                              <span class="text-xs font-weight-bold">75%</span>
+                            </div>
+                          </div>
+                          <div class="progress">
+                            <div class="progress-bar bg-gradient-warning w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="align-middle">
+                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs">
+                          View
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="d-flex px-2 py-1">
+                          <div class="d-flex flex-column justify-content-center">
+                            <h6 class="mb-0 text-sm">CS201</h6>
+                            <p class="text-xs text-secondary mb-0">Data Structures</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <p class="text-xs font-weight-bold mb-0">Dr. Le Van C</p>
+                      </td>
+                      <td class="align-middle text-center text-sm">
+                        <span class="badge badge-sm bg-gradient-info">Computer Science</span>
+                      </td>
+                      <td class="align-middle text-center">
+                        <span class="text-secondary text-xs font-weight-bold">4</span>
+                      </td>
+                      <td class="align-middle text-center">
+                        <span class="badge badge-sm bg-gradient-success">Approved</span>
+                      </td>
+                      <td class="align-middle text-center">
+                        <div class="progress-wrapper w-75 mx-auto">
+                          <div class="progress-info">
+                            <div class="progress-percentage">
+                              <span class="text-xs font-weight-bold">100%</span>
+                            </div>
+                          </div>
+                          <div class="progress">
+                            <div class="progress-bar bg-gradient-success w-100" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="align-middle">
+                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs">
+                          View
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer pt-3">
+        <div class="container-fluid">
+          <div class="row align-items-center justify-content-lg-between">
+            <div class="col-lg-6 mb-lg-0 mb-4">
+              <div class="copyright text-center text-sm text-muted text-lg-start">
+                © <script>document.write(new Date().getFullYear())</script>, SMD System - Academic Affairs Module
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <script src="./assets/js/core/popper.min.js"></script>
+  <script src="./assets/js/core/bootstrap.min.js"></script>
+  <script src="./assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="./assets/js/plugins/smooth-scrollbar.min.js"></script>
+  
+  <script>
+    const API_BASE_URL = 'http://localhost:8000';
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        window.location.replace('/index.html');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/users/me`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) throw new Error('Unauthorized');
+
+        const user = await response.json();
+        if (user.role !== 'academic_affairs') {
+          alert('Access denied. Academic Affairs role required.');
+          window.location.replace('/index.html');
+          return;
+        }
+
+        document.getElementById('userName').textContent = user.full_name || 'Academic Affairs';
+      } catch (error) {
+        console.error('Authentication error:', error);
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        window.location.replace('/index.html');
+      }
+    });
+
+    function searchSyllabuses() {
+      const searchTerm = document.querySelector('input[placeholder*="subject"]')?.value || '';
+      const department = document.getElementById('filterProgram')?.value || 'all';
+      const semester = document.querySelector('input[placeholder*="All Semesters"]')?.value || 'all';
+      const status = document.getElementById('filterProgram')?.value || 'all';
+      
+      alert(`Searching for syllabuses:\n- Subject: ${searchTerm}\n- Department: ${department}\n- Semester: ${semester}\n- Status: ${status}`);
+    }
+
+    function exportResults() {
+      const data = [
+        { 'Subject Code': 'CS301', 'Subject Name': 'Database Systems', 'Lecturer': 'Dr. Nguyen Van A', 'Department': 'Computer Science', 'Credits': 3, 'Status': 'APPROVED', 'PLO Mapping': '100%' },
+        { 'Subject Code': 'CS401', 'Subject Name': 'Artificial Intelligence', 'Lecturer': 'Dr. Tran Thi B', 'Department': 'Computer Science', 'Credits': 3, 'Status': 'PENDING', 'PLO Mapping': '75%' },
+        { 'Subject Code': 'CS201', 'Subject Name': 'Data Structures', 'Lecturer': 'Dr. Le Van C', 'Department': 'Computer Science', 'Credits': 4, 'Status': 'APPROVED', 'PLO Mapping': '100%' }
+      ];
+      
+      let csv = Object.keys(data[0]).join(',') + '\n';
+      data.forEach(row => {
+        csv += Object.values(row).join(',') + '\n';
+      });
+      
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `syllabuses_${new Date().toISOString().split('T')[0]}.csv`;
+      link.click();
+      
+      alert('Export successful!');
+    }
+
+    function printResults() {
+      window.print();
+    }
+
+    function handleLogout() {
+      if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        window.location.replace('/index.html');
+      }
+    }
+
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = { damping: '0.5' }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  </script>
+  <script src="./assets/js/soft-ui-dashboard.min.js?v=1.0.7"></script>
+</body>
+</html>

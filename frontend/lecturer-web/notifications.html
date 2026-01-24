@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>SMD - Notifications</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f2f4f8;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        /* ===== HEADER ===== */
+        .page-header {
+            background: white;
+            padding: 20px 28px;
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            margin-bottom: 24px;
+        }
+
+        /* ===== STAT CARDS ===== */
+        .stat-card {
+            background: linear-gradient(135deg, #4f6ef7, #5b8dfc);
+            color: white;
+            border-radius: 16px;
+            padding: 24px;
+            min-height: 130px;
+            position: relative;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+        }
+
+        .stat-card i {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 44px;
+            opacity: 0.25;
+        }
+
+        /* ===== NOTIFICATION LIST ===== */
+        .notification-item {
+            background: white;
+            border-radius: 14px;
+            padding: 18px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            margin-bottom: 14px;
+        }
+
+        .badge-status {
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .approved { background: #dcfce7; color: #166534; }
+        .review { background: #fff7ed; color: #9a3412; }
+        .action { background: #fee2e2; color: #991b1b; }
+
+        /* ===== TABS ===== */
+        .tabs button {
+            border: 1px solid #2563eb;
+            background: white;
+            color: #2563eb;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .tabs button.active {
+            background: #2563eb;
+            color: white;
+        }
+    </style>
+</head>
+
+<script>
+    // Tổng số notification (đang có 4)
+    const totalNotifications = 4;
+    const unreadNotifications = 2;
+
+    localStorage.setItem("totalNotifications", totalNotifications);
+    localStorage.setItem("unreadNotifications", unreadNotifications);
+</script>
+
+<body>
+
+<div class="container my-4">
+
+    <!-- HEADER -->
+    <div class="page-header d-flex justify-content-between align-items-center">
+        <div>
+            <h4 class="mb-1">
+                <i class="fa-regular fa-bell me-2"></i>Nhận thông báo
+            </h4>
+            <p class="text-muted mb-0">Theo dõi các cập nhật từ hệ thống SMD</p>
+        </div>
+
+        <a href="dashboard.html" class="btn btn-outline-primary">
+            <i class="fa-solid fa-arrow-left me-2"></i>Quay lại Dashboard
+        </a>
+    </div>
+
+    <!-- STATS -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h6>THÔNG BÁO MỚI</h6>
+                <h2>2</h2>
+                <small>Chưa đọc</small>
+                <i class="fa-regular fa-bell"></i>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h6>ĐÃ XỬ LÝ</h6>
+                <h2>2</h2>
+                <small>Đã đọc</small>
+                <i class="fa-solid fa-check"></i>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h6>CẦN HÀNH ĐỘNG</h6>
+                <h2>1</h2>
+                <small>Từ hệ thống</small>
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h6>TỔNG CỘNG</h6>
+                <h2>4</h2>
+                <small>Tất cả thông báo</small>
+                <i class="fa-solid fa-clipboard-list"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- FILTER -->
+    <div class="tabs d-flex gap-2 mb-4">
+        <button class="active">Tất cả</button>
+        <button>Chưa đọc</button>
+        <button>Review</button>
+        <button>Phê duyệt</button>
+
+        <div class="ms-auto">
+            <button class="btn btn-sm btn-outline-secondary">
+                Đánh dấu tất cả đã đọc
+            </button>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION LIST -->
+    <div class="notification-item">
+        <div>
+            <strong>Đề cương được phê duyệt</strong>
+            <div class="text-muted">CS101 đã được HoD phê duyệt</div>
+            <small class="text-muted">2 giờ trước</small>
+        </div>
+        <span class="badge-status approved">Đã phê duyệt</span>
+    </div>
+
+    <div class="notification-item">
+        <div>
+            <strong>Yêu cầu chỉnh sửa đề cương</strong>
+            <div class="text-muted">CS202 cần chỉnh sửa CLO</div>
+            <small class="text-muted">5 giờ trước</small>
+        </div>
+        <span class="badge-status action">Cần hành động</span>
+    </div>
+
+    <div class="notification-item">
+        <div>
+            <strong>Đề cương chờ review</strong>
+            <div class="text-muted">CS303 đang chờ hội đồng review</div>
+            <small class="text-muted">1 ngày trước</small>
+        </div>
+        <span class="badge-status review">Review</span>
+    </div>
+
+    <div class="notification-item">
+        <div>
+            <strong>Đề cương đã hoàn tất</strong>
+            <div class="text-muted">CS404 đã được phê duyệt</div>
+            <small class="text-muted">2 ngày trước</small>
+        </div>
+        <span class="badge-status approved">Đã phê duyệt</span>
+    </div>
+
+</div>
+
+</body>
+</html>
+

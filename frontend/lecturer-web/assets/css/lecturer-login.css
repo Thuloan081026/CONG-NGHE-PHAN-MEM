@@ -1,0 +1,308 @@
+/* Lecturer Login Page Styles */
+
+/* ===========================
+   Login Page Layout
+   =========================== */
+.login {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    overflow: hidden;
+}
+
+.login::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url('../images/bg-pattern.png') repeat;
+    opacity: 0.1;
+    animation: slideBackground 60s linear infinite;
+}
+
+@keyframes slideBackground {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-50px, -50px); }
+}
+
+/* ===========================
+   Login Card
+   =========================== */
+.login-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    max-width: 450px;
+    width: 100%;
+    margin: 20px;
+    position: relative;
+    z-index: 1;
+    animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===========================
+   Logo Section
+   =========================== */
+.login-card .text-center {
+    margin-bottom: 30px;
+}
+
+.login-card .text-center img {
+    max-width: 180px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.login-card h3 {
+    color: #333;
+    font-weight: 600;
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+/* ===========================
+   Form Styling
+   =========================== */
+.login-card form {
+    padding: 40px 35px;
+}
+
+.md-input-wrapper {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.md-form-control {
+    width: 100%;
+    height: 50px;
+    padding: 15px 15px 10px;
+    font-size: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.md-form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.md-form-control:focus + label,
+.md-form-control:valid + label {
+    top: 8px;
+    font-size: 11px;
+    color: #667eea;
+    font-weight: 600;
+}
+
+.md-input-wrapper label {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 14px;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    background: white;
+    padding: 0 5px;
+}
+
+/* ===========================
+   Remember Me & Forgot Password
+   =========================== */
+.rkmd-checkbox {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+}
+
+.rkmd-checkbox .input-checkbox {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    margin: 0;
+}
+
+.rkmd-checkbox input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.rkmd-checkbox .checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #667eea;
+    border-radius: 4px;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.rkmd-checkbox input[type="checkbox"]:checked + .checkbox {
+    background: #667eea;
+    border-color: #667eea;
+}
+
+.rkmd-checkbox input[type="checkbox"]:checked + .checkbox::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.rkmd-checkbox .captions {
+    color: #666;
+    font-size: 14px;
+    user-select: none;
+}
+
+.forgot-phone a {
+    color: #667eea;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.forgot-phone a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* ===========================
+   Login Button
+   =========================== */
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    height: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* ===========================
+   Footer Links
+   =========================== */
+.text-center {
+    margin-top: 25px;
+}
+
+.text-muted {
+    color: #999;
+    font-size: 14px;
+}
+
+.text-center a {
+    color: #667eea;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.text-center a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* ===========================
+   Alert Messages
+   =========================== */
+.alert {
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border: none;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+}
+
+/* ===========================
+   Responsive Design
+   =========================== */
+@media (max-width: 576px) {
+    .login-card {
+        margin: 15px;
+    }
+    
+    .login-card form {
+        padding: 30px 25px;
+    }
+    
+    .login-card h3 {
+        font-size: 20px;
+    }
+    
+    .md-form-control {
+        height: 45px;
+        font-size: 14px;
+    }
+    
+    .btn-primary {
+        height: 45px;
+        font-size: 14px;
+    }
+    
+    .forgot-phone {
+        text-align: left !important;
+        margin-top: 10px;
+    }
+}

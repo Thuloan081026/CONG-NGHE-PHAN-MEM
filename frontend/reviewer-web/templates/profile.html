@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile - SMD Reviewer</title>
+    <link rel="stylesheet" href="/static/css/reviewer.css">
+</head>
+<body>
+
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>👤 User Profile</h2>
+        <a href="/reviewer/dashboard" class="btn-back">← Back to Dashboard</a>
+    </div>
+
+    <hr>
+
+    <div class="profile-wrapper">
+        <div class="profile-card">
+            <div class="avatar-circle">
+                {{ user.full_name[0] }}
+            </div>
+            <h3>{{ user.full_name }}</h3>
+            <p class="role-badge">{{ user.role }}</p>
+            <p>Department: <b>{{ user.department }}</b></p>
+        </div>
+
+        <div class="profile-form">
+            <h3>Update Information</h3>
+            <form method="post" action="/reviewer/profile/update">
+                
+                <div class="form-group">
+                    <label>Email (Read-only):</label>
+                    <input type="text" value="{{ user.email }}" disabled class="input-readonly">
+                </div>
+
+                <div class="form-group">
+                    <label>Full Name:</label>
+                    <input type="text" name="full_name" value="{{ user.full_name }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number:</label>
+                    <input type="text" name="phone" value="{{ user.phone }}">
+                </div>
+
+                <div class="form-group">
+                    <label>Change Password (Optional):</label>
+                    <input type="password" name="password" placeholder="Enter new password to change">
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn-approve">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

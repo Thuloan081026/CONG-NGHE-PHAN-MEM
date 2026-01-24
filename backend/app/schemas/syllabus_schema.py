@@ -75,6 +75,9 @@ class SyllabusBase(BaseModel):
     textbooks: Optional[List[Dict[str, Any]]] = None
     references: Optional[List[Dict[str, Any]]] = None
     learning_materials: Optional[List[Dict[str, Any]]] = None
+    
+    # File metadata
+    file_metadata: Optional[Dict[str, Any]] = None
 
 
 # Create new Syllabus (request)
@@ -126,13 +129,34 @@ class SyllabusOut(SyllabusBase):
         from_attributes = True
 
 
+# Simple Syllabus for List (without relationships)
+class SyllabusListItem(BaseModel):
+    id: int
+    subject_code: str
+    subject_name: str
+    description: Optional[str] = None
+    credits: Optional[int] = None
+    semester: Optional[int] = None
+    department: Optional[str] = None
+    academic_year: Optional[str] = None
+    created_by: int
+    status: str
+    is_published: bool
+    created_at: datetime
+    updated_at: datetime
+    published_at: Optional[datetime] = None
+    
+    class Config:
+        from_attributes = True
+
+
 # List of Syllabuses (pagination)
 class SyllabusListOut(BaseModel):
     total: int
     count: int
     page: int
     page_size: int
-    items: List[SyllabusOut]
+    items: List[SyllabusListItem]  # Changed from SyllabusOut
     
     class Config:
         from_attributes = True

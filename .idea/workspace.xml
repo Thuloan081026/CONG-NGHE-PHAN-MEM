@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="523de369-18a9-4d10-a290-8ab48c48df80" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/backend/API_TESTING_GUIDE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/BACKEND_TEST_SUMMARY.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/MANUAL_TEST_GUIDE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/api/v1/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/api/v1/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/api/v1/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/api/v1/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/api/v1/syllabus.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/api/v1/syllabus.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/core/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/core/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/core/security.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/core/security.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/models/syllabus.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/syllabus.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/schemas/syllabus_schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/schemas/syllabus_schema.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/schemas/user_schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/schemas/user_schema.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/beautiful_test_interface.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/check_passwords.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/check_tables.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/check_test_db.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/check_user_ids.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/check_users_password.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/comprehensive_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/create_demo_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/create_demo_syllabus.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/create_draft_syllabus.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/create_module_7_8_demo_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/create_notification_tables.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/create_production_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/create_sample_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/create_system_settings_table.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/create_test_users.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/debug_login.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/debug_mapping.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/debug_syllabus_api.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/demo_clo_plo.db" beforeDir="false" afterPath="$PROJECT_DIR$/backend/demo_clo_plo.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/deploy.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/direct_db_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/fix_test_urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/manual_test_registration.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/minimal_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/minimal_server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/publish_test_syllabuses.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/quick_auth_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/quick_test_456.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/quick_test_7_8.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/quick_test_registration.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/quick_test_syllabus_create.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/simple_test_api.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/simple_test_search.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/simple_test_server.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_all_8_modules.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_api.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_app.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_auth_api.ps1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_auth_api.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_clo_plo.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_complete_system.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_data.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_db.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_gemini.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_hod_login.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_login_quick.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_login_response.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_module_7_8.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_module_7_8_complete.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_mysql.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_mysql_api.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_mysql_connection.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_new_user_hash.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_review.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_student_notifications.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_syllabus_api.ps1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_tokenuser.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_user_registration.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_workflow.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_workflow.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/test_workflow_complete.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/login/login.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/login/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/login/login.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/public/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/app/handlers/CreateTimelineHandler.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/app/handlers/CreateUserHandler.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/app/handlers/LoginHandler.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/app/handlers/LogoutHandler.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/auth/login.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/auth/logout.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/components/form/TimelineForm.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/components/form/UserForm.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/components/layout/Footer.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/components/layout/Header.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/components/layout/MainLayout.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/components/layout/Sidebar.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/components/table/TimelineTable.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/components/table/UserTable.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/context/AdminContext.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/context/FlashMessage.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/hooks/useAuth.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/hooks/useFlash.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/lib/AuthGuard.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/lib/Response.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/lib/Validator.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/pages/Dashboard..php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/pages/ManageTimeline.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/pages/ManageUsers.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/services/AdminAuthService.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/services/SyllabusService.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/services/TimelineService.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/services/UserService.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/services/WorkflowService.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/styles/admin.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/types/Syllabus.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/types/Timeline.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/admin-web/src/types/User.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/lecturer-web/public/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/lecturer-web/src/app/handlers/CreateSyllabusHandler.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/lecturer-web/src/app/handlers/LoginHandler.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/lecturer-web/src/app/handlers/SubmitReviewHandler.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/lecturer-web/src/auth/login.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/lecturer-web/src/auth/logout.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/lecturer-web/src/components/layout/Header.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/lecturer-web/src/components/layout/MainLayout.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/lecturer-web/src/components/layout/Sidebar.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/lecturer-web/src/pages/CreateSyllabus.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/lecturer-web/src/pages/Dashboard.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/lecturer-web/src/pages/MappingCLO.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/lecturer-web/src/pages/MySyllabus.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/lecturer-web/src/pages/ReviewSyllabus.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/lecturer-web/src/services/LecturerAuthService.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/lecturer-web/src/services/SyllabusService.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/lecturer-web/src/styles/lecturer.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/reviewer-web/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/reviewer-web/routes.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/reviewer-web/static/css/reviewer.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/reviewer-web/static/js/reviewer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/reviewer-web/templates/compare.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/reviewer-web/templates/dashboard.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/reviewer-web/templates/review_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/student-web/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/student-web/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/student-web/routes.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/student-web/static/css/student.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/student-web/static/js/student.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/student-web/templates/roadmap.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/student-web/templates/search.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/student-web/templates/syllabus_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/user-web/login/login.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/user-web/login/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/user-web/login/login.js" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="38ZYtmNF9UU06LBlTWuZ77wykPe" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ThuLoan&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-1f1b7bcced7d-64d779b69b7a-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.29188.22" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="523de369-18a9-4d10-a290-8ab48c48df80" name="Changes" comment="" />
+      <created>1769008781426</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1769008781426</updated>
+      <workItem from="1769008784743" duration="336000" />
+    </task>
+    <servers />
+  </component>
+</project>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h2>Đăng nhập</h2>
+
+    {% with messages = get_flashed_messages(category_filter=["error"]) %}
+        {% for msg in messages %}
+            <p class="error">{{ msg }}</p>
+        {% endfor %}
+    {% endwith %}
+
+    <form method="POST">
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Mật khẩu" required>
+        <button type="submit">Đăng nhập</button>
+    </form>
+</div>
+
+</body>
+</html>
