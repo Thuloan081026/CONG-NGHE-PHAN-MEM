@@ -48,13 +48,13 @@ async def startup_event():
             print("✓ Đã có tài khoản trong hệ thống")
             return
         
-        # Danh sách tài khoản demo với email @ut.edu.vn
+        # Danh sách tài khoản demo với email @edu.vn
         demo_users = [
-            {"email": "admin@ut.edu.vn", "full_name": "Quản trị viên hệ thống", "password": "admin123", "role": "admin"},
-            {"email": "lecturer@ut.edu.vn", "full_name": "Giảng viên Demo", "password": "lecturer123", "role": "lecturer"},
-            {"email": "hod@ut.edu.vn", "full_name": "Trưởng khoa CNTT", "password": "hod123", "role": "hod"},
-            {"email": "aa@ut.edu.vn", "full_name": "Phòng Đào tạo", "password": "aa123", "role": "academic_affairs"},
-            {"email": "student@ut.edu.vn", "full_name": "Sinh viên Demo", "password": "student123", "role": "student"},
+            {"email": "admin@edu.vn", "full_name": "Quản trị viên hệ thống", "password": "admin123", "role": "admin"},
+            {"email": "lecturer@edu.vn", "full_name": "Giảng viên Demo", "password": "lecturer123", "role": "lecturer"},
+            {"email": "hod@edu.vn", "full_name": "Trưởng khoa CNTT", "password": "hod123", "role": "hod"},
+            {"email": "aa@edu.vn", "full_name": "Phòng Đào tạo", "password": "aa123", "role": "academic_affairs"},
+            {"email": "student@edu.vn", "full_name": "Sinh viên Demo", "password": "student123", "role": "student"},
         ]
         
         print("\n👥 Đang tạo tài khoản demo...")
@@ -127,7 +127,9 @@ app.include_router(departments_router.router, prefix="/departments", tags=["depa
 app.include_router(users_import_router.router, prefix="/users/import", tags=["users-import"])
 
 # Mount static files for uploaded syllabus files
-app.mount("/data", StaticFiles(directory="data"), name="data")
+data_dir = str(Path(__file__).resolve().parents[1] / "data")
+os.makedirs(data_dir, exist_ok=True)
+app.mount("/data", StaticFiles(directory=data_dir), name="data")
 
 # Serve frontend static files from the workspace so users can open the UI from backend origin
 try:

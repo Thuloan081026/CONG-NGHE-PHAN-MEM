@@ -67,7 +67,7 @@ def add_student_account(email: str, password: str, full_name: str = None):
 
 if __name__ == "__main__":
     # Add student account with the provided credentials
-    email = "student@ut.edu.vn"
+    email = "student@edu.vn"
     password = "Student@123"
     
     print(f"Adding student account...")
