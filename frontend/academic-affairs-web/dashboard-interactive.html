@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Affairs Dashboard - SMD System</title>
+    <link rel="stylesheet" href="../admin-web/assets/css/styles.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #5570f1;
+            --success: #13deb9;
+            --warning: #ffb64d;
+            --danger: #fa5441;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f7fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container-fluid { display: flex; min-height: 100vh; }
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #667eea 0%, #5a63d8 100%);
+            color: white;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        .sidebar-menu { list-style: none; }
+        .sidebar-menu a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: block;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 5px 0;
+            transition: all 0.3s;
+        }
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        .main-content { margin-left: 280px; flex: 1; }
+        .topbar {
+            background: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .page { padding: 30px; display: none; }
+        .page.active { display: block; }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .stat-card:nth-child(2) { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .stat-card:nth-child(3) { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .stat-card:nth-child(4) { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .stat-value { font-size: 32px; font-weight: bold; margin: 10px 0; }
+        .table-responsive { overflow-x: auto; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #f8f9fa; padding: 15px; text-align: left; font-weight: 600; border-bottom: 1px solid #ddd; }
+        td { padding: 12px 15px; border-bottom: 1px solid #eee; }
+        tr:hover { background: #f8f9fa; }
+        .badge { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge-success { background: #d4edda; color: #155724; }
+        .badge-warning { background: #fff3cd; color: #856404; }
+        .badge-danger { background: #f8d7da; color: #721c24; }
+        .btn { padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; margin: 5px; }
+        .btn-primary { background: #5570f1; color: white; }
+        .btn-success { background: #13deb9; color: white; }
+        .btn-danger { background: #fa5441; color: white; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .progress-bar { background: #e0e0e0; height: 8px; border-radius: 4px; overflow: hidden; }
+        .progress-fill { background: #13deb9; height: 100%; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h4 style="margin-bottom: 30px; text-align: center;">📚 Academic Affairs</h4>
+            <ul class="sidebar-menu">
+                <li><a href="javascript:void(0)" onclick="showPage('dashboard')" class="active">📊 Dashboard</a></li>
+                <li><a href="javascript:void(0)" onclick="showPage('syllabi')">📖 Phê Duyệt Giáo Trình</a></li>
+                <li><a href="javascript:void(0)" onclick="showPage('plo')">🎯 Quản Lý PLO</a></li>
+                <li><a href="javascript:void(0)" onclick="showPage('reports')">📈 Báo Cáo</a></li>
+                <li><a href="javascript:void(0)" onclick="showPage('courses')">📚 Khoá Học</a></li>
+                <li><hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 15px 0;"></li>
+                <li><a href="javascript:void(0)" onclick="logout()">🚪 Đăng Xuất</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="topbar">
+                <h3>Academic Affairs Dashboard</h3>
+                <div>
+                    <span id="userName">Academic Affairs</span> | <a href="javascript:void(0)" onclick="logout()">Logout</a>
+                </div>
+            </div>
+
+            <!-- Dashboard Page -->
+            <div id="page-dashboard" class="page active">
+                <h2>📊 Tổng Quan Giáo Dục</h2>
+                <div class="grid">
+                    <div class="stat-card">
+                        <div style="opacity: 0.9;">Giáo Trình Chờ Duyệt</div>
+                        <div class="stat-value" id="pendingSyllabi">8</div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="opacity: 0.9;">Giáo Trình Đã Duyệt</div>
+                        <div class="stat-value" id="approvedSyllabi">287</div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="opacity: 0.9;">Khóa Học Hoạt Động</div>
+                        <div class="stat-value" id="activeCourses">54</div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="opacity: 0.9;">Tỉ Lệ Hoàn Thành</div>
+                        <div class="stat-value" id="completionRate">87%</div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 40px;">Giáo Trình Chờ Phê Duyệt</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã Môn</th>
+                                <th>Tên Môn</th>
+                                <th>Giảng Viên</th>
+                                <th>Khoa</th>
+                                <th>Ngày Nộp</th>
+                                <th>Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pendingSyllabusTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Syllabi Page -->
+            <div id="page-syllabi" class="page">
+                <h2>📖 Quản Lý Giáo Trình</h2>
+                <div style="margin: 20px 0;">
+                    <button class="btn btn-primary">🔍 Tìm Kiếm</button>
+                    <button class="btn btn-success">✓ Duyệt Hàng Loạt</button>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã Môn</th>
+                                <th>Tên Môn</th>
+                                <th>Giảng Viên</th>
+                                <th>Trạng Thái</th>
+                                <th>Lần Cập Nhật</th>
+                                <th>Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="syllabusTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PLO Page -->
+            <div id="page-plo" class="page">
+                <h2>🎯 Quản Lý PLO (Program Learning Outcomes)</h2>
+                <div style="margin: 20px 0;">
+                    <button class="btn btn-primary">+ Thêm PLO</button>
+                    <button class="btn btn-success">Cập Nhật Ánh Xạ</button>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã PLO</th>
+                                <th>Tên PLO</th>
+                                <th>Mô Tả</th>
+                                <th>Chương Trình Đào Tạo</th>
+                                <th>Mục Tiêu</th>
+                                <th>Trạng Thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ploTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Reports Page -->
+            <div id="page-reports" class="page">
+                <h2>📈 Báo Cáo Học Thuật</h2>
+                <div class="grid">
+                    <div class="stat-card">
+                        <div style="opacity: 0.9;">Giáo Trình (Năm)</div>
+                        <div class="stat-value">127</div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="opacity: 0.9;">Giảng Viên</div>
+                        <div class="stat-value">248</div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="opacity: 0.9;">Sinh Viên</div>
+                        <div class="stat-value">5,240</div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="opacity: 0.9;">Tỉ Lệ Phê Duyệt</div>
+                        <div class="stat-value">95%</div>
+                    </div>
+                </div>
+
+                <h3>Tiến Độ Phê Duyệt Theo Khoa</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Khoa</th>
+                                <th>Tổng</th>
+                                <th>Đã Duyệt</th>
+                                <th>Chờ Duyệt</th>
+                                <th>Tiến Độ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="progressTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Courses Page -->
+            <div id="page-courses" class="page">
+                <h2>📚 Khoá Học</h2>
+                <div style="margin: 20px 0;">
+                    <button class="btn btn-primary">+ Tạo Khoá Học</button>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã Khoá</th>
+                                <th>Tên Khoá</th>
+                                <th>Năm Học</th>
+                                <th>Số Sinh Viên</th>
+                                <th>Trạng Thái</th>
+                                <th>Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="courseTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock data
+        const mockAAData = {
+            syllabi: [
+                { code: 'CS301', name: 'Cơ sở dữ liệu nâng cao', lecturer: 'TS. Nguyễn Văn A', faculty: 'CNTT', status: 'pending', submitted: '2026-01-20' },
+                { code: 'CS401', name: 'Trí tuệ nhân tạo', lecturer: 'TS. Trần Thị B', faculty: 'CNTT', status: 'approved', submitted: '2026-01-19' },
+                { code: 'MATH101', name: 'Giải Tích 1', lecturer: 'TS. Phạm Thị D', faculty: 'Toán', status: 'pending', submitted: '2026-01-21' },
+                { code: 'CS201', name: 'Cấu trúc dữ liệu', lecturer: 'TS. Lê Văn C', faculty: 'CNTT', status: 'approved', submitted: '2026-01-18' },
+                { code: 'CS102', name: 'Lập trình OOP', lecturer: 'ThS. Phạm Văn E', faculty: 'CNTT', status: 'approved', submitted: '2026-01-17' }
+            ],
+            plos: [
+                { code: 'PLO1', name: 'Kiến thức chuyên môn', description: 'Hiểu rõ kiến thức cơ bản', program: 'CNTT', target: 80 },
+                { code: 'PLO2', name: 'Kỹ năng lập trình', description: 'Viết code chất lượng cao', program: 'CNTT', target: 85 },
+                { code: 'PLO3', name: 'Kỹ năng mềm', description: 'Giao tiếp và làm việc nhóm', program: 'CNTT', target: 75 }
+            ],
+            progress: [
+                { faculty: 'CNTT', total: 45, approved: 42, pending: 3, progress: 93 },
+                { faculty: 'Toán', total: 32, approved: 28, pending: 4, progress: 87 },
+                { faculty: 'Vật Lý', total: 28, approved: 25, pending: 3, progress: 89 },
+                { faculty: 'Hóa Học', total: 24, approved: 21, pending: 3, progress: 87 }
+            ],
+            courses: [
+                { code: 'K20', name: 'Khóa 2020', year: '2020-2024', students: 1200, status: 'completed' },
+                { code: 'K21', name: 'Khóa 2021', year: '2021-2025', students: 1150, status: 'active' },
+                { code: 'K22', name: 'Khóa 2022', year: '2022-2026', students: 1300, status: 'active' },
+                { code: 'K23', name: 'Khóa 2023', year: '2023-2027', students: 1250, status: 'active' }
+            ]
+        };
+
+        const token = localStorage.getItem('access_token');
+        
+        if (token) {
+            fetch('http://localhost:8000/users/me', {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            .then(r => r.json())
+            .then(user => {
+                if (user.role !== 'academic_affairs') {
+                    window.location.href = '../index.html';
+                }
+                document.getElementById('userName').textContent = user.full_name || 'Academic Affairs';
+            })
+            .catch(err => console.log('Auth check: using demo data'));
+        }
+
+        function initializeAA() {
+            loadDashboard();
+            loadSyllabi();
+            loadPLOs();
+            loadProgress();
+            loadCourses();
+        }
+
+        function loadDashboard() {
+            const tbody = document.getElementById('pendingSyllabusTable');
+            const pending = mockAAData.syllabi.filter(s => s.status === 'pending');
+            tbody.innerHTML = pending.map(s => `
+                <tr>
+                    <td>${s.code}</td>
+                    <td>${s.name}</td>
+                    <td>${s.lecturer}</td>
+                    <td>${s.faculty}</td>
+                    <td>${s.submitted}</td>
+                    <td>
+                        <button class="btn btn-success" onclick="approveSyllabus('${s.code}')">✓ Duyệt</button>
+                        <button class="btn btn-danger" onclick="rejectSyllabus('${s.code}')">✕ Từ Chối</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function loadSyllabi() {
+            const tbody = document.getElementById('syllabusTable');
+            tbody.innerHTML = mockAAData.syllabi.map(s => `
+                <tr>
+                    <td>${s.code}</td>
+                    <td>${s.name}</td>
+                    <td>${s.lecturer}</td>
+                    <td><span class="badge ${s.status === 'approved' ? 'badge-success' : 'badge-warning'}">${s.status === 'approved' ? 'Đã Duyệt' : 'Chờ Duyệt'}</span></td>
+                    <td>${s.submitted}</td>
+                    <td>
+                        <button class="btn btn-primary" onclick="viewSyllabus('${s.code}')">Xem</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function loadPLOs() {
+            const tbody = document.getElementById('ploTable');
+            tbody.innerHTML = mockAAData.plos.map(p => `
+                <tr>
+                    <td>${p.code}</td>
+                    <td>${p.name}</td>
+                    <td>${p.description}</td>
+                    <td>${p.program}</td>
+                    <td>${p.target}%</td>
+                    <td><span class="badge badge-success">Hoạt Động</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function loadProgress() {
+            const tbody = document.getElementById('progressTable');
+            tbody.innerHTML = mockAAData.progress.map(p => `
+                <tr>
+                    <td>${p.faculty}</td>
+                    <td>${p.total}</td>
+                    <td>${p.approved}</td>
+                    <td>${p.pending}</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${p.progress}%;"></div>
+                        </div>
+                        ${p.progress}%
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function loadCourses() {
+            const tbody = document.getElementById('courseTable');
+            tbody.innerHTML = mockAAData.courses.map(c => `
+                <tr>
+                    <td>${c.code}</td>
+                    <td>${c.name}</td>
+                    <td>${c.year}</td>
+                    <td>${c.students}</td>
+                    <td><span class="badge ${c.status === 'active' ? 'badge-success' : 'badge-warning'}">${c.status === 'active' ? 'Hoạt Động' : 'Kết Thúc'}</span></td>
+                    <td><button class="btn btn-primary" onclick="viewCourse('${c.code}')">Chi Tiết</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function approveSyllabus(code) {
+            alert(`✓ Đã duyệt giáo trình ${code}`);
+        }
+
+        function rejectSyllabus(code) {
+            alert(`✕ Đã từ chối giáo trình ${code}`);
+        }
+
+        function viewSyllabus(code) {
+            alert(`Xem chi tiết giáo trình ${code}`);
+        }
+
+        function viewCourse(code) {
+            alert(`Xem chi tiết khóa học ${code}`);
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = '../index.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', initializeAA);
+    </script>
+</body>
+</html>

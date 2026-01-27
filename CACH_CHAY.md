@@ -4,25 +4,25 @@
 
 ### Terminal 1 - Backend API (Port 8000)
 ```bash
-cd d:\smd\backend
-d:\smd\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+cd c:\smd\backend
+c:\smd\smd\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
 ### Terminal 2 - Frontend Login Page (Port 3000)
 ```bash
-cd d:\smd\frontend
+cd c:\smd\smd\frontend
 python -m http.server 3000
 ```
 
 ### Terminal 3 - Admin Dashboard (Port 3001)
 ```bash
-cd d:\smd\frontend\admin-web\html
+cd c:\smd\smd\frontend\admin-web\html
 python -m http.server 3001
 ```
 
 ### Terminal 4 - Lecturer Dashboard (Port 3002)
 ```bash
-cd d:\smd\frontend\lecturer-web
+cd c:\smd\smd\frontend\lecturer-web
 python -m http.server 3002
 ```
 
