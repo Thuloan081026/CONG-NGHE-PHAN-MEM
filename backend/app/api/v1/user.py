@@ -31,7 +31,14 @@ def list_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), _
 @router.get("/me", response_model=UserOut)
 def get_me(current_user=Depends(get_current_user)):
     """Get current authenticated user info"""
-    return current_user
+    # Convert SQLAlchemy model to dict for proper serialization
+    return {
+        "id": current_user.id,
+        "email": current_user.email,
+        "full_name": current_user.full_name,
+        "role": current_user.role,
+        "is_active": bool(current_user.is_active),
+    }
 
 
 @router.get("/{user_id}", response_model=UserOut)
