@@ -33,10 +33,11 @@ app = FastAPI(
 )
 
 # Startup event: Tự động tạo tài khoản demo khi khởi động
-# @app.on_event("startup")
-# async def startup_event():
-#     """Khởi tạo dữ liệu demo khi server khởi động"""
-#     pass
+@app.on_event("startup")
+async def startup_event():
+    """Khởi tạo dữ liệu demo khi server khởi động"""
+    from .core.database import initialize_demo_users
+    initialize_demo_users()
 
 # CORS Configuration for Frontend - Allow all for local development
 app.add_middleware(
