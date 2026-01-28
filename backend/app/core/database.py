@@ -19,10 +19,9 @@ def create_database_if_not_exists():
         try:
             # Connect to MySQL server (không chỉ định database)
             temp_engine = create_engine(base_url)
-            with temp_engine.connect() as conn:
+            with temp_engine.begin() as conn:
                 # Kiểm tra và tạo database nếu chưa có
                 conn.execute(text(f"CREATE DATABASE IF NOT EXISTS `{db_name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"))
-                conn.commit()
                 print(f"✅ Database '{db_name}' đã sẵn sàng!")
             temp_engine.dispose()
         except Exception as e:
@@ -56,13 +55,13 @@ def initialize_demo_users():
         if user_count > 0:
             return  # Đã có users, không tạo nữa
         
-        # Danh sách tài khoản demo với email @ut.edu.vn
+        # Danh sách tài khoản demo với email @edu.vn
         demo_users = [
-            {"email": "admin@ut.edu.vn", "full_name": "Quản trị viên hệ thống", "password": "admin123", "role": "admin"},
-            {"email": "lecturer@ut.edu.vn", "full_name": "Giảng viên Demo", "password": "lecturer123", "role": "lecturer"},
-            {"email": "hod@ut.edu.vn", "full_name": "Trưởng khoa CNTT", "password": "hod123", "role": "hod"},
-            {"email": "aa@ut.edu.vn", "full_name": "Phòng Đào tạo", "password": "aa123", "role": "academic_affairs"},
-            {"email": "student@ut.edu.vn", "full_name": "Sinh viên Demo", "password": "student123", "role": "student"},
+            {"email": "admin@edu.vn", "full_name": "Quản trị viên hệ thống", "password": "admin123", "role": "admin"},
+            {"email": "lecturer@edu.vn", "full_name": "Giảng viên Demo", "password": "lecturer123", "role": "lecturer"},
+            {"email": "hod@edu.vn", "full_name": "Trưởng khoa CNTT", "password": "hod123", "role": "hod"},
+            {"email": "aa@edu.vn", "full_name": "Phòng Đào tạo", "password": "aa123", "role": "academic_affairs"},
+            {"email": "student@edu.vn", "full_name": "Sinh viên Demo", "password": "student123", "role": "student"},
         ]
         
         print("\n👥 Đang tạo tài khoản demo...")

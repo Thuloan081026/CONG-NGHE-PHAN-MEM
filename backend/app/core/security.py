@@ -7,27 +7,47 @@ import jwt
 
 from .config import settings
 
-pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
+# Try to use bcrypt, fallback to sha256
+pwd_context = None
+try:
+    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+except Exception:
+    try:
+        pwd_context = CryptContext(schemes=["plaintext"], deprecated="auto")
+    except:
+        pass
 
 
 def get_password_hash(password: str) -> str:
-    """Hash password - hỗ trợ cả argon2 và sha256 để tương thích"""
+    """Hash password - dùng sha256 fallback"""
     # Nếu password đã là hash sha256 (64 ký tự hex), trả về luôn
     if len(password) == 64 and all(c in '0123456789abcdef' for c in password.lower()):
         return password
-    return pwd_context.hash(password)
+    
+    # Always use sha256 for compatibility
+    return hashlib.sha256(password.encode()).hexdigest()
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify password - hỗ trợ cả argon2 và sha256"""
+    """Verify password - hỗ trợ sha256"""
     # Nếu hash là sha256 (64 ký tự hex), dùng sha256 để verify
     if len(hashed_password) == 64 and all(c in '0123456789abcdef' for c in hashed_password.lower()):
         sha256_hash = hashlib.sha256(plain_password.encode()).hexdigest()
         return sha256_hash == hashed_password
-    # Ngược lại dùng argon2
+    
+    # Try passlib for backward compatibility
+    if pwd_context:
+        try:
+            return pwd_context.verify(plain_password, hashed_password)
+        except:
+            return False
+    
+    # Last resort - try sha256
     try:
-        return pwd_context.verify(plain_password, hashed_password)
+        sha256_hash = hashlib.sha256(plain_password.encode()).hexdigest()
+        return sha256_hash == hashed_password
     except:
+        return False
         return False
 
 

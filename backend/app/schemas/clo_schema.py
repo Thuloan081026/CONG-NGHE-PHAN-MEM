@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, validator
 from typing import Optional, List
 from datetime import datetime
 
@@ -74,8 +74,7 @@ class MappingBase(BaseModel):
 
 
 class MappingCreate(MappingBase):
-    @field_validator('correlation_score')
-    @classmethod
+    @validator('correlation_score')
     def validate_score(cls, v):
         if v is not None and (v < 0 or v > 1):
             raise ValueError('correlation_score must be between 0 and 1')

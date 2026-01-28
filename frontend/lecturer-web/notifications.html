@@ -28,13 +28,14 @@
 
         /* ===== STAT CARDS ===== */
         .stat-card {
-            background: linear-gradient(135deg, #4f6ef7, #5b8dfc);
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
             color: white;
             border-radius: 16px;
             padding: 24px;
             min-height: 130px;
             position: relative;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+            box-shadow: 0 12px 28px rgba(37, 99, 235, 0.35), 
+                        0 0 20px rgba(37, 99, 235, 0.15);
         }
 
         .stat-card i {
@@ -55,6 +56,13 @@
             align-items: center;
             box-shadow: 0 6px 20px rgba(0,0,0,0.08);
             margin-bottom: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .notification-item:hover {
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.2);
+            transform: translateY(-2px);
         }
 
         .badge-status {
@@ -76,6 +84,12 @@
             padding: 8px 14px;
             border-radius: 8px;
             font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tabs button:hover {
+            background: #eff6ff;
         }
 
         .tabs button.active {
@@ -84,15 +98,6 @@
         }
     </style>
 </head>
-
-<script>
-    // Tổng số notification (đang có 4)
-    const totalNotifications = 4;
-    const unreadNotifications = 2;
-
-    localStorage.setItem("totalNotifications", totalNotifications);
-    localStorage.setItem("unreadNotifications", unreadNotifications);
-</script>
 
 <body>
 
@@ -117,7 +122,7 @@
         <div class="col-md-3">
             <div class="stat-card">
                 <h6>THÔNG BÁO MỚI</h6>
-                <h2>2</h2>
+                <h2>0</h2>
                 <small>Chưa đọc</small>
                 <i class="fa-regular fa-bell"></i>
             </div>
@@ -125,7 +130,7 @@
         <div class="col-md-3">
             <div class="stat-card">
                 <h6>ĐÃ XỬ LÝ</h6>
-                <h2>2</h2>
+                <h2>0</h2>
                 <small>Đã đọc</small>
                 <i class="fa-solid fa-check"></i>
             </div>
@@ -133,7 +138,7 @@
         <div class="col-md-3">
             <div class="stat-card">
                 <h6>CẦN HÀNH ĐỘNG</h6>
-                <h2>1</h2>
+                <h2>0</h2>
                 <small>Từ hệ thống</small>
                 <i class="fa-solid fa-triangle-exclamation"></i>
             </div>
@@ -141,7 +146,7 @@
         <div class="col-md-3">
             <div class="stat-card">
                 <h6>TỔNG CỘNG</h6>
-                <h2>4</h2>
+                <h2>0</h2>
                 <small>Tất cả thông báo</small>
                 <i class="fa-solid fa-clipboard-list"></i>
             </div>
@@ -150,57 +155,172 @@
 
     <!-- FILTER -->
     <div class="tabs d-flex gap-2 mb-4">
-        <button class="active">Tất cả</button>
-        <button>Chưa đọc</button>
-        <button>Review</button>
-        <button>Phê duyệt</button>
+        <button class="active" onclick="filterNotifications('all')">Tất cả</button>
+        <button onclick="filterNotifications('unread')">Chưa đọc</button>
+        <button onclick="filterNotifications('approve')">Phê duyệt</button>
+        <button onclick="filterNotifications('reject')">Yêu cầu sửa</button>
 
         <div class="ms-auto">
-            <button class="btn btn-sm btn-outline-secondary">
+            <button class="btn btn-sm btn-outline-secondary" onclick="markAllAsRead()">
                 Đánh dấu tất cả đã đọc
             </button>
         </div>
     </div>
 
     <!-- NOTIFICATION LIST -->
-    <div class="notification-item">
-        <div>
-            <strong>Đề cương được phê duyệt</strong>
-            <div class="text-muted">CS101 đã được HoD phê duyệt</div>
-            <small class="text-muted">2 giờ trước</small>
+    <div id="notificationsList">
+        <div class="text-center text-muted py-5">
+            <i class="fa-solid fa-spinner fa-spin"></i> Đang tải thông báo...
         </div>
-        <span class="badge-status approved">Đã phê duyệt</span>
-    </div>
-
-    <div class="notification-item">
-        <div>
-            <strong>Yêu cầu chỉnh sửa đề cương</strong>
-            <div class="text-muted">CS202 cần chỉnh sửa CLO</div>
-            <small class="text-muted">5 giờ trước</small>
-        </div>
-        <span class="badge-status action">Cần hành động</span>
-    </div>
-
-    <div class="notification-item">
-        <div>
-            <strong>Đề cương chờ review</strong>
-            <div class="text-muted">CS303 đang chờ hội đồng review</div>
-            <small class="text-muted">1 ngày trước</small>
-        </div>
-        <span class="badge-status review">Review</span>
-    </div>
-
-    <div class="notification-item">
-        <div>
-            <strong>Đề cương đã hoàn tất</strong>
-            <div class="text-muted">CS404 đã được phê duyệt</div>
-            <small class="text-muted">2 ngày trước</small>
-        </div>
-        <span class="badge-status approved">Đã phê duyệt</span>
     </div>
 
 </div>
 
+<script>
+    const API_URL = 'http://localhost:8000';
+    const token = localStorage.getItem('access_token') || localStorage.getItem('token');
+    
+    if (!token) {
+        window.location.href = 'home.html';
+    }
+
+    let allNotifications = [];
+    let currentFilter = 'all';
+
+    async function loadNotifications() {
+        try {
+            const res = await fetch(`${API_URL}/notifications?skip=0&limit=50`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (!res.ok) throw new Error('Failed to load notifications');
+
+            const data = await res.json();
+            allNotifications = data.items || [];
+            
+            // Update stats
+            const unreadCount = allNotifications.filter(n => !n.is_read).length;
+            const readCount = allNotifications.filter(n => n.is_read).length;
+            
+            document.querySelectorAll('.stat-card h2')[0].textContent = unreadCount;
+            document.querySelectorAll('.stat-card h2')[1].textContent = readCount;
+            document.querySelectorAll('.stat-card h2')[3].textContent = allNotifications.length;
+
+            displayNotifications();
+        } catch (error) {
+            console.error('Error loading notifications:', error);
+            document.getElementById('notificationsList').innerHTML = `
+                <div class="text-center text-danger py-5">
+                    <i class="fa-solid fa-exclamation-triangle"></i> Không thể tải thông báo
+                </div>
+            `;
+        }
+    }
+
+    function displayNotifications() {
+        let filtered = allNotifications;
+        
+        if (currentFilter === 'unread') {
+            filtered = allNotifications.filter(n => !n.is_read);
+        } else if (currentFilter !== 'all') {
+            filtered = allNotifications.filter(n => n.notification_type === currentFilter);
+        }
+
+        const container = document.getElementById('notificationsList');
+
+        if (filtered.length === 0) {
+            container.innerHTML = `
+                <div class="text-center text-muted py-5">
+                    <i class="fa-solid fa-inbox"></i> Không có thông báo
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        filtered.forEach(notif => {
+            const timeAgo = getTimeAgo(new Date(notif.created_at));
+            const badgeClass = getBadgeClass(notif.notification_type);
+            const badgeText = getBadgeText(notif.notification_type);
+            const unreadClass = notif.is_read ? '' : ' border-start border-primary border-3';
+
+            html += `
+                <div class="notification-item${unreadClass}" onclick="markAsRead(${notif.id})">
+                    <div>
+                        <strong>${notif.title}</strong>
+                        <div class="text-muted">${notif.message}</div>
+                        <small class="text-muted">${timeAgo}</small>
+                    </div>
+                    <span class="badge-status ${badgeClass}">${badgeText}</span>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    function filterNotifications(type) {
+        currentFilter = type;
+        document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        displayNotifications();
+    }
+
+    async function markAsRead(notifId) {
+        try {
+            await fetch(`${API_URL}/notifications/${notifId}/read`, {
+                method: 'PUT',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            loadNotifications();
+        } catch (error) {
+            console.error('Error marking notification as read:', error);
+        }
+    }
+
+    async function markAllAsRead() {
+        const unreadIds = allNotifications.filter(n => !n.is_read).map(n => n.id);
+        for (const id of unreadIds) {
+            await markAsRead(id);
+        }
+    }
+
+    function getTimeAgo(date) {
+        const now = new Date();
+        const diff = now - date;
+        const minutes = Math.floor(diff / 60000);
+        const hours = Math.floor(diff / 3600000);
+        const days = Math.floor(diff / 86400000);
+
+        if (minutes < 60) return `${minutes} phút trước`;
+        if (hours < 24) return `${hours} giờ trước`;
+        if (days < 7) return `${days} ngày trước`;
+        return date.toLocaleDateString('vi-VN');
+    }
+
+    function getBadgeClass(type) {
+        switch (type) {
+            case 'approve': return 'approved';
+            case 'reject': return 'action';
+            case 'update': return 'review';
+            case 'follow': return 'review';
+            default: return 'review';
+        }
+    }
+
+    function getBadgeText(type) {
+        switch (type) {
+            case 'approve': return 'Đã phê duyệt';
+            case 'reject': return 'Cần sửa';
+            case 'update': return 'Cập nhật';
+            case 'follow': return 'Theo dõi';
+            default: return 'Thông báo';
+        }
+    }
+
+    // Load notifications on page load
+    window.addEventListener('DOMContentLoaded', loadNotifications);
+</script>
 </body>
 </html>
 

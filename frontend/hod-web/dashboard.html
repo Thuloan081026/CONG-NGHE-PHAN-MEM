@@ -308,37 +308,36 @@
       }
     }
 
+    // 📊 MOCK DATA FOR HOD DASHBOARD
+    const mockHODData = {
+      pending: [
+        { id: 1, subject_code: 'CS301', subject_name: 'Cơ sở dữ liệu nâng cao', lecturer_name: 'TS. Nguyễn Văn A', version: 'v2.0', status: 'Pending Review', created_at: '2026-01-20', priority: 'high' },
+        { id: 2, subject_code: 'CS401', subject_name: 'Trí tuệ nhân tạo', lecturer_name: 'TS. Trần Thị B', version: 'v1.5', status: 'Pending Review', created_at: '2026-01-18', priority: 'high' },
+        { id: 3, subject_code: 'CS201', subject_name: 'Cấu trúc dữ liệu', lecturer_name: 'TS. Lê Văn C', version: 'v3.0', status: 'Pending Review', created_at: '2026-01-15', priority: 'medium' }
+      ],
+      collaborative: [
+        { id: 4, subject_code: 'CS102', subject_name: 'Lập trình hướng đối tượng', lecturer_name: 'ThS. Phạm Văn D', version: 'v1.0', status: 'Collaborative Review', created_at: '2026-01-19', priority: 'medium' },
+        { id: 5, subject_code: 'CS303', subject_name: 'Mạng máy tính', lecturer_name: 'TS. Hoàng Thị E', version: 'v2.5', status: 'Collaborative Review', created_at: '2026-01-17', priority: 'low' }
+      ],
+      approved: [
+        { id: 6, subject_code: 'CS505', subject_name: 'Lập trình Web', lecturer_name: 'ThS. Võ Văn F', status: 'Approved', created_at: '2026-01-25', updated_at: '2026-01-25' },
+        { id: 7, subject_code: 'CS606', subject_name: 'Mobile Development', lecturer_name: 'TS. Dương Thị G', status: 'Approved', created_at: '2026-01-24', updated_at: '2026-01-24' }
+      ]
+    };
+
     // Load dashboard statistics
-    async function loadStatistics() {
+    function loadStatistics() {
       try {
-        // Load syllabuses with different statuses
-        const headers = { 'Authorization': `Bearer ${token}` };
+        // Use mock data instead of API
+        const pending = mockHODData.pending;
+        const collab = mockHODData.collaborative;
+        const approved = mockHODData.approved;
         
-        // Get pending syllabuses (status: pending_hod_review)
-        const pendingRes = await fetch(`${API_BASE_URL}/syllabuses/?status=pending_hod_review`, { headers });
-        const pending = pendingRes.ok ? await pendingRes.json() : [];
-        document.getElementById('pending-count').textContent = pending.length || 0;
-
-        // Get collaborative review syllabuses
-        const collabRes = await fetch(`${API_BASE_URL}/syllabuses/?status=collaborative_review`, { headers });
-        const collab = collabRes.ok ? await collabRes.json() : [];
-        document.getElementById('collab-count').textContent = collab.length || 0;
-        document.getElementById('collaborative-count').textContent = collab.length || 0;
-
-        // Get approved this month
-        const approvedRes = await fetch(`${API_BASE_URL}/syllabuses/?status=approved`, { headers });
-        const approved = approvedRes.ok ? await approvedRes.json() : [];
-        const thisMonth = approved.filter(s => {
-          const date = new Date(s.updated_at);
-          const now = new Date();
-          return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
-        });
-        document.getElementById('approved-count').textContent = thisMonth.length;
-
-        // Get total syllabuses in department
-        const allRes = await fetch(`${API_BASE_URL}/syllabuses/`, { headers });
-        const all = allRes.ok ? await allRes.json() : [];
-        document.getElementById('total-count').textContent = all.length;
+        document.getElementById('pending-count').textContent = pending.length;
+        document.getElementById('collab-count').textContent = collab.length;
+        document.getElementById('collaborative-count').textContent = collab.length;
+        document.getElementById('approved-count').textContent = approved.length;
+        document.getElementById('total-count').textContent = pending.length + collab.length + approved.length;
 
         // Load priority and recent tables
         loadPriorityTable(pending);
