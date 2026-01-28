@@ -55,11 +55,12 @@ def initialize_demo_users():
         if user_count > 0:
             return  # Đã có users, không tạo nữa
         
-        # Danh sách tài khoản demo với email @edu.vn
+        # Danh sách tài khoản demo với email @ut.edu.vn
         demo_users = [
-            {"email": "admin@edu.vn", "full_name": "Quản trị viên hệ thống", "password": "admin123", "role": "admin"},
-            {"email": "lecturer@edu.vn", "full_name": "Giảng viên Demo", "password": "lecturer123", "role": "lecturer"},
-            {"email": "hod@edu.vn", "full_name": "Trưởng khoa CNTT", "password": "hod123", "role": "hod"},
+            {"email": "admin@ut.edu.vn", "full_name": "Quản trị viên hệ thống", "password": "admin123", "role": "admin"},
+            {"email": "lecturer@ut.edu.vn", "full_name": "Giảng viên Demo", "password": "lecturer123", "role": "lecturer"},
+            {"email": "hod@ut.edu.vn", "full_name": "Trưởng khoa CNTT", "password": "hod123", "role": "hod"},
+            {"email": "principal@ut.edu.vn", "full_name": "Hiệu trưởng", "password": "principal123", "role": "principal"},
             {"email": "aa@edu.vn", "full_name": "Phòng Đào tạo", "password": "aa123", "role": "academic_affairs"},
             {"email": "student@edu.vn", "full_name": "Sinh viên Demo", "password": "student123", "role": "student"},
         ]

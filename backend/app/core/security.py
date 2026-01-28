@@ -7,40 +7,50 @@ import jwt
 
 from .config import settings
 
-# Try to use bcrypt, fallback to sha256
+# Use argon2 for better security, fallback to bcrypt then sha256
 pwd_context = None
 try:
-    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+    pwd_context = CryptContext(schemes=["argon2", "bcrypt"], deprecated="auto")
 except Exception:
     try:
-        pwd_context = CryptContext(schemes=["plaintext"], deprecated="auto")
+        pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
     except:
-        pass
+        try:
+            pwd_context = CryptContext(schemes=["plaintext"], deprecated="auto")
+        except:
+            pass
 
 
 def get_password_hash(password: str) -> str:
-    """Hash password - dùng sha256 fallback"""
+    """Hash password - ưu tiên argon2, fallback sha256"""
     # Nếu password đã là hash sha256 (64 ký tự hex), trả về luôn
     if len(password) == 64 and all(c in '0123456789abcdef' for c in password.lower()):
         return password
     
-    # Always use sha256 for compatibility
+    # Try to use passlib (argon2 or bcrypt)
+    if pwd_context:
+        try:
+            return pwd_context.hash(password)
+        except:
+            pass
+    
+    # Fallback to sha256
     return hashlib.sha256(password.encode()).hexdigest()
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify password - hỗ trợ sha256"""
-    # Nếu hash là sha256 (64 ký tự hex), dùng sha256 để verify
-    if len(hashed_password) == 64 and all(c in '0123456789abcdef' for c in hashed_password.lower()):
-        sha256_hash = hashlib.sha256(plain_password.encode()).hexdigest()
-        return sha256_hash == hashed_password
-    
-    # Try passlib for backward compatibility
+    """Verify password - hỗ trợ argon2, bcrypt, sha256"""
+    # Try passlib first (supports argon2, bcrypt)
     if pwd_context:
         try:
             return pwd_context.verify(plain_password, hashed_password)
         except:
-            return False
+            pass
+    
+    # Nếu hash là sha256 (64 ký tự hex), dùng sha256 để verify
+    if len(hashed_password) == 64 and all(c in '0123456789abcdef' for c in hashed_password.lower()):
+        sha256_hash = hashlib.sha256(plain_password.encode()).hexdigest()
+        return sha256_hash == hashed_password
     
     # Last resort - try sha256
     try:
