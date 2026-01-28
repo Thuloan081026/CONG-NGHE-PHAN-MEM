@@ -32,8 +32,9 @@ Mở trình duyệt và truy cập: **http://localhost:3000**
 
 ## Tài khoản test
 
-- **Admin:** admin@smd.edu.vn / Admin@123
-- **Lecturer:** lecturer@smd.edu.vn / Lecturer@123
+- **Admin:** admin@test.com / admin123
+- **Lecturer:** lecturer@test.com / lecturer123
+- **Student:** student@test.com / student123
 
 ## Luồng hoạt động
 
