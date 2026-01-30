@@ -1,45 +1,19 @@
 <?php
-namespace Services;
+// services/UserService.php
+require_once __DIR__ . "/../types/User.php";
 
-class UserService
-{
-    // Fake data (demo)
-    private static array $users = [
-        [
-            'id' => 1,
-            'name' => 'Admin',
-            'email' => 'admin@smd.edu.vn',
-            'role' => 'admin'
-        ],
-        [
-            'id' => 2,
-            'name' => 'Lecturer A',
-            'email' => 'lecturer@smd.edu.vn',
-            'role' => 'lecturer'
-        ]
-    ];
+class UserService {
 
-    // Lấy toàn bộ user
-    public static function getAll(): array
-    {
-        return self::$users;
+    public static function getUsers() {
+        return [
+            new User(1, "Nguyễn Văn A", "admin"),
+            new User(2, "Trần Thị B", "lecturer"),
+            new User(3, "Lê Văn C", "student")
+        ];
     }
 
-    // Tạo user mới
-    public static function create(array $data): void
-    {
-        $data['id'] = count(self::$users) + 1;
-        self::$users[] = $data;
-    }
-
-    // Tìm user theo id
-    public static function findById(int $id): ?array
-    {
-        foreach (self::$users as $user) {
-            if ($user['id'] === $id) {
-                return $user;
-            }
-        }
-        return null;
+    public static function createUser($name, $role) {
+        // Frontend demo – chưa có DB
+        return new User(rand(10, 100), $name, $role);
     }
 }

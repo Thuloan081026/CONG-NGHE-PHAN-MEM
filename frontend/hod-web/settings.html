@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - HoD - SMD System</title>
+  <link rel="shortcut icon" href="./img/svg/logo.svg" type="image/x-icon">
+  <link rel="stylesheet" href="./css/style.min.css">
+  <style>
+    .settings-container { max-width: 900px; margin: 0 auto; }
+    .settings-card { background: white; border-radius: 12px; padding: 30px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .settings-card h3 { margin: 0 0 20px 0; padding-bottom: 15px; border-bottom: 2px solid #f0f0f0; color: #333; font-size: 18px; display: flex; align-items: center; gap: 10px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-weight: 600; color: #666; margin-bottom: 8px; font-size: 14px; }
+    .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+    .toggle-switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 26px; }
+    .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+    input:checked + .slider { background-color: #667eea; }
+    input:checked + .slider:before { transform: translateX(24px); }
+    .save-btn { background: #667eea; color: white; border: none; padding: 12px 32px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s; }
+    .save-btn:hover { background: #5568d3; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3); }
+    .cancel-btn { background: #6c757d; color: white; border: none; padding: 12px 32px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; margin-left: 10px; }
+    .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f5f5f5; }
+    .setting-row:last-child { border-bottom: none; }
+    .setting-info h4 { margin: 0 0 5px 0; font-size: 15px; color: #333; }
+    .setting-info p { margin: 0; font-size: 13px; color: #666; }
+    .success-message { background: #d4edda; color: #155724; padding: 12px 20px; border-radius: 6px; margin-bottom: 20px; display: none; }
+    .btn-group { display: flex; gap: 10px; margin-top: 30px; }
+  </style>
+</head>
+
+<body>
+  <div class="layer"></div>
+  <a class="skip-link sr-only" href="#skip-target">Skip to content</a>
+  <div class="page-flex">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-start">
+        <div class="sidebar-head">
+          <a href="/hod-web/dashboard.html" class="logo-wrapper" title="Home">
+            <span class="sr-only">Home</span>
+            <div class="logo-text">
+              <span class="logo-title">SMD System</span>
+              <span class="logo-subtitle">Head of Department</span>
+            </div>
+          </a>
+          <button class="sidebar-toggle transparent-btn" title="Menu" type="button">
+            <span class="sr-only">Toggle menu</span>
+            <span class="icon menu-toggle" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="sidebar-body">
+          <ul class="sidebar-body-menu">
+            <li>
+              <a href="dashboard.html"><span class="icon home" aria-hidden="true"></span>Dashboard</a>
+            </li>
+            <li>
+              <a class="show-cat-btn" href="##">
+                <span class="icon document" aria-hidden="true"></span>Syllabus Review
+                <span class="category__btn transparent-btn" title="Open list">
+                  <span class="sr-only">Open list</span>
+                  <span class="icon arrow-down" aria-hidden="true"></span>
+                </span>
+              </a>
+              <ul class="cat-sub-menu">
+                <li><a href="syllabus-pending.html">Pending Review</a></li>
+                <li><a href="syllabus-search.html">Search & Compare</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="collaborative-review.html">
+                <span class="icon message" aria-hidden="true"></span>Collaborative Review
+              </a>
+            </li>
+            <li>
+              <a href="syllabus-search.html">
+                <span class="icon search" aria-hidden="true"></span>Search & Analysis
+              </a>
+            </li>
+            <li>
+              <a href="profile.html">
+                <span class="icon user" aria-hidden="true"></span>My Profile
+              </a>
+            </li>
+            <li>
+              <a class="active" href="settings.html">
+                <span class="icon setting" aria-hidden="true"></span>Settings
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <a href="##" class="sidebar-user">
+          <span class="sidebar-user-img"><span class="icon user" aria-hidden="true"></span></span>
+          <div class="sidebar-user-info">
+            <span class="sidebar-user__title" id="sidebar-username">Loading...</span>
+            <span class="sidebar-user__subtitle" id="sidebar-role">HoD</span>
+          </div>
+        </a>
+        <a href="#" onclick="handleLogout()" class="sidebar-user">
+          <span class="sidebar-user-img"><span class="icon logout" aria-hidden="true"></span></span>
+          <div class="sidebar-user-info">
+            <span class="sidebar-user__title">Logout</span>
+          </div>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main users chart-page" id="skip-target">
+      <div class="container">
+        <h2 class="main-title">⚙️ Settings</h2>
+        
+        <div id="success-msg" class="success-message">
+          ✅ Settings saved successfully!
+        </div>
+
+        <div class="settings-container">
+          <!-- Notification Settings -->
+          <div class="settings-card">
+            <h3>🔔 Notification Settings</h3>
+            
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Email Notifications</h4>
+                <p>Receive email notifications for new syllabus submissions</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="email-notifications" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Desktop Notifications</h4>
+                <p>Show browser notifications for urgent reviews</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="desktop-notifications" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Review Reminders</h4>
+                <p>Get daily reminders for pending reviews</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="review-reminders" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Collaborative Session Updates</h4>
+                <p>Notifications for collaborative review activities</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="collab-notifications" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Review Preferences -->
+          <div class="settings-card">
+            <h3>📋 Review Preferences</h3>
+            
+            <div class="form-group">
+              <label for="default-priority">Default Review Priority</label>
+              <select id="default-priority">
+                <option value="high">High Priority First</option>
+                <option value="fifo" selected>First In, First Out</option>
+                <option value="deadline">By Deadline</option>
+                <option value="complexity">By Complexity</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="auto-assign">Auto-assign Reviews</label>
+              <select id="auto-assign">
+                <option value="yes">Yes - Automatically assign to me</option>
+                <option value="no" selected>No - Manual assignment only</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="review-deadline">Default Review Deadline (days)</label>
+              <input type="number" id="review-deadline" value="7" min="1" max="30">
+            </div>
+          </div>
+
+          <!-- Display Settings -->
+          <div class="settings-card">
+            <h3>🎨 Display Settings</h3>
+            
+            <div class="form-group">
+              <label for="items-per-page">Items Per Page</label>
+              <select id="items-per-page">
+                <option value="10">10</option>
+                <option value="20" selected>20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="date-format">Date Format</label>
+              <select id="date-format">
+                <option value="dd/mm/yyyy" selected>DD/MM/YYYY</option>
+                <option value="mm/dd/yyyy">MM/DD/YYYY</option>
+                <option value="yyyy-mm-dd">YYYY-MM-DD</option>
+              </select>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Compact View</h4>
+                <p>Show more items in a condensed layout</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="compact-view">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Security Settings -->
+          <div class="settings-card">
+            <h3>🔒 Security Settings</h3>
+            
+            <div class="form-group">
+              <label for="current-password">Current Password</label>
+              <input type="password" id="current-password" placeholder="Enter current password">
+            </div>
+
+            <div class="form-group">
+              <label for="new-password">New Password</label>
+              <input type="password" id="new-password" placeholder="Enter new password">
+            </div>
+
+            <div class="form-group">
+              <label for="confirm-password">Confirm New Password</label>
+              <input type="password" id="confirm-password" placeholder="Confirm new password">
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Two-Factor Authentication</h4>
+                <p>Add an extra layer of security (Coming soon)</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="two-factor" disabled>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- AI Assistant Settings -->
+          <div class="settings-card">
+            <h3>🤖 AI Assistant Settings</h3>
+            
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Enable AI Suggestions</h4>
+                <p>Get AI-powered recommendations during review</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="ai-suggestions" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Auto-detect Changes</h4>
+                <p>Automatically highlight changes in syllabus versions</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="auto-detect-changes" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>CLO-PLO Validation</h4>
+                <p>Automatically validate CLO-PLO mappings</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="clo-plo-validation" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="btn-group">
+            <button class="save-btn" onclick="saveSettings()">💾 Save All Settings</button>
+            <button class="cancel-btn" onclick="resetSettings()">↻ Reset to Default</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="./plugins/chart.min.js"></script>
+  <script src="./js/script.js"></script>
+  <script>
+    const API_URL = 'http://localhost:8000';
+    let currentUser = null;
+
+    // Check authentication
+    window.addEventListener('DOMContentLoaded', async () => {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        window.location.href = '/index.html';
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/users/me`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+          currentUser = await response.json();
+          document.getElementById('sidebar-username').textContent = currentUser.full_name || 'Unknown';
+          document.getElementById('sidebar-role').textContent = (currentUser.role || 'hod').toUpperCase();
+          
+          // Load saved settings from localStorage
+          loadSettings();
+        } else {
+          localStorage.clear();
+          window.location.href = '/index.html';
+        }
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        localStorage.clear();
+        window.location.href = '/index.html';
+      }
+    });
+
+    function loadSettings() {
+      // Load settings from localStorage
+      const settings = {
+        emailNotifications: localStorage.getItem('setting_email_notifications') !== 'false',
+        desktopNotifications: localStorage.getItem('setting_desktop_notifications') !== 'false',
+        reviewReminders: localStorage.getItem('setting_review_reminders') !== 'false',
+        collabNotifications: localStorage.getItem('setting_collab_notifications') !== 'false',
+        defaultPriority: localStorage.getItem('setting_default_priority') || 'fifo',
+        autoAssign: localStorage.getItem('setting_auto_assign') || 'no',
+        reviewDeadline: localStorage.getItem('setting_review_deadline') || '7',
+        itemsPerPage: localStorage.getItem('setting_items_per_page') || '20',
+        dateFormat: localStorage.getItem('setting_date_format') || 'dd/mm/yyyy',
+        compactView: localStorage.getItem('setting_compact_view') === 'true',
+        aiSuggestions: localStorage.getItem('setting_ai_suggestions') !== 'false',
+        autoDetectChanges: localStorage.getItem('setting_auto_detect_changes') !== 'false',
+        cloPloValidation: localStorage.getItem('setting_clo_plo_validation') !== 'false'
+      };
+
+      // Apply settings to UI
+      document.getElementById('email-notifications').checked = settings.emailNotifications;
+      document.getElementById('desktop-notifications').checked = settings.desktopNotifications;
+      document.getElementById('review-reminders').checked = settings.reviewReminders;
+      document.getElementById('collab-notifications').checked = settings.collabNotifications;
+      document.getElementById('default-priority').value = settings.defaultPriority;
+      document.getElementById('auto-assign').value = settings.autoAssign;
+      document.getElementById('review-deadline').value = settings.reviewDeadline;
+      document.getElementById('items-per-page').value = settings.itemsPerPage;
+      document.getElementById('date-format').value = settings.dateFormat;
+      document.getElementById('compact-view').checked = settings.compactView;
+      document.getElementById('ai-suggestions').checked = settings.aiSuggestions;
+      document.getElementById('auto-detect-changes').checked = settings.autoDetectChanges;
+      document.getElementById('clo-plo-validation').checked = settings.cloPloValidation;
+    }
+
+    function saveSettings() {
+      // Save all settings to localStorage
+      localStorage.setItem('setting_email_notifications', document.getElementById('email-notifications').checked);
+      localStorage.setItem('setting_desktop_notifications', document.getElementById('desktop-notifications').checked);
+      localStorage.setItem('setting_review_reminders', document.getElementById('review-reminders').checked);
+      localStorage.setItem('setting_collab_notifications', document.getElementById('collab-notifications').checked);
+      localStorage.setItem('setting_default_priority', document.getElementById('default-priority').value);
+      localStorage.setItem('setting_auto_assign', document.getElementById('auto-assign').value);
+      localStorage.setItem('setting_review_deadline', document.getElementById('review-deadline').value);
+      localStorage.setItem('setting_items_per_page', document.getElementById('items-per-page').value);
+      localStorage.setItem('setting_date_format', document.getElementById('date-format').value);
+      localStorage.setItem('setting_compact_view', document.getElementById('compact-view').checked);
+      localStorage.setItem('setting_ai_suggestions', document.getElementById('ai-suggestions').checked);
+      localStorage.setItem('setting_auto_detect_changes', document.getElementById('auto-detect-changes').checked);
+      localStorage.setItem('setting_clo_plo_validation', document.getElementById('clo-plo-validation').checked);
+
+      // Handle password change if provided
+      const currentPassword = document.getElementById('current-password').value;
+      const newPassword = document.getElementById('new-password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+
+      if (currentPassword && newPassword && confirmPassword) {
+        if (newPassword !== confirmPassword) {
+          alert('❌ New passwords do not match!');
+          return;
+        }
+
+        changePassword(currentPassword, newPassword);
+        return;
+      }
+
+      // Show success message
+      const successMsg = document.getElementById('success-msg');
+      successMsg.style.display = 'block';
+      setTimeout(() => {
+        successMsg.style.display = 'none';
+      }, 3000);
+
+      // Scroll to top to show success message
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function changePassword(oldPassword, newPassword) {
+      const token = localStorage.getItem('access_token');
+      
+      try {
+        const response = await fetch(`${API_URL}/auth/change-password`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            old_password: oldPassword,
+            new_password: newPassword
+          })
+        });
+
+        if (response.ok) {
+          alert('✅ Password changed successfully!');
+          document.getElementById('current-password').value = '';
+          document.getElementById('new-password').value = '';
+          document.getElementById('confirm-password').value = '';
+        } else {
+          const error = await response.json();
+          alert('❌ Failed to change password: ' + (error.detail || 'Unknown error'));
+        }
+      } catch (error) {
+        console.error('Password change failed:', error);
+        alert('❌ Failed to change password. Please try again.');
+      }
+    }
+
+    function resetSettings() {
+      if (confirm('Are you sure you want to reset all settings to default?')) {
+        // Clear all settings from localStorage
+        const keys = Object.keys(localStorage);
+        keys.forEach(key => {
+          if (key.startsWith('setting_')) {
+            localStorage.removeItem(key);
+          }
+        });
+
+        // Reload page to apply defaults
+        window.location.reload();
+      }
+    }
+
+    function handleLogout() {
+      if (confirm('Are you sure you want to logout?')) {
+        localStorage.clear();
+        window.location.href = '/index.html';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,9 +1,3 @@
-<?php
-
-?>
-<footer class="app-footer">
-    <p>
-        © <?= date('Y') ?> Syllabus Management & Digitalization System (SMD)
-    </p>
-</footer>
-
+<div class="footer">
+    <p>© 2025 - SMD System</p>
+</div>

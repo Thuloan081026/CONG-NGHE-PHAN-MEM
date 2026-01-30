@@ -41,6 +41,7 @@ class Syllabus(Base):
     textbooks = Column(JSON, nullable=True)  # [{"title": "...", "author": "...", "year": 2024}, ...]
     references = Column(JSON, nullable=True)  # [{"title": "...", "url": "...", "type": "website"}, ...]
     learning_materials = Column(JSON, nullable=True)  # Slides, videos, etc.
+    file_metadata = Column(JSON, nullable=True)  # Additional metadata including file paths
     
     # Status & ownership
     created_by = Column(Integer, ForeignKey("users.id"), nullable=False)  # Lecturer ID

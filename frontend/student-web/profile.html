@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Thông tin cá nhân - SMD System</title>
+  <link href="img/logo/logo.png" rel="icon">
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="css/ruang-admin.min.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.html">
+        <div class="sidebar-brand-icon">
+          <img src="img/logo/logo.png" style="max-width: 40px;">
+        </div>
+        <div class="sidebar-brand-text mx-3">SMD Student</div>
+      </a>
+      <hr class="sidebar-divider my-0">
+      <li class="nav-item">
+        <a class="nav-link" href="dashboard.html">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dashboard</span></a>
+      </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">Syllabus</div>
+      <li class="nav-item">
+        <a class="nav-link" href="syllabus-search.html">
+          <i class="fas fa-fw fa-search"></i>
+          <span>Tìm kiếm Giáo trình</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="my-subscriptions.html">
+          <i class="fas fa-fw fa-star"></i>
+          <span>Giáo trình theo dõi</span>
+        </a>
+      </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">Account</div>
+      <li class="nav-item active">
+        <a class="nav-link" href="profile.html">
+          <i class="fas fa-fw fa-user"></i>
+          <span>Thông tin cá nhân</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" onclick="handleLogout()">
+          <i class="fas fa-fw fa-sign-out-alt"></i>
+          <span>Đăng xuất</span>
+        </a>
+      </li>
+    </ul>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <!-- TopBar -->
+        <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+          <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown">
+                <img class="img-profile rounded-circle" src="img/logo/logo.png" style="max-width: 60px">
+                <span class="ml-2 d-none d-lg-inline text-white small" id="userFullName">Student</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
+                <a class="dropdown-item" href="profile.html">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Profile
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" onclick="handleLogout()">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Logout
+                </a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Container Fluid-->
+        <div class="container-fluid" id="container-wrapper">
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Thông tin cá nhân</h1>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="dashboard.html">Home</a></li>
+              <li class="breadcrumb-item active">Thông tin cá nhân</li>
+            </ol>
+          </div>
+
+          <div class="row">
+            <!-- Profile Card -->
+            <div class="col-lg-4">
+              <div class="card mb-4">
+                <div class="card-body text-center">
+                  <img src="img/logo/logo.png" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                  <h5 class="my-3" id="profileName">Nguyễn Văn A</h5>
+                  <p class="text-muted mb-1">Sinh viên</p>
+                  <p class="text-muted mb-4">Công nghệ Thông tin - Khóa 2021</p>
+                  <div class="d-flex justify-content-center mb-2">
+                    <button type="button" class="btn btn-primary" onclick="document.getElementById('editMode').style.display='block'">
+                      <i class="fas fa-edit"></i> Chỉnh sửa
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Notification Settings -->
+              <div class="card mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Cài đặt thông báo</h6>
+                </div>
+                <div class="card-body">
+                  <div class="custom-control custom-switch mb-3">
+                    <input type="checkbox" class="custom-control-input" id="emailNotif" checked>
+                    <label class="custom-control-label" for="emailNotif">Email thông báo</label>
+                  </div>
+                  <div class="custom-control custom-switch mb-3">
+                    <input type="checkbox" class="custom-control-input" id="updateNotif" checked>
+                    <label class="custom-control-label" for="updateNotif">Cập nhật giáo trình</label>
+                  </div>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="newsNotif">
+                    <label class="custom-control-label" for="newsNotif">Tin tức hệ thống</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Personal Information -->
+            <div class="col-lg-8">
+              <div class="card mb-4" id="viewMode">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                  <h6 class="m-0 font-weight-bold text-primary">Thông tin chi tiết</h6>
+                </div>
+                <div class="card-body">
+                  <div class="row mb-3">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Họ và tên</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      <span id="viewFullName">Nguyễn Văn A</span>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row mb-3">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">MSSV</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      21110001
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row mb-3">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Email</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      <span id="viewEmail">student@hcmute.edu.vn</span>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row mb-3">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Số điện thoại</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      <span id="viewPhone">0123456789</span>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row mb-3">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Chuyên ngành</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      Công nghệ Thông tin
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row mb-3">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Khóa học</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      2021 - 2025
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row mb-3">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Lớp</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      21DTHB1
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Edit Mode (Hidden by default) -->
+              <div class="card mb-4" id="editMode" style="display: none;">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Chỉnh sửa thông tin</h6>
+                </div>
+                <div class="card-body">
+                  <form id="profileForm">
+                    <div class="form-group">
+                      <label>Họ và tên</label>
+                      <input type="text" class="form-control" id="editFullName" value="Nguyễn Văn A">
+                    </div>
+                    <div class="form-group">
+                      <label>Email</label>
+                      <input type="email" class="form-control" id="editEmail" value="student@hcmute.edu.vn" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label>Số điện thoại</label>
+                      <input type="tel" class="form-control" id="editPhone" value="0123456789">
+                    </div>
+                    <div class="d-flex justify-content-end">
+                      <button type="button" class="btn btn-secondary mr-2" onclick="cancelEdit()">Hủy</button>
+                      <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <!-- Change Password -->
+              <div class="card mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Đổi mật khẩu</h6>
+                </div>
+                <div class="card-body">
+                  <form id="passwordForm">
+                    <div class="form-group">
+                      <label>Mật khẩu hiện tại</label>
+                      <input type="password" class="form-control" id="currentPassword" required>
+                    </div>
+                    <div class="form-group">
+                      <label>Mật khẩu mới</label>
+                      <input type="password" class="form-control" id="newPassword" required>
+                    </div>
+                    <div class="form-group">
+                      <label>Xác nhận mật khẩu mới</label>
+                      <input type="password" class="form-control" id="confirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                  </form>
+                </div>
+              </div>
+
+              <!-- Learning Progress -->
+              <div class="card mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Tiến độ học tập</h6>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                      <span>Tín chỉ hoàn thành</span>
+                      <span class="font-weight-bold">98 / 150</span>
+                    </div>
+                    <div class="progress" style="height: 20px;">
+                      <div class="progress-bar bg-success" role="progressbar" style="width: 65%;">65%</div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                      <span>GPA (Điểm trung bình)</span>
+                      <span class="font-weight-bold text-primary">3.45 / 4.00</span>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                      <span>Môn đã hoàn thành</span>
+                      <span class="font-weight-bold">32 môn</span>
+                    </div>
+                  </div>
+                  <div class="mb-0">
+                    <div class="d-flex justify-content-between mb-1">
+                      <span>Học kỳ hiện tại</span>
+                      <span class="font-weight-bold">6 / 8</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - SMD System</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="js/ruang-admin.min.js"></script>
+
+  <script>
+    const API_BASE_URL = 'http://localhost:8000';
+
+    async function checkAuth() {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        window.location.href = '/index.html';
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/users/me`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+          const user = await response.json();
+          if (user.role !== 'student') {
+            alert('Bạn không có quyền truy cập!');
+            window.location.href = '/index.html';
+            return;
+          }
+          
+          // Update profile information
+          document.getElementById('userFullName').textContent = user.full_name || 'Student';
+          document.getElementById('profileName').textContent = user.full_name || 'Nguyễn Văn A';
+          document.getElementById('viewFullName').textContent = user.full_name || 'Nguyễn Văn A';
+          document.getElementById('editFullName').value = user.full_name || 'Nguyễn Văn A';
+          document.getElementById('viewEmail').textContent = user.email || 'student@hcmute.edu.vn';
+          document.getElementById('editEmail').value = user.email || 'student@hcmute.edu.vn';
+        } else {
+          localStorage.removeItem('access_token');
+          window.location.href = '/index.html';
+        }
+      } catch (error) {
+        console.error('Auth error:', error);
+      }
+    }
+
+    function handleLogout() {
+      if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+        localStorage.removeItem('access_token');
+        window.location.href = '/index.html';
+      }
+    }
+
+    function cancelEdit() {
+      document.getElementById('editMode').style.display = 'none';
+      document.getElementById('viewMode').style.display = 'block';
+    }
+
+    // Profile form submission
+    $('#profileForm').submit(function(e) {
+      e.preventDefault();
+      
+      const fullName = $('#editFullName').val();
+      const phone = $('#editPhone').val();
+      
+      // TODO: Call API to update profile
+      alert('Cập nhật thông tin thành công!');
+      
+      // Update view mode
+      $('#viewFullName').text(fullName);
+      $('#profileName').text(fullName);
+      $('#viewPhone').text(phone);
+      
+      cancelEdit();
+    });
+
+    // Password form submission
+    $('#passwordForm').submit(function(e) {
+      e.preventDefault();
+      
+      const currentPwd = $('#currentPassword').val();
+      const newPwd = $('#newPassword').val();
+      const confirmPwd = $('#confirmPassword').val();
+      
+      if (newPwd !== confirmPwd) {
+        alert('Mật khẩu mới không khớp!');
+        return;
+      }
+      
+      if (newPwd.length < 6) {
+        alert('Mật khẩu phải có ít nhất 6 ký tự!');
+        return;
+      }
+      
+      // TODO: Call API to change password
+      alert('Đổi mật khẩu thành công!');
+      
+      // Clear form
+      $('#passwordForm')[0].reset();
+    });
+
+    $(document).ready(function() {
+      checkAuth();
+    });
+  </script>
+</body>
+
+</html>

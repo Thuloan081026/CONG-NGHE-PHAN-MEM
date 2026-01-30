@@ -1,31 +1,23 @@
-<?php
-
-?>
-
 <!DOCTYPE html>
-<html lang="vi">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Lecturer Dashboard - SMD</title>
-    <link rel="stylesheet" href="../src/styles/lecturer.css">
+    <title>Lecturer Web</title>
+    <link rel="stylesheet" href="/lecturer-web/public/styles/main.css">
 </head>
 <body>
 
 <?php include __DIR__ . "/Header.php"; ?>
 
-<div class="container">
+<div class="layout">
     <?php include __DIR__ . "/Sidebar.php"; ?>
 
-    <main class="content">
-        <?php
-        if (isset($pageContent) && file_exists($pageContent)) {
-            include $pageContent;
-        } else {
-            echo "<p>Page not found</p>";
-        }
-        ?>
-    </main>
+    <div class="main-content">
+        <?php include $pageContent; ?>
+    </div>
 </div>
+
+<?php include __DIR__ . "/Footer.php"; ?>
 
 </body>
 </html>

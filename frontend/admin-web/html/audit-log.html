@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audit Log - SMD Admin</title>
+  <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
+  <link rel="stylesheet" href="../assets/css/styles.min.css" />
+  <link rel="stylesheet" href="../assets/css/smd-custom.css" />
+</head>
+
+<body>
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    <aside class="left-sidebar">
+      <div>
+        <div class="brand-logo d-flex align-items-center justify-content-between">
+          <a href="./dashboard.html" class="text-nowrap logo-img">
+            <img src="../assets/images/logos/dark-logo.svg" width="180" alt="" />
+          </a>
+          <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+            <i class="ti ti-x fs-8"></i>
+          </div>
+        </div>
+        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+          <ul id="sidebarnav">
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">ADMIN PANEL</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./dashboard.html" aria-expanded="false">
+                <span><i class="ti ti-layout-dashboard"></i></span>
+                <span class="hide-menu">Dashboard</span>
+              </a>
+            </li>
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">USER MANAGEMENT</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./users-list.html" aria-expanded="false">
+                <span><i class="ti ti-users"></i></span>
+                <span class="hide-menu">User List</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./users-create.html" aria-expanded="false">
+                <span><i class="ti ti-user-plus"></i></span>
+                <span class="hide-menu">Create User</span>
+              </a>
+            </li>
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">SYSTEM SETTINGS</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./settings-general.html" aria-expanded="false">
+                <span><i class="ti ti-settings"></i></span>
+                <span class="hide-menu">General Settings</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./settings-clo-plo.html" aria-expanded="false">
+                <span><i class="ti ti-target"></i></span>
+                <span class="hide-menu">CLO/PLO Templates</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./settings-grading.html" aria-expanded="false">
+                <span><i class="ti ti-chart-bar"></i></span>
+                <span class="hide-menu">Grading Scale</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./settings-workflow.html" aria-expanded="false">
+                <span><i class="ti ti-git-branch"></i></span>
+                <span class="hide-menu">Workflow Rules</span>
+              </a>
+            </li>
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">MONITORING</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link active" href="./audit-log.html" aria-expanded="false">
+                <span><i class="ti ti-file-text"></i></span>
+                <span class="hide-menu">Audit Log</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </aside>
+    <!--  Sidebar End -->
+    
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+      <!--  Header Start -->
+      <header class="app-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <ul class="navbar-nav">
+            <li class="nav-item d-block d-xl-none">
+              <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
+                <i class="ti ti-menu-2"></i>
+              </a>
+            </li>
+          </ul>
+          <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+              <li class="nav-item dropdown">
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <img src="../assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+                  <div class="message-body">
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-user fs-6"></i>
+                      <p class="mb-0 fs-3">My Profile</p>
+                    </a>
+                    <a href="javascript:void(0)" onclick="logout()" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!--  Header End -->
+      
+      <div class="container-fluid">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div>
+                <h5 class="card-title fw-semibold mb-1">System Audit Log</h5>
+                <p class="mb-0 text-muted">Track all system activities and user actions</p>
+              </div>
+              <button class="btn btn-primary" onclick="exportLogs()">
+                <i class="ti ti-download me-2"></i>Export Logs
+              </button>
+            </div>
+            
+            <!-- Filters -->
+            <div class="card bg-light mb-4">
+              <div class="card-body">
+                <div class="row g-3">
+                  <div class="col-md-3">
+                    <label class="form-label">Action Type</label>
+                    <select class="form-select" id="filterAction" onchange="filterLogs()">
+                      <option value="">All Actions</option>
+                      <option value="login">Login</option>
+                      <option value="logout">Logout</option>
+                      <option value="create">Create</option>
+                      <option value="update">Update</option>
+                      <option value="delete">Delete</option>
+                      <option value="approve">Approve</option>
+                      <option value="reject">Reject</option>
+                      <option value="publish">Publish</option>
+                    </select>
+                  </div>
+                  
+                  <div class="col-md-3">
+                    <label class="form-label">User Role</label>
+                    <select class="form-select" id="filterRole" onchange="filterLogs()">
+                      <option value="">All Roles</option>
+                      <option value="admin">Admin</option>
+                      <option value="lecturer">Lecturer</option>
+                      <option value="hod">HOD</option>
+                      <option value="academic_affairs">Academic Affairs</option>
+                    </select>
+                  </div>
+                  
+                  <div class="col-md-3">
+                    <label class="form-label">Date From</label>
+                    <input type="date" class="form-control" id="filterDateFrom" onchange="filterLogs()">
+                  </div>
+                  
+                  <div class="col-md-3">
+                    <label class="form-label">Date To</label>
+                    <input type="date" class="form-control" id="filterDateTo" onchange="filterLogs()">
+                  </div>
+                </div>
+                
+                <div class="row mt-3">
+                  <div class="col-md-9">
+                    <input type="text" class="form-control" id="searchQuery" placeholder="Search by user, action, or details..." oninput="filterLogs()">
+                  </div>
+                  <div class="col-md-3">
+                    <button class="btn btn-outline-secondary w-100" onclick="resetFilters()">
+                      <i class="ti ti-refresh me-2"></i>Reset Filters
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+              <div class="col-md-3">
+                <div class="card bg-light-info">
+                  <div class="card-body text-center">
+                    <h3 class="mb-0" id="totalLogs">0</h3>
+                    <p class="mb-0 text-muted">Total Logs</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-light-success">
+                  <div class="card-body text-center">
+                    <h3 class="mb-0" id="todayLogs">0</h3>
+                    <p class="mb-0 text-muted">Today's Activity</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-light-warning">
+                  <div class="card-body text-center">
+                    <h3 class="mb-0" id="activeUsers">0</h3>
+                    <p class="mb-0 text-muted">Active Users (24h)</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-light-danger">
+                  <div class="card-body text-center">
+                    <h3 class="mb-0" id="failedActions">0</h3>
+                    <p class="mb-0 text-muted">Failed Actions</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Audit Log Table -->
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="table-light">
+                  <tr>
+                    <th width="150">Timestamp</th>
+                    <th width="120">User</th>
+                    <th width="100">Role</th>
+                    <th width="100">Action</th>
+                    <th>Details</th>
+                    <th width="100">Status</th>
+                    <th width="120">IP Address</th>
+                  </tr>
+                </thead>
+                <tbody id="auditLogTable">
+                  <tr>
+                    <td colspan="7" class="text-center">Loading audit logs...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <p class="mb-0 text-muted">Showing <span id="showingCount">0</span> of <span id="totalCount">0</span> logs</p>
+              <nav>
+                <ul class="pagination mb-0" id="pagination">
+                  <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                  <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Footer -->
+      <div class="py-6 px-6 text-center">
+        <p class="mb-0 fs-4">SMD - Syllabus Management & Digitalization System | University Administration Panel | v1.0.0</p>
+      </div>
+    </div>
+  </div>
+  
+  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/sidebarmenu.js"></script>
+  <script src="../assets/js/app.min.js"></script>
+  <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+  
+  <script>
+    const API_BASE_URL = 'http://127.0.0.1:8000';
+    let allLogs = [];
+    let filteredLogs = [];
+    let currentPage = 1;
+    const logsPerPage = 50;
+    
+    // Check authentication
+    function checkAuth() {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        window.location.href = 'http://localhost:3000';
+        return false;
+      }
+      return token;
+    }
+    
+    function logout() {
+      localStorage.clear();
+      window.location.href = 'http://localhost:3000/home.html';
+    }
+    
+    // Generate sample audit logs (since backend doesn't have audit log API yet)
+    function generateSampleLogs() {
+      const actions = ['login', 'logout', 'create', 'update', 'delete', 'approve', 'reject', 'publish'];
+      const roles = ['admin', 'lecturer', 'hod', 'academic_affairs'];
+      const users = ['admin@hcmute.edu.vn', 'lecturer1@hcmute.edu.vn', 'hod.cs@hcmute.edu.vn', 'academic@hcmute.edu.vn'];
+      const statuses = ['success', 'success', 'success', 'failed']; // 75% success rate
+      
+      const logs = [];
+      const now = new Date();
+      
+      for (let i = 0; i < 100; i++) {
+        const date = new Date(now - Math.random() * 7 * 24 * 60 * 60 * 1000); // Last 7 days
+        const action = actions[Math.floor(Math.random() * actions.length)];
+        const user = users[Math.floor(Math.random() * users.length)];
+        const role = roles[Math.floor(Math.random() * roles.length)];
+        const status = statuses[Math.floor(Math.random() * statuses.length)];
+        
+        let details = '';
+        switch(action) {
+          case 'login':
+            details = 'User logged in successfully';
+            break;
+          case 'logout':
+            details = 'User logged out';
+            break;
+          case 'create':
+            details = `Created syllabus IT${String(Math.floor(Math.random() * 999)).padStart(3, '0')}`;
+            break;
+          case 'update':
+            details = `Updated syllabus IT${String(Math.floor(Math.random() * 999)).padStart(3, '0')}`;
+            break;
+          case 'delete':
+            details = `Deleted user ${Math.floor(Math.random() * 100)}`;
+            break;
+          case 'approve':
+            details = `Approved syllabus IT${String(Math.floor(Math.random() * 999)).padStart(3, '0')}`;
+            break;
+          case 'reject':
+            details = `Rejected syllabus IT${String(Math.floor(Math.random() * 999)).padStart(3, '0')} - Needs revision`;
+            break;
+          case 'publish':
+            details = `Published syllabus IT${String(Math.floor(Math.random() * 999)).padStart(3, '0')}`;
+            break;
+        }
+        
+        logs.push({
+          id: i + 1,
+          timestamp: date.toISOString(),
+          user: user,
+          role: role,
+          action: action,
+          details: details,
+          status: status,
+          ip: `192.168.1.${Math.floor(Math.random() * 255)}`
+        });
+      }
+      
+      return logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    }
+    
+    // Load audit logs
+    async function loadAuditLogs() {
+      const token = checkAuth();
+      if (!token) return;
+      
+      try {
+        // Try to load from backend API (if exists)
+        const response = await fetch(`${API_BASE_URL}/audit-logs`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          allLogs = await response.json();
+        } else {
+          // Use sample data if API doesn't exist
+          allLogs = generateSampleLogs();
+        }
+      } catch (error) {
+        console.error('Error loading audit logs, using sample data:', error);
+        allLogs = generateSampleLogs();
+      }
+      
+      filteredLogs = [...allLogs];
+      updateStats();
+      displayLogs();
+    }
+    
+    // Update statistics
+    function updateStats() {
+      document.getElementById('totalLogs').textContent = allLogs.length;
+      
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const todayLogs = allLogs.filter(log => new Date(log.timestamp) >= today);
+      document.getElementById('todayLogs').textContent = todayLogs.length;
+      
+      const last24h = new Date(Date.now() - 24 * 60 * 60 * 1000);
+      const activeUsers = new Set(allLogs.filter(log => new Date(log.timestamp) >= last24h).map(log => log.user));
+      document.getElementById('activeUsers').textContent = activeUsers.size;
+      
+      const failedActions = allLogs.filter(log => log.status === 'failed').length;
+      document.getElementById('failedActions').textContent = failedActions;
+    }
+    
+    // Display logs
+    function displayLogs() {
+      const tbody = document.getElementById('auditLogTable');
+      const start = (currentPage - 1) * logsPerPage;
+      const end = start + logsPerPage;
+      const displayedLogs = filteredLogs.slice(start, end);
+      
+      if (displayedLogs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center">No audit logs found</td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = displayedLogs.map(log => {
+        const date = new Date(log.timestamp);
+        const dateStr = date.toLocaleDateString('en-GB');
+        const timeStr = date.toLocaleTimeString('en-GB');
+        
+        return `
+          <tr>
+            <td>
+              <small>${dateStr}<br>${timeStr}</small>
+            </td>
+            <td><small>${log.user.split('@')[0]}</small></td>
+            <td><span class="badge bg-${getRoleBadge(log.role)}">${formatRole(log.role)}</span></td>
+            <td><span class="badge bg-${getActionBadge(log.action)}">${log.action.toUpperCase()}</span></td>
+            <td><small>${log.details}</small></td>
+            <td><span class="badge bg-${log.status === 'success' ? 'success' : 'danger'}">${log.status.toUpperCase()}</span></td>
+            <td><small>${log.ip}</small></td>
+          </tr>
+        `;
+      }).join('');
+      
+      document.getElementById('showingCount').textContent = displayedLogs.length;
+      document.getElementById('totalCount').textContent = filteredLogs.length;
+      
+      updatePagination();
+    }
+    
+    // Filter logs
+    function filterLogs() {
+      const action = document.getElementById('filterAction').value;
+      const role = document.getElementById('filterRole').value;
+      const dateFrom = document.getElementById('filterDateFrom').value;
+      const dateTo = document.getElementById('filterDateTo').value;
+      const search = document.getElementById('searchQuery').value.toLowerCase();
+      
+      filteredLogs = allLogs.filter(log => {
+        if (action && log.action !== action) return false;
+        if (role && log.role !== role) return false;
+        
+        const logDate = new Date(log.timestamp).toISOString().split('T')[0];
+        if (dateFrom && logDate < dateFrom) return false;
+        if (dateTo && logDate > dateTo) return false;
+        
+        if (search) {
+          const searchStr = `${log.user} ${log.action} ${log.details} ${log.status}`.toLowerCase();
+          if (!searchStr.includes(search)) return false;
+        }
+        
+        return true;
+      });
+      
+      currentPage = 1;
+      displayLogs();
+    }
+    
+    // Reset filters
+    function resetFilters() {
+      document.getElementById('filterAction').value = '';
+      document.getElementById('filterRole').value = '';
+      document.getElementById('filterDateFrom').value = '';
+      document.getElementById('filterDateTo').value = '';
+      document.getElementById('searchQuery').value = '';
+      filteredLogs = [...allLogs];
+      currentPage = 1;
+      displayLogs();
+    }
+    
+    // Update pagination
+    function updatePagination() {
+      const totalPages = Math.ceil(filteredLogs.length / logsPerPage);
+      const pagination = document.getElementById('pagination');
+      
+      let html = `
+        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+          <a class="page-link" href="#" onclick="changePage(${currentPage - 1}); return false;">Previous</a>
+        </li>
+      `;
+      
+      for (let i = 1; i <= Math.min(totalPages, 5); i++) {
+        html += `
+          <li class="page-item ${currentPage === i ? 'active' : ''}">
+            <a class="page-link" href="#" onclick="changePage(${i}); return false;">${i}</a>
+          </li>
+        `;
+      }
+      
+      html += `
+        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+          <a class="page-link" href="#" onclick="changePage(${currentPage + 1}); return false;">Next</a>
+        </li>
+      `;
+      
+      pagination.innerHTML = html;
+    }
+    
+    // Change page
+    function changePage(page) {
+      const totalPages = Math.ceil(filteredLogs.length / logsPerPage);
+      if (page < 1 || page > totalPages) return;
+      currentPage = page;
+      displayLogs();
+    }
+    
+    // Export logs
+    function exportLogs() {
+      const csv = ['Timestamp,User,Role,Action,Details,Status,IP Address'];
+      filteredLogs.forEach(log => {
+        csv.push(`"${log.timestamp}","${log.user}","${log.role}","${log.action}","${log.details}","${log.status}","${log.ip}"`);
+      });
+      
+      const blob = new Blob([csv.join('\n')], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `audit-log-${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+    }
+    
+    // Helper functions
+    function getRoleBadge(role) {
+      const badges = {
+        'admin': 'danger',
+        'lecturer': 'info',
+        'hod': 'warning',
+        'academic_affairs': 'success'
+      };
+      return badges[role] || 'secondary';
+    }
+    
+    function formatRole(role) {
+      const names = {
+        'admin': 'Admin',
+        'lecturer': 'Lecturer',
+        'hod': 'HOD',
+        'academic_affairs': 'Academic'
+      };
+      return names[role] || role;
+    }
+    
+    function getActionBadge(action) {
+      const badges = {
+        'login': 'info',
+        'logout': 'secondary',
+        'create': 'success',
+        'update': 'primary',
+        'delete': 'danger',
+        'approve': 'success',
+        'reject': 'warning',
+        'publish': 'success'
+      };
+      return badges[action] || 'secondary';
+    }
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      checkAuth();
+      loadAuditLogs();
+    });
+  </script>
+</body>
+
+</html>

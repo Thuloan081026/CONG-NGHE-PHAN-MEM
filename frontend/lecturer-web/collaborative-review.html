@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <title>Collaborative Review - SMD System</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="assets/icon/icofont/css/icofont.css">
+    <link rel="stylesheet" type="text/css" href="assets/icon/themify-icons/themify-icons.css">
+    <link rel="stylesheet" type="text/css" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/menu.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/color/color-1.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
+    <style>
+        .review-card { border-left: 4px solid #667eea; margin-bottom: 20px; }
+        .reviewer-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="theme-loader"><div class="ball-scale"><div class='contain'><div class="ring"><div class="frame"></div></div><div class="ring"><div class="frame"></div></div><div class="ring"><div class="frame"></div></div></div></div></div>
+    <div id="pcoded" class="pcoded"><div class="pcoded-overlay-box"></div><div class="pcoded-container navbar-wrapper">
+    <nav class="navbar header-navbar pcoded-header"><div class="navbar-wrapper"><div class="navbar-logo"><a class="mobile-menu" id="mobile-collapse" href="#!"><i class="ti-menu"></i></a><a href="dashboard.html"><h4 style="color: white; margin: 0; padding: 10px;">SMD - Lecturer</h4></a><a class="mobile-options"><i class="ti-more"></i></a></div><div class="navbar-container container-fluid"><ul class="nav-right"><li class="user-profile header-notification"><a href="#!"><i class="ti-user"></i><span id="userName">Lecturer</span></a><ul class="show-notification profile-notification"><li><a href="#!" onclick="logout()"><i class="ti-layout-sidebar-left"></i> Logout</a></li></ul></li></ul></div></div></nav>
+    <div class="pcoded-main-container"><div class="pcoded-wrapper">
+    <nav class="pcoded-navbar"><div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div><div class="pcoded-inner-navbar main-menu"><ul class="pcoded-item pcoded-left-item"><li><a href="dashboard.html"><span class="pcoded-micon"><i class="ti-home"></i></span><span class="pcoded-mtext">Dashboard</span></a></li><li class="pcoded-hasmenu"><a href="javascript:void(0)"><span class="pcoded-micon"><i class="ti-files"></i></span><span class="pcoded-mtext">Syllabus Management</span></a><ul class="pcoded-submenu"><li><a href="syllabus-list.html">My Syllabuses</a></li><li><a href="syllabus-create.html">Create New</a></li></ul></li><li class="active"><a href="collaborative-review.html"><span class="pcoded-micon"><i class="ti-comments"></i></span><span class="pcoded-mtext">Collaborative Review</span></a></li><li><a href="comments-feedback.html"><span class="pcoded-micon"><i class="ti-comment"></i></span><span class="pcoded-mtext">Comments & Feedback</span></a></li><li><a href="search-reference.html"><span class="pcoded-micon"><i class="ti-search"></i></span><span class="pcoded-mtext">Search & Reference</span></a></li></ul></div></nav>
+    <div class="pcoded-content"><div class="pcoded-inner-content"><div class="main-body"><div class="page-wrapper">
+    <div class="page-header"><div class="row align-items-end"><div class="col-lg-8"><div class="page-header-title"><div class="d-inline"><h4>Collaborative Review</h4><span>Review syllabuses from your colleagues</span></div></div></div><div class="col-lg-4"><div class="page-header-breadcrumb"><ul class="breadcrumb-title"><li class="breadcrumb-item"><a href="dashboard.html"><i class="ti-home"></i></a></li><li class="breadcrumb-item active">Collaborative Review</li></ul></div></div></div></div>
+    <div class="page-body"><div class="row">
+        <div class="col-md-4">
+            <div class="card"><div class="card-block text-center">
+                <h2 class="text-primary">5</h2>
+                <p class="mb-0">Pending Reviews</p>
+            </div></div>
+        </div>
+        <div class="col-md-4">
+            <div class="card"><div class="card-block text-center">
+                <h2 class="text-success">12</h2>
+                <p class="mb-0">Completed Reviews</p>
+            </div></div>
+        </div>
+        <div class="col-md-4">
+            <div class="card"><div class="card-block text-center">
+                <h2 class="text-info">8</h2>
+                <p class="mb-0">My Syllabuses in Review</p>
+            </div></div>
+        </div>
+        <div class="col-sm-12"><div class="card"><div class="card-header"><h5>Syllabuses Awaiting Your Review</h5></div><div class="card-block">
+        <div class="review-card card">
+            <div class="card-block">
+                <div class="d-flex align-items-start">
+                    <div class="reviewer-avatar mr-3">JD</div>
+                    <div class="flex-grow-1">
+                        <h6 class="mb-1">CS201 - Data Structures and Algorithms</h6>
+                        <small class="text-muted">Requested by: Dr. John Doe | Department: Computer Science</small>
+                        <p class="mt-2 mb-2">Please review the CLO-PLO mapping and provide feedback on the assessment methods.</p>
+                        <small><i class="ti-time"></i> Requested: 2 days ago</small>
+                    </div>
+                    <a href="#" class="btn btn-sm btn-primary"><i class="ti-eye"></i> Review</a>
+                </div>
+            </div>
+        </div>
+        <div class="review-card card">
+            <div class="card-block">
+                <div class="d-flex align-items-start">
+                    <div class="reviewer-avatar mr-3" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">MS</div>
+                    <div class="flex-grow-1">
+                        <h6 class="mb-1">IT301 - Database Management Systems</h6>
+                        <small class="text-muted">Requested by: Prof. Mary Smith | Department: Information Technology</small>
+                        <p class="mt-2 mb-2">Need feedback on the practical lab sessions and textbook selection.</p>
+                        <small><i class="ti-time"></i> Requested: 5 days ago</small>
+                    </div>
+                    <a href="#" class="btn btn-sm btn-primary"><i class="ti-eye"></i> Review</a>
+                </div>
+            </div>
+        </div>
+        </div></div></div>
+    </div></div>
+    </div></div></div></div></div>
+    </div></div></div></div>
+    <script src="assets/plugins/Jquery/jquery.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <script src="assets/js/modernizr-custom.js"></script>
+    <script src="assets/js/menu.js"></script>
+    <script src="assets/js/common-pages.min.js"></script>
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token || localStorage.getItem('userRole') !== 'lecturer') {
+            alert('⚠️ Access denied! Please login first.');
+            window.location.href = 'home.html';
+        }
+        document.getElementById('userName').textContent = localStorage.getItem('userName') || 'Lecturer';
+        function logout() { localStorage.clear(); window.location.href = 'home.html'; }
+    </script>
+</body>
+</html>

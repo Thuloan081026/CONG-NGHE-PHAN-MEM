@@ -5,8 +5,26 @@ from datetime import datetime
 
 class UserBase(BaseModel):
     email: EmailStr
+    employee_id: Optional[str] = None
     full_name: Optional[str] = None
     role: Optional[str] = Field(default="student")
+    
+    # Academic information
+    degree: Optional[str] = None
+    title: Optional[str] = None
+    department: Optional[str] = None
+    specialization: Optional[str] = None
+    
+    # Contact information
+    phone: Optional[str] = None
+    office_location: Optional[str] = None
+    
+    # Research & Teaching information
+    research_interests: Optional[str] = None
+    teaching_subjects: Optional[str] = None
+    years_experience: Optional[int] = None
+    qualifications: Optional[str] = None
+    publications: Optional[str] = None
 
 
 class UserCreate(UserBase):
@@ -14,13 +32,32 @@ class UserCreate(UserBase):
 
 
 class UserUpdate(BaseModel):
+    employee_id: Optional[str] = None
     full_name: Optional[str] = None
     role: Optional[str] = None
+    
+    # Academic information
+    degree: Optional[str] = None
+    title: Optional[str] = None
+    department: Optional[str] = None
+    specialization: Optional[str] = None
+    
+    # Contact information
+    phone: Optional[str] = None
+    office_location: Optional[str] = None
+    
+    # Research & Teaching information
+    research_interests: Optional[str] = None
+    teaching_subjects: Optional[str] = None
+    years_experience: Optional[int] = None
+    qualifications: Optional[str] = None
+    publications: Optional[str] = None
 
 
 class UserOut(UserBase):
     id: int
     is_active: bool
+    syllabus_count: Optional[int] = 0
     created_at: datetime
     updated_at: Optional[datetime] = None  # Can be None on first create
 
