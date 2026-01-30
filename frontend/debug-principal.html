@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Debug Principal Login</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #f5f5f5; }
+        .box { background: white; padding: 20px; margin: 10px 0; border-radius: 5px; }
+        pre { background: #f0f0f0; padding: 10px; overflow-x: auto; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        .success { background: #2ed573; color: white; }
+        .error { background: #ff4757; color: white; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Debug Principal Login Flow</h1>
+    
+    <div class="box">
+        <h2>Step 1: Test Login API</h2>
+        <button onclick="testLogin()">Test Login</button>
+        <pre id="loginResult"></pre>
+    </div>
+    
+    <div class="box">
+        <h2>Step 2: Check Role</h2>
+        <pre id="roleResult"></pre>
+    </div>
+    
+    <div class="box">
+        <h2>Step 3: Test Redirect Logic</h2>
+        <button onclick="testRedirectLogic()">Test Redirect Logic</button>
+        <pre id="redirectResult"></pre>
+    </div>
+
+    <script>
+        async function testLogin() {
+            const resultDiv = document.getElementById('loginResult');
+            try {
+                const response = await fetch('http://localhost:8000/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: 'principal@edu.vn',
+                        password: 'principal123'
+                    })
+                });
+                
+                const data = await response.json();
+                console.log('Login response:', data);
+                
+                // Save for later use
+                window.loginData = data;
+                localStorage.setItem('access_token', data.access_token);
+                localStorage.setItem('user_data', JSON.stringify(data.user));
+                
+                resultDiv.innerHTML = `
+✅ Login successful!
+Status: ${response.status}
+
+User Data:
+${JSON.stringify(data.user, null, 2)}
+
+Token: ${data.access_token.substring(0, 50)}...
+                `;
+                
+                // Auto test role
+                setTimeout(testRedirectLogic, 500);
+            } catch (err) {
+                resultDiv.innerHTML = `❌ Error: ${err.message}`;
+            }
+        }
+
+        function testRedirectLogic() {
+            const resultDiv = document.getElementById('redirectResult');
+            
+            try {
+                if (!window.loginData) {
+                    resultDiv.innerHTML = '❌ No login data. Click "Test Login" first.';
+                    return;
+                }
+                
+                const userData = window.loginData.user;
+                const role = userData.role;
+                
+                console.log('Testing redirect with role:', role);
+                
+                const dashboardMap = {
+                    'admin': 'admin-web/html/dashboard.html',
+                    'lecturer': 'lecturer-web/dashboard.html',
+                    'hod': 'hod-web/dashboard.html',
+                    'academic_affairs': 'academic-affairs-web/dashboard.html',
+                    'student': 'student-web/dashboard.html',
+                    'principal': 'principal-web/dashboard.html',
+                    'reviewer': 'reviewer-web/dashboard.html',
+                    'user': 'user-web/dashboard.html'
+                };
+                
+                const redirectUrl = dashboardMap[role];
+                
+                resultDiv.innerHTML = `
+Role: "${role}"
+Role type: ${typeof role}
+Role in map: ${role in dashboardMap ? '✅ YES' : '❌ NO'}
+Redirect URL: ${redirectUrl || 'NOT FOUND'}
+
+Dashboard map:
+${JSON.stringify(dashboardMap, null, 2)}
+
+Conclusion: ${redirectUrl ? '✅ Ready to redirect!' : '❌ Role not found in map'}
+                `;
+                
+                if (redirectUrl) {
+                    document.getElementById('redirectResult').innerHTML += `
+<br><button class="success" onclick="window.location.href='${redirectUrl}'">
+  ✅ Click to Redirect to Dashboard
+</button>
+                    `;
+                }
+            } catch (err) {
+                resultDiv.innerHTML = `❌ Error: ${err.message}`;
+            }
+        }
+    </script>
+</body>
+</html>

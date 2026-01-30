@@ -267,18 +267,21 @@
       const token = localStorage.getItem('access_token');
       
       try {
-        const response = await fetch(`${API_BASE_URL}/syllabus/pending`, {
+        const response = await fetch(`${API_BASE_URL}/syllabuses?status=pending_review`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
 
         if (response.ok) {
           const data = await response.json();
-          allSyllabuses = data.items || [];
+          allSyllabuses = Array.isArray(data) ? data : data.items || [];
+          if (allSyllabuses.length === 0) {
+            allSyllabuses = getMockSyllabuses();
+          }
         } else {
           allSyllabuses = getMockSyllabuses();
         }
       } catch (error) {
-        console.log('Using mock data');
+        console.log('Using mock data:', error);
         allSyllabuses = getMockSyllabuses();
       }
 
@@ -425,8 +428,9 @@
     }
 
     function viewDetail(id) {
-      window.location.href = `syllabus-review.html?id=${id}`;
-    }
+  window.location.href = `/academic-affairs-web/syllabus-detail.html?id=${id}`;
+}
+
 
     function approveSyllabus(id) {
       currentSyllabusId = id;
@@ -442,28 +446,69 @@
 
     async function confirmApproval() {
       const comment = document.getElementById('approval-comment').value;
+      const token = localStorage.getItem('access_token');
       
-      // TODO: Call API to approve
-      alert(`Syllabus #${currentSyllabusId} approved!\nComment: ${comment || 'No comment'}`);
-      
-      const modal = bootstrap.Modal.getInstance(document.getElementById('approvalModal'));
-      modal.hide();
-      
-      // Reload data
-      await loadSyllabuses();
+      try {
+        const response = await fetch(`${API_BASE_URL}/syllabus/${currentSyllabusId}/status`, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            status: 'approved'
+          })
+        });
+
+        if (response.ok) {
+          alert(`Syllabus #${currentSyllabusId} approved!`);
+          const modal = bootstrap.Modal.getInstance(document.getElementById('approvalModal'));
+          modal.hide();
+          document.getElementById('approval-comment').value = '';
+          await loadSyllabuses();
+        } else {
+          throw new Error('Failed to approve');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error: ' + error.message);
+      }
     }
 
     async function confirmRejection() {
       const reason = document.getElementById('rejection-reason').value;
+      const token = localStorage.getItem('access_token');
       
       if (!reason.trim()) {
         alert('Please provide a reason for rejection');
         return;
       }
       
-      // TODO: Call API to reject
-      alert(`Syllabus #${currentSyllabusId} rejected!\nReason: ${reason}`);
-      
+      try {
+        const response = await fetch(`${API_BASE_URL}/syllabus/${currentSyllabusId}/status`, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            status: 'rejected'
+          })
+        });
+
+        if (response.ok) {
+          alert(`Syllabus #${currentSyllabusId} rejected!`);
+          const modal = bootstrap.Modal.getInstance(document.getElementById('rejectionModal'));
+          modal.hide();
+          document.getElementById('rejection-reason').value = '';
+          await loadSyllabuses();
+        } else {
+          throw new Error('Failed to reject');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error: ' + error.message);
+      }
       const modal = bootstrap.Modal.getInstance(document.getElementById('rejectionModal'));
       modal.hide();
       

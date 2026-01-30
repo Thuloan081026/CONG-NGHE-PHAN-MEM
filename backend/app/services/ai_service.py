@@ -6,7 +6,10 @@ from typing import List, Dict, Any, Optional
 from datetime import datetime
 import re
 from difflib import SequenceMatcher
-import google.generativeai as genai
+try:
+    import google.generativeai as genai
+except ImportError:
+    genai = None
 
 from ..models.syllabus import Syllabus, SyllabusVersion
 from ..models.clo import CLO

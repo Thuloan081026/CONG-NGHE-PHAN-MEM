@@ -152,7 +152,7 @@
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary">Kết quả tìm kiếm</h6>
-                  <span class="text-muted" id="resultCount">Tìm thấy 156 giáo trình</span>
+                  <span class="text-muted" id="resultCount">Tìm thấy 13 giáo trình</span>
                 </div>
                 <div class="table-responsive p-3">
                   <table class="table align-items-center table-flush table-hover" id="syllabusTable">
@@ -348,6 +348,25 @@
 
   <script>
     const API_BASE_URL = 'http://localhost:8000';
+    
+    // Store all syllabus data
+    const allSyllabuses = [
+      { id: 'CS101', name: 'Nhập môn lập trình', credits: 3, lecturer: 'TS. Nguyễn Văn A', major: 'CNTT', semester: 1 },
+      { id: 'CS102', name: 'Lập trình hướng đối tượng', credits: 3, lecturer: 'ThS. Phạm Văn D', major: 'CNTT', semester: 2 },
+      { id: 'CS201', name: 'Cấu trúc dữ liệu và giải thuật', credits: 4, lecturer: 'TS. Lê Văn C', major: 'CNTT', semester: 3 },
+      { id: 'CS301', name: 'Cơ sở dữ liệu', credits: 3, lecturer: 'TS. Nguyễn Văn A', major: 'CNTT', semester: 4 },
+      { id: 'CS302', name: 'Hệ điều hành', credits: 3, lecturer: 'TS. Trần Thị B', major: 'CNTT', semester: 4 },
+      { id: 'CS303', name: 'Mạng máy tính', credits: 3, lecturer: 'TS. Hoàng Thị E', major: 'CNTT', semester: 5 },
+      { id: 'CS401', name: 'Trí tuệ nhân tạo', credits: 4, lecturer: 'TS. Trần Thị B', major: 'AI', semester: 6 },
+      { id: 'CS402', name: 'Học máy', credits: 4, lecturer: 'TS. Lê Văn C', major: 'AI', semester: 7 },
+      { id: 'SE101', name: 'Kiến trúc phần mềm', credits: 3, lecturer: 'TS. Hoàng Văn F', major: 'SE', semester: 1 },
+      { id: 'SE201', name: 'Testing và QA', credits: 3, lecturer: 'ThS. Tạ Văn G', major: 'SE', semester: 3 },
+      { id: 'IT101', name: 'Hệ thống thông tin', credits: 3, lecturer: 'TS. Vũ Thị H', major: 'IT', semester: 1 },
+      { id: 'IT201', name: 'Quản lý hệ thống', credits: 3, lecturer: 'TS. Phạm Thị I', major: 'IT', semester: 3 },
+    ];
+
+    let dataTable = null;
+    let subscriptions = new Set(); // Store subscribed syllabuses
 
     async function checkAuth() {
       const token = localStorage.getItem('access_token');
@@ -388,16 +407,117 @@
     }
 
     function toggleSubscribe(subjectCode) {
-      alert(`Đang xử lý theo dõi môn ${subjectCode}...`);
+      if (subscriptions.has(subjectCode)) {
+        subscriptions.delete(subjectCode);
+        const btn = event.target.closest('button');
+        btn.classList.remove('btn-warning');
+        btn.classList.add('btn-outline-warning');
+        btn.innerHTML = '<i class="far fa-star"></i>';
+        alert(`Đã bỏ chọn theo dõi môn ${subjectCode}`);
+      } else {
+        subscriptions.add(subjectCode);
+        const btn = event.target.closest('button');
+        btn.classList.remove('btn-outline-warning');
+        btn.classList.add('btn-warning');
+        btn.innerHTML = '<i class="fas fa-star"></i>';
+        alert(`Đang theo dõi môn ${subjectCode}`);
+      }
+      saveSubscriptions();
+    }
+
+    function saveSubscriptions() {
+      localStorage.setItem('subscriptions', JSON.stringify(Array.from(subscriptions)));
+    }
+
+    function loadSubscriptions() {
+      const saved = localStorage.getItem('subscriptions');
+      if (saved) {
+        subscriptions = new Set(JSON.parse(saved));
+      }
+    }
+
+    function renderSyllabusTable(syllabuses) {
+      const tbody = $('#syllabusTable tbody');
+      tbody.empty();
+
+      if (syllabuses.length === 0) {
+        tbody.html(`
+          <tr>
+            <td colspan="7" class="text-center text-muted py-4">
+              Không tìm thấy kết quả phù hợp
+            </td>
+          </tr>
+        `);
+        $('#resultCount').text('Tìm thấy 0 giáo trình');
+        return;
+      }
+
+      syllabuses.forEach(syllabus => {
+        const isSubscribed = subscriptions.has(syllabus.id);
+        const btnClass = isSubscribed ? 'btn-warning' : 'btn-outline-warning';
+        const starIcon = isSubscribed ? 'fas fa-star' : 'far fa-star';
+        const row = `
+          <tr>
+            <td><strong>${syllabus.id}</strong></td>
+            <td>${syllabus.name}</td>
+            <td><span class="badge badge-primary">${syllabus.credits}</span></td>
+            <td>${syllabus.lecturer}</td>
+            <td>${syllabus.major}</td>
+            <td>${syllabus.semester}</td>
+            <td>
+              <a href="syllabus-detail.html?id=${syllabus.id}" class="btn btn-sm btn-primary">
+                <i class="fas fa-eye"></i> Xem
+              </a>
+              <button class="btn btn-sm ${btnClass}" onclick="toggleSubscribe('${syllabus.id}')">
+                <i class="${starIcon}"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+        tbody.append(row);
+      });
+
+      $('#resultCount').text(`Tìm thấy ${syllabuses.length} giáo trình`);
+    }
+
+    function filterSyllabuses() {
+      const keyword = $('#searchKeyword').val().toLowerCase().trim();
+      const major = $('#filterMajor').val();
+      const semester = $('#filterSemester').val();
+
+      let filtered = allSyllabuses;
+
+      // Filter by keyword
+      if (keyword) {
+        filtered = filtered.filter(s => 
+          s.id.toLowerCase().includes(keyword) || 
+          s.name.toLowerCase().includes(keyword)
+        );
+      }
+
+      // Filter by major
+      if (major) {
+        filtered = filtered.filter(s => s.major === major);
+      }
+
+      // Filter by semester
+      if (semester) {
+        filtered = filtered.filter(s => s.semester === parseInt(semester));
+      }
+
+      renderSyllabusTable(filtered);
     }
 
     // Initialize DataTable
     $(document).ready(function() {
-      $('#syllabusTable').DataTable({
+      loadSubscriptions();
+      
+      dataTable = $('#syllabusTable').DataTable({
+        "pageLength": 12,
+        "lengthChange": false,
+        "info": false,
         "language": {
           "search": "Tìm kiếm:",
-          "lengthMenu": "Hiển thị _MENU_ bản ghi",
-          "info": "Hiển thị _START_ đến _END_ của _TOTAL_ bản ghi",
           "infoEmpty": "Không có dữ liệu",
           "infoFiltered": "(lọc từ _MAX_ bản ghi)",
           "paginate": {
@@ -410,11 +530,25 @@
       });
 
       checkAuth();
+      filterSyllabuses();
 
       // Search form handler
       $('#searchForm').submit(function(e) {
         e.preventDefault();
-        alert('Đang tìm kiếm... (Tính năng sẽ được kết nối với backend)');
+        filterSyllabuses();
+      });
+
+      // Real-time filtering on input change
+      $('#searchKeyword').on('keyup', function() {
+        filterSyllabuses();
+      });
+
+      $('#filterMajor').on('change', function() {
+        filterSyllabuses();
+      });
+
+      $('#filterSemester').on('change', function() {
+        filterSyllabuses();
       });
     });
   </script>

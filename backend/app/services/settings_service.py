@@ -3,7 +3,10 @@ Settings Management Service
 """
 from sqlalchemy.orm import Session
 from typing import Optional, Dict, Any
-from cryptography.fernet import Fernet
+try:
+    from cryptography.fernet import Fernet
+except ImportError:
+    Fernet = None
 import os
 import base64
 
@@ -15,9 +18,11 @@ class SettingsService:
     """Service for managing system settings"""
     
     # Encryption key (should be in environment variable)
-    ENCRYPTION_KEY = base64.urlsafe_b64encode(
-        settings.SECRET_KEY.encode()[:32].ljust(32, b'0')
-    )
+    ENCRYPTION_KEY = None
+    if Fernet is not None:
+        ENCRYPTION_KEY = base64.urlsafe_b64encode(
+            settings.SECRET_KEY.encode()[:32].ljust(32, b'0')
+        )
     
     @staticmethod
     def get_setting(db: Session, key: str, default: Any = None) -> Any:
@@ -33,7 +38,7 @@ class SettingsService:
         value = setting.value
         
         # Decrypt if needed
-        if setting.is_encrypted and value:
+        if setting.is_encrypted and value and Fernet is not None:
             try:
                 cipher = Fernet(SettingsService.ENCRYPTION_KEY)
                 value = cipher.decrypt(value.encode()).decode()

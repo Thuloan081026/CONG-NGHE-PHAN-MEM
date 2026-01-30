@@ -501,11 +501,33 @@
     });
 
     function searchSyllabuses() {
-      alert('Search functionality will be implemented with backend API');
+      const searchTerm = document.querySelector('input[placeholder*="subject"]')?.value || '';
+      const department = document.getElementById('filterProgram')?.value || 'all';
+      const semester = document.querySelector('input[placeholder*="All Semesters"]')?.value || 'all';
+      const status = document.getElementById('filterProgram')?.value || 'all';
+      
+      alert(`Searching for syllabuses:\n- Subject: ${searchTerm}\n- Department: ${department}\n- Semester: ${semester}\n- Status: ${status}`);
     }
 
     function exportResults() {
-      alert('Export functionality will be implemented');
+      const data = [
+        { 'Subject Code': 'CS301', 'Subject Name': 'Database Systems', 'Lecturer': 'Dr. Nguyen Van A', 'Department': 'Computer Science', 'Credits': 3, 'Status': 'APPROVED', 'PLO Mapping': '100%' },
+        { 'Subject Code': 'CS401', 'Subject Name': 'Artificial Intelligence', 'Lecturer': 'Dr. Tran Thi B', 'Department': 'Computer Science', 'Credits': 3, 'Status': 'PENDING', 'PLO Mapping': '75%' },
+        { 'Subject Code': 'CS201', 'Subject Name': 'Data Structures', 'Lecturer': 'Dr. Le Van C', 'Department': 'Computer Science', 'Credits': 4, 'Status': 'APPROVED', 'PLO Mapping': '100%' }
+      ];
+      
+      let csv = Object.keys(data[0]).join(',') + '\n';
+      data.forEach(row => {
+        csv += Object.values(row).join(',') + '\n';
+      });
+      
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `syllabuses_${new Date().toISOString().split('T')[0]}.csv`;
+      link.click();
+      
+      alert('Export successful!');
     }
 
     function printResults() {

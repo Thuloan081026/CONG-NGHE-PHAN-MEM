@@ -247,133 +247,41 @@
       window.location.href = 'dashboard.html';
     }
 
-    // Get mock syllabus data by ID - DEFINED FIRST!
-    function getMockSyllabusById(id) {
-      const mockSyllabuses = {
-        6: {
-          id: 6,
-          subject_code: 'CSC401',
-          subject_name: 'Trí tuệ Nhân tạo',
-          credits: 3,
-          status: 'approved',
-          department: 'Computer Science',
-          semester: 1,
-          version: 'v1.0',
-          lecturer_name: 'TS. Nguyễn Văn A',
-          created_at: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
-          description: 'Môn học cung cấp kiến thức cơ bản về trí tuệ nhân tạo, bao gồm các thuật toán tìm kiếm, học máy, và xử lý ngôn ngữ tự nhiên.',
-          learning_objectives: '- Hiểu các khái niệm cơ bản về AI\n- Áp dụng các thuật toán tìm kiếm\n- Xây dựng mô hình học máy đơn giản\n- Phát triển ứng dụng AI thực tế',
-          content: 'Tuần 1-2: Giới thiệu về AI\nTuần 3-4: Thuật toán tìm kiếm\nTuần 5-7: Học máy cơ bản\nTuần 8-10: Mạng Neural\nTuần 11-12: NLP cơ bản\nTuần 13-14: Dự án thực hành\nTuần 15: Ôn tập và thi',
-          teaching_methods: 'Giảng lý thuyết, thực hành lab, dự án nhóm',
-          assessment_methods: 'Chuyên cần: 10%\nBài tập: 20%\nThí nghiệm: 20%\nGiữa kỳ: 20%\nCuối kỳ: 30%',
-          references: '1. Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach.\n2. Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep Learning.\n3. Murphy, K. P. (2012). Machine Learning: A Probabilistic Perspective.',
-          clo_plo_mapping: [
-            { clo: 'CLO1', description: 'Hiểu các khái niệm cơ bản về AI', plo: ['PLO1', 'PLO2'] },
-            { clo: 'CLO2', description: 'Áp dụng thuật toán tìm kiếm', plo: ['PLO3'] },
-            { clo: 'CLO3', description: 'Xây dựng mô hình học máy', plo: ['PLO4', 'PLO5'] },
-            { clo: 'CLO4', description: 'Phát triển ứng dụng AI', plo: ['PLO6'] }
-          ]
-        },
-        7: {
-          id: 7,
-          subject_code: 'CSC303',
-          subject_name: 'Mạng máy tính',
-          credits: 3,
-          status: 'approved',
-          department: 'Computer Science',
-          semester: 1,
-          version: 'v2.5',
-          lecturer_name: 'TS. Trần Thị B',
-          created_at: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
-          description: 'Môn học cung cấp kiến thức về kiến trúc mạng, giao thức TCP/IP, và các ứng dụng mạng.',
-          learning_objectives: '- Hiểu kiến trúc mạng máy tính\n- Nắm vững các giao thức mạng\n- Cấu hình và quản trị mạng cơ bản\n- Phân tích và giải quyết vấn đề mạng',
-          content: 'Tuần 1-3: Tổng quan về mạng máy tính\nTuần 4-6: Tầng ứng dụng\nTuần 7-9: Tầng giao vận\nTuần 10-12: Tầng mạng\nTuần 13-14: Tầng liên kết dữ liệu\nTuần 15: Ôn tập',
-          teaching_methods: 'Giảng lý thuyết, thực hành Cisco Packet Tracer',
-          assessment_methods: 'Chuyên cần: 10%\nBài tập: 20%\nThực hành: 30%\nCuối kỳ: 40%',
-          references: '1. Kurose, J. F., & Ross, K. W. (2021). Computer Networking: A Top-Down Approach.\n2. Tanenbaum, A. S. (2011). Computer Networks.',
-          clo_plo_mapping: [
-            { clo: 'CLO1', description: 'Hiểu kiến trúc mạng', plo: ['PLO1'] },
-            { clo: 'CLO2', description: 'Nắm vững giao thức', plo: ['PLO2', 'PLO3'] },
-            { clo: 'CLO3', description: 'Cấu hình mạng', plo: ['PLO4'] },
-            { clo: 'CLO4', description: 'Phân tích vấn đề mạng', plo: ['PLO5', 'PLO6'] }
-          ]
-        }
-      };
-
-      return mockSyllabuses[id] || mockSyllabuses[6]; // Default to CSC401 if not found
-    }
-
     // Load syllabus data
     async function loadSyllabus() {
-      console.log('=== Starting loadSyllabus with ID:', syllabusId);
-      
-      // Always use mock data for demo
-      const syllabusData = getMockSyllabusById(syllabusId);
-      
-      if (!syllabusData) {
-        console.error('No mock data found for ID:', syllabusId);
-        alert('Không tìm thấy giáo trình với ID: ' + syllabusId);
-        window.history.back();
-        return;
-      }
+      try {
+        const response = await fetch(`${API_BASE_URL}/syllabuses/${syllabusId}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
 
-      console.log('Mock data loaded:', syllabusData);
-      currentSyllabus = syllabusData;
-      
-      // Display all sections
-      try {
+        if (!response.ok) throw new Error('Failed to load syllabus');
+
+        currentSyllabus = await response.json();
         displaySyllabusInfo();
-        console.log('✓ Displayed syllabus info');
-      } catch (e) {
-        console.error('✗ Error in displaySyllabusInfo:', e);
-      }
-      
-      try {
         displaySyllabusContent();
-        console.log('✓ Displayed syllabus content');
-      } catch (e) {
-        console.error('✗ Error in displaySyllabusContent:', e);
-      }
-      
-      try {
         displayCLOPLO();
-        console.log('✓ Displayed CLO-PLO');
-      } catch (e) {
-        console.error('✗ Error in displayCLOPLO:', e);
+        
+        // Load AI features
+        runChangeDetection();
+        runValidation();
+        generateSummary();
+        loadPreviousReviews();
+
+      } catch (error) {
+        console.error('Error loading syllabus:', error);
+        alert('Error loading syllabus data');
       }
-      
-      // Load AI features (these can fail silently)
-      setTimeout(() => {
-        try { runChangeDetection(); } catch (e) { console.log('Change detection skipped'); }
-        try { runValidation(); } catch (e) { console.log('Validation skipped'); }
-        try { generateSummary(); } catch (e) { console.log('Summary skipped'); }
-        try { loadPreviousReviews(); } catch (e) { console.log('Previous reviews skipped'); }
-      }, 500);
-      
-      console.log('=== loadSyllabus completed');
-    }
     }
 
     // Display syllabus info
     function displaySyllabusInfo() {
-      console.log('displaySyllabusInfo called with:', currentSyllabus);
-      
-      const titleEl = document.getElementById('syllabus-title');
-      const subtitleEl = document.getElementById('syllabus-subtitle');
-      const statusBadgeEl = document.getElementById('status-badge');
-      const infoEl = document.getElementById('syllabus-info');
-      
-      if (!titleEl || !subtitleEl || !statusBadgeEl || !infoEl) {
-        console.error('Required elements not found');
-        return;
-      }
-      
-      titleEl.textContent = currentSyllabus.subject_name || 'Untitled Syllabus';
-      subtitleEl.textContent = 
+      document.getElementById('syllabus-title').textContent = currentSyllabus.subject_name || 'Untitled Syllabus';
+      document.getElementById('syllabus-subtitle').textContent = 
         `${currentSyllabus.subject_code || 'N/A'} • ${currentSyllabus.lecturer_name || 'Unknown'} • ${new Date(currentSyllabus.created_at).toLocaleDateString('vi-VN')}`;
       
-      statusBadgeEl.textContent = currentSyllabus.status || 'Pending';
-      statusBadgeEl.className = `badge badge-${currentSyllabus.status === 'approved' ? 'approved' : currentSyllabus.status === 'rejected' ? 'rejected' : 'pending'}`;
+      const statusBadge = document.getElementById('status-badge');
+      statusBadge.textContent = currentSyllabus.status || 'Pending';
+      statusBadge.className = `badge badge-${currentSyllabus.status === 'approved' ? 'approved' : currentSyllabus.status === 'rejected' ? 'rejected' : 'pending'}`;
 
       const info = `
         <div class="info-row"><div class="info-label">Subject Code:</div><div class="info-value">${currentSyllabus.subject_code || 'N/A'}</div></div>
@@ -385,19 +293,12 @@
         <div class="info-row"><div class="info-label">Submitted Date:</div><div class="info-value">${new Date(currentSyllabus.created_at).toLocaleString('vi-VN')}</div></div>
         <div class="info-row"><div class="info-label">Status:</div><div class="info-value"><strong>${currentSyllabus.status || 'Pending'}</strong></div></div>
       `;
-      infoEl.innerHTML = info;
-      infoEl.classList.remove('loading'); // Remove loading class
-      console.log('Syllabus info displayed successfully');
+      document.getElementById('syllabus-info').innerHTML = info;
     }
 
     // Display syllabus content
     function displaySyllabusContent() {
-      const contentEl = document.getElementById('syllabus-content');
-      if (!contentEl) {
-        console.error('Content element not found');
-        return;
-      }
-
+      const content = currentSyllabus.content || currentSyllabus.description || 'No content available';
       const sections = [
         { title: 'Course Description', field: 'description' },
         { title: 'Learning Objectives', field: 'learning_objectives' },
@@ -411,54 +312,19 @@
       sections.forEach(section => {
         const value = currentSyllabus[section.field] || 'Not provided';
         html += `
-          <div class="content-section" style="margin-bottom: 20px;">
-            <h4 style="color: #333; margin-bottom: 10px;">${section.title}</h4>
-            <div style="white-space: pre-wrap; line-height: 1.6; color: #555;">${value}</div>
+          <div class="content-section">
+            <h4>${section.title}</h4>
+            <div style="white-space: pre-wrap;">${value}</div>
           </div>
         `;
       });
 
-      contentEl.innerHTML = html || '<p style="color: #999;">No content available</p>';
-      contentEl.classList.remove('loading'); // Remove loading class
-      console.log('Syllabus content displayed successfully');
+      document.getElementById('syllabus-content').innerHTML = html || '<p style="color: #999;">No content available</p>';
     }
 
     // Display CLO-PLO mapping
     function displayCLOPLO() {
-      const cloEl = document.getElementById('clo-plo-content');
-      if (!cloEl) {
-        console.error('CLO-PLO element not found');
-        return;
-      }
-
       const cloData = currentSyllabus.clo_plo_mapping || [];
-      
-      if (cloData.length === 0) {
-        cloEl.innerHTML = '<p style="color: #999; padding: 20px; text-align: center;">No CLO-PLO mapping available</p>';
-        cloEl.classList.remove('loading');
-        return;
-      }
-
-      let html = '<table style="width: 100%; border-collapse: collapse;">';
-      html += '<thead><tr style="background: #f8f9fa; border-bottom: 2px solid #dee2e6;">';
-      html += '<th style="padding: 12px; text-align: left;">CLO</th>';
-      html += '<th style="padding: 12px; text-align: left;">Description</th>';
-      html += '<th style="padding: 12px; text-align: left;">PLO Mapping</th>';
-      html += '</tr></thead><tbody>';
-
-      cloData.forEach(item => {
-        html += '<tr style="border-bottom: 1px solid #eee;">';
-        html += `<td style="padding: 12px;"><strong>${item.clo}</strong></td>`;
-        html += `<td style="padding: 12px;">${item.description}</td>`;
-        html += `<td style="padding: 12px;">${Array.isArray(item.plo) ? item.plo.join(', ') : item.plo}</td>`;
-        html += '</tr>';
-      });
-
-      html += '</tbody></table>';
-      cloEl.innerHTML = html;
-      cloEl.classList.remove('loading'); // Remove loading class
-      console.log('CLO-PLO mapping displayed successfully');
-    }
       
       if (cloData.length === 0) {
         document.getElementById('clo-plo-section').innerHTML = '<p style="color: #999;">No CLO-PLO mapping defined</p>';
@@ -659,22 +525,9 @@
       window.location.href = '/index.html';
     }
 
-    // Initialize when DOM is ready
-    document.addEventListener('DOMContentLoaded', function() {
-      console.log('DOM loaded, initializing with syllabusId:', syllabusId);
-      loadSyllabus();
-      loadDraft();
-    });
-    
-    // Also try immediate load in case DOM is already loaded
-    if (document.readyState === 'loading') {
-      // Still loading, wait for DOMContentLoaded
-    } else {
-      // DOM already loaded, execute immediately
-      console.log('DOM already loaded, initializing immediately with syllabusId:', syllabusId);
-      loadSyllabus();
-      loadDraft();
-    }
+    // Initialize
+    loadSyllabus();
+    loadDraft();
   </script>
 </body>
 </html>

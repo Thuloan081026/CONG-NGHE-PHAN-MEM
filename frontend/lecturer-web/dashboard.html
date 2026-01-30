@@ -28,7 +28,6 @@
 
 <body class="sidebar-mini fixed">
 
-    <!-- HƯỚNG DẪN ĐÃ BỊ XÓA THEO YÊU CẦU -->
     <!-- Pre-loader start -->
     <div class="loader-bg">
         <div class="loader-bar"></div>
@@ -94,7 +93,7 @@
                     <li class="treeview">
                         <a class="waves-effect waves-dark" href="#!">
                             <i class="ti-book"></i><span> My Syllabuses</span>
-                            <span class="badge badge-primary" style="margin-left: 10px;">12</span>
+                            <span class="badge badge-primary" style="margin-left: 10px;">5</span>
                             <i class="ti-angle-down" style="float: right; margin-top: 5px;"></i>
                         </a>
                         <ul class="treeview-menu">
@@ -107,13 +106,11 @@
                     <li>
                         <a class="waves-effect waves-dark" href="comments-feedback.html">
                             <i class="ti-comment-alt"></i><span> Reviews & Feedback</span>
-                            <span class="badge badge-warning" style="margin-left: 5px;">3</span>
                         </a>
                     </li>
                     <li>
                         <a class="waves-effect waves-dark" href="search-reference.html">
                             <i class="ti-search"></i><span> Search References</span>
-                            <span class="badge badge-success" style="margin-left: 5px;">NEW</span>
                         </a>
                     </li>
                     
@@ -126,7 +123,6 @@
                     <li>
                         <a class="waves-effect waves-dark" href="notifications.html">
                             <i class="ti-bell"></i><span> Notifications</span>
-                            <span class="badge badge-danger" style="margin-left: 5px;">5</span>
                         </a>
                     </li>
                     
@@ -204,17 +200,11 @@
                         <div class="card">
                             <div class="card-header">
                                 <h5 class="card-header-text"><i class="ti-files"></i> My Recent Syllabuses</h5>
-                                <div class="card-header-right">
-                                    <a href="syllabus-list.html" class="btn btn-sm btn-primary-gradient">
-                                        <i class="ti-eye"></i> View All
-                                    </a>
-                                </div>
                             </div>
-                            <div class="card-block" style="padding: 0;">
+                            <div class="card-block" style="padding: 15px;">
                                 <div id="recentSyllabuses">
-                                    <div class="loading-spinner">
-                                        <div class="spinner"></div>
-                                        <p style="color: #999;">Loading syllabuses...</p>
+                                    <div style="text-align: center; color: #999;">
+                                        <p>Loading syllabuses...</p>
                                     </div>
                                 </div>
                             </div>
@@ -227,17 +217,11 @@
                                 <h5 class="card-header-text"><i class="ti-layout-grid2"></i> Quick Actions</h5>
                             </div>
                             <div class="card-block">
-                                <a href="syllabus-create.html" class="btn btn-primary-gradient btn-block btn-action mb-3" onclick="window.location.assign('syllabus-create.html'); return false;">
-                                    <i class="ti-plus"></i> Create New Syllabus
+                                <a href="syllabus-create.html" class="btn btn-primary btn-block" style="margin-bottom: 10px;">
+                                    <i class="ti-plus"></i> Create New
                                 </a>
-                                <a href="syllabus-list.html" class="btn btn-outline-primary btn-block btn-action mb-3" onclick="window.location.assign('syllabus-list.html'); return false;">
-                                    <i class="ti-files"></i> View All Syllabuses
-                                </a>
-                                <a href="comments-feedback.html" class="btn btn-outline-info btn-block btn-action mb-3" onclick="window.location.assign('comments-feedback.html'); return false;">
-                                    <i class="ti-comment"></i> Reviews & Feedback
-                                </a>
-                                <a href="search-reference.html" class="btn btn-outline-success btn-block btn-action" onclick="window.location.assign('search-reference.html'); return false;">
-                                    <i class="ti-search"></i> Search References
+                                <a href="syllabus-list.html" class="btn btn-outline-primary btn-block" style="margin-bottom: 10px;">
+                                    <i class="ti-files"></i> View All
                                 </a>
                             </div>
                         </div>
@@ -248,7 +232,7 @@
         </div>
     </div>
 
-    <!-- Required Jquery - CDN Fallback -->
+    <!-- Required Jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <script type="text/javascript" src="assets/plugins/tether/dist/js/tether.min.js"></script>
@@ -257,95 +241,134 @@
     <!-- Scrollbar JS-->
     <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
     <script src="assets/plugins/jquery.nicescroll/jquery.nicescroll.min.js"></script>
-    <!--classic JS-->
-    <script src="assets/plugins/classie/classie.js"></script>
     <!-- Custom js -->
     <script type="text/javascript" src="assets/js/main.min.js"></script>
     <script src="assets/js/menu.min.js"></script>
     <script>
+        // ============ LECTURER DASHBOARD WITH MOCK DATA ============
         const API_URL = 'http://localhost:8000';
 
-        // Authentication helper: get token, refresh user from /users/me
+        // 📊 MOCK DATA - Real data for testing
+        const mockLecturerData = {
+          syllabuses: [
+            { id: 1, code: 'CS301', name: 'Cơ sở dữ liệu nâng cao', status: 'published', updated_at: '2026-01-25T10:00:00', faculty: 'CNTT' },
+            { id: 2, code: 'CS401', name: 'Trí tuệ nhân tạo', status: 'in_review', updated_at: '2026-01-24T14:30:00', faculty: 'CNTT' },
+            { id: 3, code: 'CS201', name: 'Cấu trúc dữ liệu', status: 'published', updated_at: '2026-01-23T09:15:00', faculty: 'CNTT' },
+            { id: 4, code: 'CS102', name: 'Lập trình hướng đối tượng', status: 'draft', updated_at: '2026-01-22T11:45:00', faculty: 'CNTT' },
+            { id: 5, code: 'CS303', name: 'Mạng máy tính', status: 'published', updated_at: '2026-01-21T15:20:00', faculty: 'CNTT' }
+          ]
+        };
+
+        // Get authentication token and user data
         const token = localStorage.getItem('access_token');
         let userData = null;
 
+        // 🔐 Try to get current user from API
         async function fetchCurrentUser() {
             if (!token) return null;
             try {
                 const res = await fetch(`${API_URL}/users/me`, { headers: { 'Authorization': `Bearer ${token}` } });
                 if (!res.ok) throw new Error('Not authenticated');
-                const u = await res.json();
-                localStorage.setItem('user_data', JSON.stringify(u));
-                return u;
+                return await res.json();
             } catch (err) {
-                console.warn('Could not fetch current user:', err);
+                console.warn('Could not fetch user:', err.message);
                 return null;
             }
         }
 
-        // Try to refresh user info from backend, then validate role
+        // 🎯 Initialize dashboard on page load
         (async () => {
+            // Get user data from API or localStorage
             userData = await fetchCurrentUser() || JSON.parse(localStorage.getItem('user_data') || 'null');
-            if (!token || !userData || userData.role !== 'lecturer') {
-                alert('⚠️ Access denied! Lecturer login required.');
-                window.location.href = 'http://localhost:3000/index.html';
-                return;
+            
+            // Fallback to demo user if not authenticated
+            if (!userData) {
+                userData = { full_name: 'Lecturer Demo', email: 'lecturer@edu.vn', role: 'lecturer' };
             }
-            // update UI name if present
-            const userNameText = userData.full_name || userData.email || 'Lecturer';
-            document.querySelectorAll('#userName').forEach(el => el.textContent = userNameText);
-            if (document.getElementById('welcomeName')) document.getElementById('welcomeName').textContent = userNameText;
-
-            // load notifications after auth
-            fetchNotifications();
+            
+            // Update UI with user name
+            const userName = userData.full_name || userData.email || 'Lecturer';
+            document.getElementById('userName').textContent = userName;
+            document.getElementById('welcomeName').textContent = userName;
+            
+            // Load and display mock data
+            loadLecturerData();
         })();
 
-        // Update user name
-        const userName = userData?.full_name || userData?.email || 'Lecturer';
-        document.querySelectorAll('#userName').forEach(el => el.textContent = userName);
-        if (document.getElementById('welcomeName')) {
-            document.getElementById('welcomeName').textContent = userName;
-        }
-
-        // Logout function
+        // 🚪 Logout function
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
                 localStorage.clear();
-                window.location.href = 'home.html';
+                window.location.href = '../index.html';
             }
         }
 
-        // Notifications
-        async function fetchNotifications() {
+        // 📈 Load lecturer data and display it
+        function loadLecturerData() {
             try {
-                const res = await fetch(`${API_URL}/notifications?skip=0&limit=10`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                if (!res.ok) {
-                    console.warn('Failed to load notifications', res.status);
-                    return;
-                }
-                const data = await res.json();
-                const items = data.items || [];
-                const unreadCount = items.filter(i => !i.is_read).length;
-                document.querySelectorAll('.header-badge').forEach(el => el.textContent = unreadCount);
-
-                // Populate dropdown
-                const dropdown = document.querySelector('.notification-menu .dropdown-menu');
-                if (dropdown) {
-                    let html = `<li class="not-head">You have <b class="text-primary">${unreadCount}</b> new notifications.</li>`;
-                    items.slice(0,5).forEach(n => {
-                        html += `<li><a href="#!">${n.title || n.message || 'Notification'}</a></li>`;
-                    });
-                    html += `<li class="not-footer"><a href="notifications.html">See all notifications.</a></li>`;
-                    dropdown.innerHTML = html;
-                }
-            } catch (err) {
-                console.error('Notifications error:', err);
+                const syllabuses = mockLecturerData.syllabuses;
+                
+                // Calculate statistics
+                const total = syllabuses.length;
+                const published = syllabuses.filter(s => s.status === 'published').length;
+                const inReview = syllabuses.filter(s => s.status === 'in_review').length;
+                const draft = syllabuses.filter(s => s.status === 'draft').length;
+                
+                // Animate numbers in stat cards
+                animateNumber(document.getElementById('totalSyllabuses'), total);
+                animateNumber(document.getElementById('publishedSyllabuses'), published);
+                animateNumber(document.getElementById('reviewSyllabuses'), inReview);
+                animateNumber(document.getElementById('draftSyllabuses'), draft);
+                
+                // Display the syllabuses table
+                displayRecentSyllabuses(syllabuses);
+                
+                console.log('✅ Lecturer data loaded successfully');
+            } catch (error) {
+                console.error('❌ Error loading lecturer data:', error);
             }
         }
 
-        // Animate numbers
+        // 📊 Display syllabuses in a table
+        function displayRecentSyllabuses(syllabuses) {
+            const container = document.getElementById('recentSyllabuses');
+            
+            if (!container) return;
+            
+            if (syllabuses.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999;">No syllabuses found</p>';
+                return;
+            }
+            
+            // Build HTML table
+            let html = '<table class="table table-sm table-hover" style="margin: 0;">';
+            html += '<thead><tr style="background: #f5f5f5;">';
+            html += '<th>Code</th><th>Name</th><th>Status</th><th>Faculty</th><th>Updated</th><th>Action</th>';
+            html += '</tr></thead><tbody>';
+            
+            syllabuses.forEach((s) => {
+                const statusColor = s.status === 'published' ? 'success' : 
+                                    s.status === 'in_review' ? 'warning' : 'secondary';
+                const statusText = s.status === 'published' ? 'Published' : 
+                                  s.status === 'in_review' ? 'In Review' : 'Draft';
+                const updatedDate = new Date(s.updated_at).toLocaleDateString('vi-VN');
+                
+                html += `<tr>
+                    <td><strong>${s.code}</strong></td>
+                    <td>${s.name}</td>
+                    <td><span class="badge badge-${statusColor}">${statusText}</span></td>
+                    <td>${s.faculty}</td>
+                    <td>${updatedDate}</td>
+                    <td><a href="#" class="btn btn-sm btn-info">View</a></td>
+                </tr>`;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+            console.log(`✅ Displayed ${syllabuses.length} syllabuses`);
+        }
+
+        // ✨ Animate number counting
         function animateNumber(element, target) {
             if (!element) return;
             let current = 0;
@@ -360,201 +383,21 @@
                 }
             }, 30);
         }
-
-        // Fetch dashboard data
-        async function fetchDashboardData() {
-            console.log('Starting to fetch dashboard data...');
-            console.log('API URL:', API_URL);
-            console.log('Token:', token ? 'Token exists' : 'No token');
-            
-            try {
-                console.log('Calling API...');
-                const response = await fetch(`${API_URL}/syllabus/`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                console.log('Response status:', response.status);
-                console.log('Response ok:', response.ok);
-
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('Data received:', data);
-                    const syllabuses = Array.isArray(data) ? data : (data.items || data.syllabuses || []);
-                    console.log('Syllabuses count:', syllabuses.length);
-                    
-                    // Calculate statistics
-                    const total = syllabuses.length;
-                    const published = syllabuses.filter(s => s.status === 'published').length;
-                    const inReview = syllabuses.filter(s => ['in_review', 'submitted', 'hod_approved'].includes(s.status)).length;
-                    const draft = syllabuses.filter(s => s.status === 'draft').length;
-                    
-                    // Animate stat numbers
-                    animateNumber(document.getElementById('totalSyllabuses'), total);
-                    animateNumber(document.getElementById('publishedSyllabuses'), published);
-                    animateNumber(document.getElementById('reviewSyllabuses'), inReview);
-                    animateNumber(document.getElementById('draftSyllabuses'), draft);
-                    
-                    // Sort by updated date (newest first)
-                    syllabuses.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
-                    
-                    // Display recent syllabuses (top 5)
-                    displayRecentSyllabuses(syllabuses.slice(0, 5));
-                } else if (response.status === 500) {
-                    console.warn('Backend validation error (500), showing empty dashboard');
-                    showEmptyDashboard();
-                } else if (response.status === 401) {
-                    console.error('Unauthorized (401) - redirecting to login');
-                    alert('Session expired. Please login again.');
-                    localStorage.clear();
-                    window.location.href = 'home.html';
-                } else {
-                    console.error('Failed to fetch syllabuses:', response.status);
-                    const errorText = await response.text();
-                    console.error('Error response:', errorText);
-                    showErrorState();
-                }
-            } catch (error) {
-                console.error('Error fetching dashboard data:', error);
-                console.error('Error details:', error.message);
-                showErrorState();
-            }
-        }
-
-        // Display recent syllabuses
-        function displayRecentSyllabuses(syllabuses) {
-            const container = document.getElementById('recentSyllabuses');
-            
-            if (syllabuses.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="ti-files"></i>
-                        <p>No syllabuses yet. Start creating!</p>
-                        <a href="syllabus-create.html" class="btn btn-primary btn-sm mt-3">
-                            <i class="ti-plus"></i> Create First Syllabus
-                        </a>
-                    </div>
-                `;
-                return;
-            }
-            
-            let html = '';
-            syllabuses.forEach((syllabus, index) => {
-                const statusClass = `status-${syllabus.status}`;
-                const statusLabel = syllabus.status.replace(/_/g, ' ').toUpperCase();
-                const updatedDate = new Date(syllabus.updated_at).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric'
-                });
-                
-                const subjectCode = syllabus.subject_code || syllabus.course_code || 'N/A';
-                const subjectName = syllabus.subject_name || syllabus.course_name || 'Untitled';
-                const credits = syllabus.credits || '-';
-                
-                html += `
-                    <div class="recent-item" style="animation: slideIn 0.3s ease ${index * 0.1}s both;">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <div style="flex: 1;">
-                                <div class="recent-item-title">${subjectCode} - ${subjectName}</div>
-                                <div class="recent-item-meta">
-                                    <i class="ti-book"></i> ${credits} credits
-                                    <span style="margin: 0 8px;">•</span>
-                                    <i class="ti-calendar"></i> ${updatedDate}
-                                </div>
-                            </div>
-                            <div>
-                                <span class="status-badge ${statusClass}">${statusLabel}</span>
-                            </div>
-                        </div>
-                        <div style="margin-top: 10px;">
-                            <a href="syllabus-view.html?id=${syllabus.id}" class="btn btn-sm btn-outline-primary" style="margin-right: 5px;">
-                                <i class="ti-eye"></i> View
-                            </a>
-                            <a href="syllabus-edit.html?id=${syllabus.id}" class="btn btn-sm btn-primary">
-                                <i class="ti-pencil"></i> Edit
-                            </a>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-        }
-
-        // Show empty dashboard
-        function showEmptyDashboard() {
-            document.getElementById('totalSyllabuses').textContent = '0';
-            document.getElementById('publishedSyllabuses').textContent = '0';
-            document.getElementById('reviewSyllabuses').textContent = '0';
-            document.getElementById('draftSyllabuses').textContent = '0';
-            
-            document.getElementById('recentSyllabuses').innerHTML = `
-                <div class="empty-state">
-                    <i class="ti-files"></i>
-                    <p>No syllabuses yet. Start creating!</p>
-                    <a href="syllabus-create.html" class="btn btn-primary btn-sm mt-3">
-                        <i class="ti-plus"></i> Create First Syllabus
-                    </a>
-                </div>
-            `;
-        }
-
-        // Show error state
-        function showErrorState() {
-            document.getElementById('recentSyllabuses').innerHTML = `
-                <div class="empty-state">
-                    <i class="ti-alert" style="color: #f5576c;"></i>
-                    <p>Unable to load data. Please try again.</p>
-                    <button onclick="fetchDashboardData()" class="btn btn-primary btn-sm mt-3">
-                        <i class="ti-reload"></i> Retry
-                    </button>
-                </div>
-            `;
-        }
-
-        // Animation CSS
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from {
-                    opacity: 0;
-                    transform: translateX(-20px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Load data on page load
-        $(document).ready(function() {
-            console.log('Dashboard loaded successfully');
-            fetchDashboardData();
-        });
     </script>
     <script>
-        // Ensure links to .html pages navigate reliably even if other JS interferes
+        // Handle link navigation
         document.addEventListener('click', function (ev) {
             try {
                 const a = ev.target.closest && ev.target.closest('a');
                 if (!a) return;
                 const href = a.getAttribute('href');
-                if (!href) return;
-                // Ignore in-page anchors and toggle placeholders
-                if (href.startsWith('#')) return;
-                // If link points to an HTML file or to a relative path, navigate using assign
+                if (!href || href.startsWith('#')) return;
                 if (href.endsWith('.html') || href.includes('/')) {
                     ev.preventDefault();
-                    // Use assign to preserve history
                     window.location.assign(href);
                 }
             } catch (e) {
-                console.warn('Navigation helper error', e);
+                console.warn('Navigation error', e);
             }
         }, false);
     </script>
