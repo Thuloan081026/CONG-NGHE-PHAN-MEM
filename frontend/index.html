@@ -204,18 +204,17 @@
       console.log('User role type:', typeof userData.role);
       console.log('User role repr:', JSON.stringify(userData.role));
       
-      // Build dashboard URLs using relative paths
-      // Sử dụng đường dẫn tương đối để tránh lỗi khi chạy trên các cổng hoặc thư mục khác nhau
+      // Build dashboard URLs - Mỗi dashboard chạy trên port riêng
       const dashboardMap = {
-        'admin': 'admin-web/html/dashboard.html',
-        'lecturer': 'lecturer-web/dashboard.html',
-        'hod': 'hod-web/dashboard.html',
-        'academic_affairs': 'academic-affairs-web/dashboard-interactive.html',
-        'student': 'student-web/dashboard.html',
-        'principal': 'principal-web/dashboard.html',
-        'reviewer': 'reviewer-web/dashboard.html',
-        'user': 'user-web/dashboard.html',
-        'aa': 'academic-affairs-web/dashboard-interactive.html'
+        'admin': 'http://localhost:3001/dashboard.html',
+        'lecturer': 'http://localhost:3002/dashboard.html',
+        'hod': 'http://localhost:3002/dashboard.html',
+        'academic_affairs': 'http://localhost:3002/dashboard.html',
+        'student': 'http://localhost:3002/dashboard.html',
+        'principal': 'http://localhost:3003/dashboard.html',
+        'reviewer': 'http://localhost:3002/dashboard.html',
+        'user': 'http://localhost:3002/dashboard.html',
+        'aa': 'http://localhost:3002/dashboard.html'
       };
 
       console.log('Dashboard map keys:', Object.keys(dashboardMap));
@@ -223,7 +222,6 @@
       console.log('Redirect URL:', redirectUrl);
       
       if (redirectUrl) {
-        // Sử dụng đường dẫn tương đối
         console.log('Redirecting to:', redirectUrl);
         window.location.replace(redirectUrl);
         return;

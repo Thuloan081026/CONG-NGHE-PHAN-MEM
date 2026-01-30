@@ -447,31 +447,49 @@
     // Load Dashboard Data from database
     async function loadDashboardData() {
       try {
+        // Wait a bit to ensure localStorage is ready after redirect
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
         // Get token from localStorage
         const token = localStorage.getItem('access_token');
         if (!token) {
-          console.warn('No token found, using mock data');
-          // Use mock data if no token
-          loadMockData();
+          console.error('No token found, redirecting to login');
+          console.log('localStorage keys:', Object.keys(localStorage));
+          window.location.href = '../../index.html';
           return;
         }
+        
+        console.log('✅ Token found:', token.substring(0, 20) + '...');
+        
         // Validate current user and role
         try {
           const meRes = await fetch(`${API_BASE_URL}/users/me`, { headers: { 'Authorization': `Bearer ${token}` } });
           if (!meRes.ok) {
-            console.warn('Cannot validate user, using mock data');
-            loadMockData();
+            console.error('Cannot validate user, redirecting to login');
+            console.error('Response status:', meRes.status);
+            localStorage.clear();
+            window.location.href = '../../index.html';
             return;
           }
           const me = await meRes.json();
-          if (me.role !== 'admin') {
+          console.log('✅ User validated:', me.email, '-', me.role);
+          
+          if (me.role !== 'admin' && me.role !== 'principal') {
             alert('Bạn không có quyền truy cập trang quản trị. Vui lòng đăng nhập bằng tài khoản Admin.\nRole: ' + me.role);
-            window.location.href = '/index.html';
+            window.location.href = '../../index.html';
             return;
           }
+          // Display user info
+          if (me.full_name) {
+            document.getElementById('userName').textContent = me.full_name;
+          }
+          if (me.email) {
+            document.getElementById('userEmail').textContent = me.email;
+          }
         } catch (err) {
-          console.warn('Error validating user, using mock data:', err);
-          loadMockData();
+          console.error('Error validating user:', err);
+          localStorage.clear();
+          window.location.href = '../../index.html';
           return;
         }
         
@@ -482,7 +500,7 @@
         
         // Load dashboard stats from database
         try {
-          console.log('Fetching dashboard stats...');
+          console.log('Fetching dashboard stats from:', `${API_BASE_URL}/api/admin/dashboard/stats`);
           const statsResponse = await fetch(`${API_BASE_URL}/api/admin/dashboard/stats`, { headers });
           console.log('Stats response status:', statsResponse.status);
           
@@ -496,15 +514,26 @@
             document.getElementById('pendingReview').textContent = stats.pending_review || 0;
             document.getElementById('publishedCount').textContent = stats.published || 0;
             
-            console.log('Dashboard stats updated successfully');
+            console.log('✅ Dashboard stats updated successfully with real data');
           } else {
-            console.error('Failed to load dashboard stats, using mock data');
-            loadMockData();
+            const errorText = await statsResponse.text();
+            console.error('Failed to load dashboard stats:', errorText);
+            alert('Không thể tải dữ liệu dashboard. Vui lòng kiểm tra backend server.');
+            // Set to 0 instead of mock data
+            document.getElementById('totalUsers').textContent = '0';
+            document.getElementById('totalSyllabuses').textContent = '0';
+            document.getElementById('pendingReview').textContent = '0';
+            document.getElementById('publishedCount').textContent = '0';
             return;
           }
         } catch (error) {
-          console.error('Error loading dashboard stats, using mock data:', error);
-          loadMockData();
+          console.error('Error loading dashboard stats:', error);
+          alert('Lỗi kết nối đến backend API. Vui lòng kiểm tra backend server có đang chạy.');
+          // Set to 0 instead of mock data
+          document.getElementById('totalUsers').textContent = '0';
+          document.getElementById('totalSyllabuses').textContent = '0';
+          document.getElementById('pendingReview').textContent = '0';
+          document.getElementById('publishedCount').textContent = '0';
           return;
         }
         
@@ -582,7 +611,7 @@
         
         if (usersResponse.ok) {
           const recentUsers = await usersResponse.json();
-          console.log('Recent users loaded:', recentUsers);
+          console.log('Recent users loaded:', recentUsers.length, 'users');
           
           if (recentUsers && recentUsers.length > 0) {
             usersTable.innerHTML = recentUsers.map(user => `
@@ -600,12 +629,11 @@
               </tr>
             `).join('');
           } else {
-            usersTable.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Chưa có người dùng</td></tr>';
+            usersTable.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Chưa có người dùng trong hệ thống</td></tr>';
           }
         } else {
-          console.error('Failed to load users, using mock data');
-          loadMockData();
-          return;
+          console.error('Failed to load users:', await usersResponse.text());
+          usersTable.innerHTML = '<tr><td colspan="3" class="text-center text-danger">Lỗi tải danh sách người dùng</td></tr>';
         }
         
         // Load recent syllabuses
@@ -615,7 +643,7 @@
         
         if (syllabusResponse.ok) {
           const recentSyllabuses = await syllabusResponse.json();
-          console.log('Recent syllabuses loaded:', recentSyllabuses);
+          console.log('Recent syllabuses loaded:', recentSyllabuses.length, 'syllabuses');
           
           if (recentSyllabuses && recentSyllabuses.length > 0) {
             syllabusTable.innerHTML = recentSyllabuses.map(syl => `
@@ -636,17 +664,19 @@
               </tr>
             `).join('');
           } else {
-            syllabusTable.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Chưa có đề cương</td></tr>';
+            syllabusTable.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Chưa có đề cương trong hệ thống</td></tr>';
           }
         } else {
-          console.error('Failed to load syllabuses, using mock data');
-          loadMockData();
-          return;
+          console.error('Failed to load syllabuses:', await syllabusResponse.text());
+          syllabusTable.innerHTML = '<tr><td colspan="3" class="text-center text-danger">Lỗi tải danh sách đề cương</td></tr>';
         }
         
+        console.log('✅ All dashboard data loaded successfully');
+        
       } catch (error) {
-        console.error('Error loading recent data, using mock data:', error);
-        loadMockData();
+        console.error('Error loading recent data:', error);
+        usersTable.innerHTML = '<tr><td colspan="3" class="text-center text-danger">Lỗi kết nối API</td></tr>';
+        syllabusTable.innerHTML = '<tr><td colspan="3" class="text-center text-danger">Lỗi kết nối API</td></tr>';
       }
     }
     
@@ -698,7 +728,7 @@
     function logout() {
       localStorage.clear();
       sessionStorage.setItem('from_logout', 'true');
-      window.location.href = '/index.html';
+      window.location.href = '../../index.html';
     }
     
     // Load data on page load
