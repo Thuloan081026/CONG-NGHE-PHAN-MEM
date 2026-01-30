@@ -23,20 +23,24 @@
             });
             if (res.ok) {
               const user = await res.json();
-              const dashboardMap = {
-                'admin': 'admin-web/dashboard-interactive.html',
-                'hod': 'hod-web/dashboard.html',
-                'academic_affairs': 'academic-affairs-web/dashboard-interactive.html',
-                'aa': 'academic-affairs-web/dashboard-interactive.html',
-                'lecturer': 'lecturer-web/dashboard.html',
-                'student': 'student-web/dashboard.html',
-                'principal': 'principal-web/dashboard.html',
-                'reviewer': 'reviewer-web/dashboard.html',
-                'user': 'user-web/dashboard.html'
-              };
-              const redirectUrl = dashboardMap[user.role];
-              if (redirectUrl) {
-                window.location.replace(redirectUrl);
+              if (user.role === 'admin') {
+                window.location.replace('/admin-web/html/dashboard.html');
+                return;
+              }
+              if (user.role === 'hod') {
+                window.location.replace('/hod-web/dashboard.html');
+                return;
+              }
+              if (user.role === 'academic_affairs') {
+                window.location.replace('/academic-affairs-web/dashboard.html');
+                return;
+              }
+              if (user.role === 'lecturer') {
+                window.location.replace('/lecturer-web/dashboard.html');
+                return;
+              }
+              if (user.role === 'student') {
+                window.location.replace('/student-web/dashboard.html');
                 return;
               }
             }
@@ -201,33 +205,29 @@
     function redirectToDashboard(userData) {
       console.log('User data:', userData);
       console.log('User role:', userData.role);
-      console.log('User role type:', typeof userData.role);
-      console.log('User role repr:', JSON.stringify(userData.role));
       
-      // Build dashboard URLs - Mỗi dashboard chạy trên port riêng
+      // Build dashboard URLs relative to the current origin to avoid hardcoded ports
+      // Sử dụng đường dẫn tương đối để tránh lỗi khi chạy trên các cổng hoặc thư mục khác nhau
       const dashboardMap = {
-        'admin': 'http://localhost:3001/dashboard.html',
-        'lecturer': 'http://localhost:3002/dashboard.html',
-        'hod': 'http://localhost:3002/dashboard.html',
-        'academic_affairs': 'http://localhost:3002/dashboard.html',
-        'student': 'http://localhost:3002/dashboard.html',
-        'principal': 'http://localhost:3003/dashboard.html',
-        'reviewer': 'http://localhost:3002/dashboard.html',
-        'user': 'http://localhost:3002/dashboard.html',
-        'aa': 'http://localhost:3002/dashboard.html'
+        'admin': '/admin-web/html/dashboard.html',
+        'lecturer': '/lecturer-web/dashboard.html',
+        'hod': '/hod-web/dashboard.html',
+        'academic_affairs': '/academic-affairs-web/dashboard.html',
+        'student': '/student-web/dashboard.html'
       };
 
-      console.log('Dashboard map keys:', Object.keys(dashboardMap));
       const redirectUrl = dashboardMap[userData.role];
       console.log('Redirect URL:', redirectUrl);
-      
       if (redirectUrl) {
-        console.log('Redirecting to:', redirectUrl);
-        window.location.replace(redirectUrl);
+        // Nếu đường dẫn bắt đầu bằng '/', chuyển hướng tuyệt đối từ gốc domain
+        if (redirectUrl.startsWith('/')) {
+          window.location.replace(redirectUrl);
+        } else {
+          // Nếu là đường dẫn tương đối, chuyển hướng theo vị trí hiện tại
+          window.location.replace(window.location.origin + '/' + redirectUrl);
+        }
         return;
       }
-      
-      console.error('Role not found in map!');
       showAlert('⚠️ Role không được hỗ trợ: ' + userData.role, 'warning');
     }
 

@@ -7,57 +7,27 @@ import jwt
 
 from .config import settings
 
-# Use argon2 for better security, fallback to bcrypt then sha256
-pwd_context = None
-try:
-    pwd_context = CryptContext(schemes=["argon2", "bcrypt"], deprecated="auto")
-except Exception:
-    try:
-        pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-    except:
-        try:
-            pwd_context = CryptContext(schemes=["plaintext"], deprecated="auto")
-        except:
-            pass
+pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
 
 def get_password_hash(password: str) -> str:
-    """Hash password - ưu tiên argon2, fallback sha256"""
+    """Hash password - hỗ trợ cả argon2 và sha256 để tương thích"""
     # Nếu password đã là hash sha256 (64 ký tự hex), trả về luôn
     if len(password) == 64 and all(c in '0123456789abcdef' for c in password.lower()):
         return password
-    
-    # Try to use passlib (argon2 or bcrypt)
-    if pwd_context:
-        try:
-            return pwd_context.hash(password)
-        except:
-            pass
-    
-    # Fallback to sha256
-    return hashlib.sha256(password.encode()).hexdigest()
+    return pwd_context.hash(password)
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify password - hỗ trợ argon2, bcrypt, sha256"""
-    # Try passlib first (supports argon2, bcrypt)
-    if pwd_context:
-        try:
-            return pwd_context.verify(plain_password, hashed_password)
-        except:
-            pass
-    
+    """Verify password - hỗ trợ cả argon2 và sha256"""
     # Nếu hash là sha256 (64 ký tự hex), dùng sha256 để verify
     if len(hashed_password) == 64 and all(c in '0123456789abcdef' for c in hashed_password.lower()):
         sha256_hash = hashlib.sha256(plain_password.encode()).hexdigest()
         return sha256_hash == hashed_password
-    
-    # Last resort - try sha256
+    # Ngược lại dùng argon2
     try:
-        sha256_hash = hashlib.sha256(plain_password.encode()).hexdigest()
-        return sha256_hash == hashed_password
+        return pwd_context.verify(plain_password, hashed_password)
     except:
-        return False
         return False
 
 

@@ -1,0 +1,3 @@
+email,full_name,password,role
+admin@hcmute.edu.vn,Admin User,admin123,admin
+lecturer1@hcmute.edu.vn,Lecturer User,lecturer123,lecturer

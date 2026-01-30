@@ -33,13 +33,13 @@ def get_dashboard_stats(
     aa_count = db.execute(text("SELECT COUNT(*) FROM users WHERE role = 'academic_affairs'")).scalar()
     
     # Count syllabuses by status
-    total_syllabuses = db.execute(text("SELECT COUNT(*) FROM syllabuses")).scalar()
-    published = db.execute(text("SELECT COUNT(*) FROM syllabuses WHERE status = 'published'")).scalar()
-    draft = db.execute(text("SELECT COUNT(*) FROM syllabuses WHERE status = 'draft'")).scalar()
+    total_syllabuses = db.execute(text("SELECT COUNT(*) FROM syllabus")).scalar()
+    published = db.execute(text("SELECT COUNT(*) FROM syllabus WHERE status = 'published'")).scalar()
+    draft = db.execute(text("SELECT COUNT(*) FROM syllabus WHERE status = 'draft'")).scalar()
     
     # Count pending review (submitted + hod_approved)
     pending_review = db.execute(text(
-        "SELECT COUNT(*) FROM syllabuses WHERE status IN ('submitted', 'hod_approved')"
+        "SELECT COUNT(*) FROM syllabus WHERE status IN ('submitted', 'hod_approved')"
     )).scalar()
     
     # Count reviews
@@ -95,7 +95,7 @@ def get_recent_syllabuses(
         result = db.execute(text(
             "SELECT s.id, s.subject_code, s.subject_name, s.status, s.created_at, "
             "u.full_name as creator_name "
-            "FROM syllabuses s "
+            "FROM syllabus s "
             "LEFT JOIN users u ON s.created_by = u.id "
             "ORDER BY s.created_at DESC LIMIT :limit"
         ), {"limit": limit})

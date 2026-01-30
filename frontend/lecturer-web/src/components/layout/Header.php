@@ -1,3 +1,3 @@
-<header style="background:#1e293b;color:#fff;padding:12px 20px">
-    <h2>Lecturer Dashboard</h2>
-</header>
+<div class="header">
+    <h2>LECTURER SYSTEM</h2>
+</div>
