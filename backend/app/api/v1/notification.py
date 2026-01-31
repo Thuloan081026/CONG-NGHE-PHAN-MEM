@@ -38,8 +38,11 @@ def get_my_notifications(
         db, current_user.id, skip, limit, unread_only
     )
     
+    # Convert items to NotificationOut schema
+    notification_items = [NotificationOut.from_orm(item) for item in items]
+    
     return NotificationListOut(
-        items=items,
+        items=notification_items,
         total=total,
         skip=skip,
         limit=limit

@@ -147,13 +147,29 @@ const APIService = {
     // });
   },
 
+  // Yêu cầu chỉnh sửa đề cương
+  async requestRevision(syllabusId, reason) {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    return { 
+      success: true, 
+      message: 'Đề cương đã được yêu cầu chỉnh sửa - Người duyệt sẽ được thông báo' 
+    };
+    
+    // Real API:
+    // return this.request(`/api/approvals/${syllabusId}/request-revision`, {
+    //   method: 'POST',
+    //   body: JSON.stringify({ reason })
+    // });
+  },
+
   // Từ chối đề cương
   async rejectSyllabus(syllabusId, reason) {
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     return { 
       success: true, 
-      message: 'Đề cương đã được yêu cầu chỉnh sửa' 
+      message: 'Đề cương đã bị từ chối' 
     };
     
     // Real API:
@@ -176,6 +192,67 @@ const APIService = {
     };
     
     // Real API: return this.request(`/api/syllabus/${syllabusId}`);
+  },
+
+  // Lấy báo cáo CLO-PLO Mapping
+  async getCLOPLOMappingReport() {
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    return {
+      totalSyllabi: 111,
+      mappedSyllabi: 106,
+      faculties: [
+        { name: 'Công nghệ Thông tin', coverage: 100, courses: 45 },
+        { name: 'Quản trị Kinh doanh', coverage: 95, courses: 38 },
+        { name: 'Tiếng Anh', coverage: 89, courses: 28 }
+      ]
+    };
+    
+    // Real API: return this.request('/api/reports/clo-plo-mapping');
+  },
+
+  // Lấy báo cáo Impact Analysis
+  async getImpactAnalysisReport() {
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    return {
+      highImpact: 1,
+      mediumImpact: 1,
+      lowImpact: 1,
+      affectedStudents: 465,
+      impacts: []
+    };
+    
+    // Real API: return this.request('/api/reports/impact-analysis');
+  },
+
+  // Lấy báo cáo Curriculum Coverage
+  async getCurriculumCoverageReport(programId) {
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    return {
+      programId,
+      totalPLOs: 5,
+      avgCoverage: 83,
+      plos: []
+    };
+    
+    // Real API: return this.request(`/api/reports/curriculum-coverage/${programId}`);
+  },
+
+  // Lấy báo cáo Audit & KPI
+  async getAuditKPIReport(timeRange = 'month') {
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    return {
+      avgProcessTime: 3.2,
+      approvalRate: 79,
+      revisionRate: 21,
+      totalProcessed: 42,
+      auditLog: []
+    };
+    
+    // Real API: return this.request(`/api/reports/audit-kpi?range=${timeRange}`);
   },
 
   // Xuất báo cáo

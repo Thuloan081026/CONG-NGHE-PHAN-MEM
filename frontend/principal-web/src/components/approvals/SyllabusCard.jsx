@@ -8,8 +8,9 @@ import { PRIORITY_LABELS, PRIORITY_COLORS } from '../../constants/config';
  * 
  * @param {object} syllabus - Thông tin đề cương
  * @param {function} onReview - Callback khi click xem xét
+ * @param {function} onViewDetail - Callback khi xem chi tiết
  */
-const SyllabusCard = ({ syllabus, onReview }) => {
+const SyllabusCard = ({ syllabus, onReview, onViewDetail }) => {
   return (
     <div className="border border-gray-200 rounded-lg p-5 hover:shadow-md transition bg-gradient-to-r from-white to-gray-50">
       <div className="flex items-start justify-between">
@@ -61,6 +62,15 @@ const SyllabusCard = ({ syllabus, onReview }) => {
 
         {/* Action Button */}
         <div className="flex flex-col space-y-2 ml-4">
+          {onViewDetail && (
+            <button 
+              onClick={() => onViewDetail(syllabus)}
+              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium flex items-center space-x-2"
+            >
+              <Eye className="w-4 h-4" />
+              <span>Chi tiết</span>
+            </button>
+          )}
           <button 
             onClick={() => onReview(syllabus)}
             className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition font-medium flex items-center space-x-2 shadow-md"

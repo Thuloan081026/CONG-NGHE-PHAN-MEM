@@ -8,8 +8,9 @@ import SyllabusCard from './SyllabusCard';
  * 
  * @param {array} syllabi - Danh sách đề cương
  * @param {function} onReview - Callback khi xem xét đề cương
+ * @param {function} onViewDetail - Callback khi xem chi tiết đề cương
  */
-const ApprovalList = ({ syllabi, onReview }) => {
+const ApprovalList = ({ syllabi, onReview, onViewDetail }) => {
   if (!syllabi || syllabi.length === 0) {
     return (
       <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
@@ -55,6 +56,7 @@ const ApprovalList = ({ syllabi, onReview }) => {
               key={syllabus.id} 
               syllabus={syllabus} 
               onReview={onReview}
+              onViewDetail={onViewDetail}
             />
           ))}
         </div>
