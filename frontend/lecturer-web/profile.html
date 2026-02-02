@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hồ sơ - Giảng viên | SMD</title>
+  <link rel="icon" href="assets/images/favicon.ico">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <style>
+    :root{--bg:#eef3ff;--card:#fff;--primary:#5b6bf3;--muted:#6b7280}
+    body{background:linear-gradient(180deg,var(--bg),#f7f9ff);font-family:Inter,system-ui,Arial;margin:0}
+    .page{max-width:1200px;margin:24px auto;padding:0 20px}
+    .profile-header{display:flex;gap:24px;align-items:center;padding:26px;border-radius:12px;background:linear-gradient(90deg,#fff,#fbfdff);box-shadow:0 6px 20px rgba(20,30,80,0.04)}
+    .avatar{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#7c5dfc);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:48px;border:6px solid var(--card)}
+    .profile-info h1{margin:0;font-size:28px}
+    .profile-info .meta{color:var(--muted);margin-top:6px}
+    .profile-actions{margin-left:auto;text-align:right}
+    .btn-edit{background:#0b67ff;color:#fff;border-radius:8px;padding:10px 14px;border:none}
+    .btn-public{background:#eef2ff;border:none;color:#374151;border-radius:8px;padding:8px 12px;margin-top:8px}
+
+    .card-panel{background:var(--card);border-radius:10px;padding:18px;box-shadow:0 6px 18px rgba(30,40,80,0.04)}
+    .section-title{font-weight:600;margin-bottom:12px}
+    .course-pill{display:inline-block;background:#f3f6fb;padding:12px 18px;border-radius:8px;margin-right:12px;margin-bottom:8px;color:#334155}
+
+    .activity-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid #f1f5f9}
+    .activity-item:last-child{border-bottom:0}
+
+    .progress-small{height:10px;border-radius:8px}
+    .side-btn{width:100%;text-align:center;border-radius:8px;padding:10px}
+
+    @media (max-width:991px){.profile-header{flex-direction:column;align-items:flex-start}.profile-actions{width:100%;text-align:left}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="profile-header">
+      <div class="avatar" id="avatar">G</div>
+      <div class="profile-info">
+        <h1 id="profileName">Lecturer User</h1>
+        <div class="meta">Giảng viên · <span id="departmentShort">Khoa Công nghệ thông tin</span></div>
+        <div class="meta" style="margin-top:6px"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#6b7280" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:8px"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z"/></svg><span id="profileEmail">lecturer1@hcmute.edu.vn</span></div>
+      </div>
+      <div class="profile-actions">
+        <button class="btn-edit" id="btnEdit">Chỉnh sửa hồ sơ</button>
+        <button class="btn-edit d-none" id="btnSave" style="background:#06ad5e">Lưu</button>
+        <button class="btn-public d-none" id="btnCancel" style="margin-top:8px">Hủy</button>
+        <div><button class="btn-public mt-2">👁️ Xem trang cá nhân công khai</button></div>
+      </div>
+    </div>
+
+    <div class="row mt-4 g-4">
+      <div class="col-lg-8">
+        <div class="card-panel mb-3">
+          <div class="section-title">Giới thiệu</div>
+          <div id="introText" data-editable="true">
+            <b>Hồ sơ Giảng viên – Hệ thống Quản lý & Số hóa Giáo trình (SMD)</b>
+            <ol>
+              <li><b>Thông tin chung</b><br>
+                Vai trò: Giảng viên (Lecturer)<br>
+                Chức năng hệ thống: Tạo, chỉnh sửa, quản lý giáo trình; tham gia quy trình xét duyệt; cộng tác phản biện<br>
+                Cấp truy cập: Đăng nhập xác thực, phân quyền theo vai trò (chỉ truy cập và chỉnh sửa các môn/phần được phân công)<br>
+                Đối tượng sử dụng: Giảng viên cơ hữu, thỉnh giảng, trợ giảng
+              </li>
+              <li><b>Nhiệm vụ chính</b>
+                <ul>
+                  <li>Tạo mới, chỉnh sửa, cập nhật giáo trình môn học</li>
+                  <li>Gắn và quản lý metadata (CLO, PLO, trọng số đánh giá, học phần tiên quyết, nội dung giảng dạy, tài liệu tham khảo)</li>
+                  <li>Thiết lập quan hệ giữa các giáo trình (thay thế, cập nhật, phiên bản mới)</li>
+                  <li>Gửi giáo trình lên quy trình xét duyệt (trình Trưởng Bộ môn/Phòng Đào tạo)</li>
+                  <li>Tham gia phản biện, góp ý, trả lời phản hồi</li>
+                  <li>Theo dõi trạng thái giáo trình, nhận thông báo cập nhật</li>
+                  <li>Tìm kiếm, xem, so sánh các phiên bản giáo trình</li>
+                  <li>Sử dụng các công cụ AI (phát hiện thay đổi, mapping CLO–PLO, tóm tắt nội dung)</li>
+                  <li>Theo dõi giáo trình để nhận thông báo khi có thay đổi</li>
+                </ul>
+              </li>
+              <li><b>Trường thông tin chi tiết</b>
+                <div style="overflow-x:auto">
+                  <table class="table table-bordered table-sm" style="background:#fff">
+                    <thead><tr><th>Tên trường</th><th>Mô tả</th><th>Ví dụ/Định dạng</th></tr></thead>
+                    <tbody>
+                      <tr><td>Mã giảng viên</td><td>Định danh duy nhất (tự sinh)</td><td>GV001, GV2025-123</td></tr>
+                      <tr><td>Họ và tên</td><td>Họ tên đầy đủ</td><td>Nguyễn Văn A</td></tr>
+                      <tr><td>Email</td><td>Email trường (dùng đăng nhập, nhận thông báo)</td><td>nguyenvana@university.edu.vn</td></tr>
+                      <tr><td>Số điện thoại</td><td>Số liên hệ (không bắt buộc)</td><td>0912xxxxxx</td></tr>
+                      <tr><td>Khoa/Bộ môn</td><td>Đơn vị công tác</td><td>Khoa CNTT</td></tr>
+                      <tr><td>Chức danh</td><td>Chức danh học thuật</td><td>Giảng viên, ThS, TS</td></tr>
+                      <tr><td>Học vị</td><td>Học vị cao nhất</td><td>ThS, TS</td></tr>
+                      <tr><td>Lĩnh vực nghiên cứu</td><td>Các lĩnh vực quan tâm (không bắt buộc)</td><td>AI, NLP, Công nghệ giáo dục</td></tr>
+                      <tr><td>Môn phụ trách</td><td>Danh sách môn học được phân công</td><td>CS101, SE202</td></tr>
+                      <tr><td>Giáo trình đã tạo</td><td>Danh sách giáo trình đã tạo hoặc quản lý</td><td>SMD101, SMD102</td></tr>
+                      <tr><td>Trạng thái tài khoản</td><td>Đang hoạt động/Đã khóa (do Quản trị viên quản lý)</td><td>Đang hoạt động</td></tr>
+                      <tr><td>Vai trò hệ thống</td><td>Vai trò được gán (Giảng viên, Phản biện, ...)</td><td>Giảng viên</td></tr>
+                      <tr><td>Ngày tham gia</td><td>Ngày tạo tài khoản</td><td>2025-09-01</td></tr>
+                      <tr><td>Lần đăng nhập cuối</td><td>Thời điểm đăng nhập gần nhất</td><td>2025-12-28 14:32</td></tr>
+                      <tr><td>Ảnh đại diện</td><td>Ảnh hồ sơ (không bắt buộc)</td><td>URL hoặc file upload</td></tr>
+                      <tr><td>Cài đặt thông báo</td><td>Email/Push/Không nhận</td><td>Email</td></tr>
+                      <tr><td>Ngôn ngữ giao diện</td><td>Ngôn ngữ ưu tiên</td><td>Tiếng Việt/English</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </li>
+              <li><b>Chức năng sử dụng</b>
+                <ul>
+                  <li>Tạo giáo trình: Nhập, chỉnh sửa đầy đủ các mục, gắn CLO, PLO, trọng số, học phần tiên quyết, tài liệu tham khảo</li>
+                  <li>Quản lý phiên bản: Cập nhật, xem lịch sử, so sánh các phiên bản giáo trình</li>
+                  <li>Tham gia quy trình: Gửi giáo trình xét duyệt, theo dõi trạng thái, phản hồi góp ý từ Trưởng Bộ môn/Phòng Đào tạo</li>
+                  <li>Cộng tác: Tham gia phản biện, thêm/sửa/xóa bình luận, báo lỗi nội dung</li>
+                  <li>Tìm kiếm & phân tích: Tìm kiếm giáo trình theo mã/tên/từ khóa, xem bảng mapping CLO–PLO, cây quan hệ học phần</li>
+                  <li>Công cụ AI: Sử dụng AI phát hiện thay đổi, mapping CLO–PLO, tóm tắt nội dung</li>
+                  <li>Nhận thông báo: Nhận thông báo thời gian thực về nộp giáo trình, hạn phản biện, phản hồi, trạng thái duyệt</li>
+                  <li>Bảo mật: Chỉ truy cập nội dung được phân quyền; mọi thao tác đều được ghi log phục vụ kiểm tra</li>
+                </ul>
+              </li>
+              <li><b>Ví dụ user story</b><br>
+                <i>Là một Giảng viên, tôi muốn tạo và cập nhật giáo trình môn học trực tuyến, gắn CLO, PLO và gửi xét duyệt, để đảm bảo nội dung chuẩn hóa và luôn cập nhật. Tôi muốn nhận thông báo về trạng thái xét duyệt, phản hồi và có thể cộng tác với đồng nghiệp trong quá trình phản biện.</i>
+              </li>
+              <li><b>Bảo mật & quyền riêng tư</b>
+                <ul>
+                  <li>Mật khẩu được mã hóa một chiều, không lưu dạng rõ</li>
+                  <li>Quyền truy cập giáo trình phân theo vai trò, bộ môn</li>
+                  <li>Mọi thao tác (tạo, sửa, gửi, bình luận) đều được ghi log phục vụ kiểm tra</li>
+                </ul>
+              </li>
+              <li><b>Giao diện người dùng</b>
+                <ul>
+                  <li>Giao diện nhập liệu trực quan, dễ sử dụng</li>
+                  <li>Hiển thị rõ trạng thái quy trình (Nháp, Chờ duyệt, Đã duyệt, ...)</li>
+                  <li>Dễ dàng truy cập lịch sử, so sánh phiên bản</li>
+                  <li>Hỗ trợ tốt trên máy tính và thiết bị di động</li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+          <button class="btn btn-outline-primary btn-sm" id="btnAddIntro">+ Thêm giới thiệu</button>
+        </div>
+
+        <div class="card-panel mb-3">
+          <div class="section-title">Các học phần đang giảng dạy</div>
+          <div id="courseList" style="display:flex;flex-wrap:wrap;gap:12px 12px"></div>
+          <button class="btn btn-outline-primary btn-sm mt-2" id="btnAddCourse">+ Thêm học phần</button>
+        </div>
+
+        <div class="card-panel">
+          <div class="section-title">Hoạt động & Công bố</div>
+          <div id="activityList">
+            <div class="activity-item">
+              <div style="width:36px;display:flex;align-items:flex-start;justify-content:center;color:#6b7280">📄</div>
+              <div>
+                <div style="font-weight:600">Tham gia xây dựng và chuẩn hóa giáo trình "Cơ sở dữ liệu" theo chuẩn đầu ra PLO.</div>
+                <div class="text-muted small">nguyenvana@university.edu.vn</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div style="width:36px;display:flex;align-items:flex-start;justify-content:center;color:#6b7280">📄</div>
+              <div>
+                <div style="font-weight:600">Cộng tác phản biện giáo trình "Phân tích & Thiết kế hệ thống".</div>
+                <div class="text-muted small">nguyenvana@university.edu.vn</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div style="width:36px;display:flex;align-items:flex-start;justify-content:center;color:#6b7280">📄</div>
+              <div>
+                <div style="font-weight:600">Nghiên cứu ứng dụng AI trong kiểm tra logic CLO–PLO và tóm tắt nội dung giáo trình.</div>
+                <div class="text-muted small">nguyenvana@university.edu.vn</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card-panel mb-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="section-title">Hoàn thiện hồ sơ</div>
+            <div class="text-muted">60%</div>
+          </div>
+          <div class="progress progress-small mb-3"><div class="progress-bar bg-primary" role="progressbar" style="width:60%"></div></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="c1"><label class="form-check-label small" for="c1">Thêm số điện thoại</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="c2"><label class="form-check-label small" for="c2">Cập nhật tiểu sử</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="c3" checked><label class="form-check-label small" for="c3">Xác thực email</label></div>
+        </div>
+
+        <div class="card-panel mb-3">
+          <div class="section-title">Thông tin liên hệ</div>
+          <div class="small text-muted">📞 <span id="phoneVal" class="editable-field" style="cursor:pointer">09xx xxx xxx</span></div>
+          <div class="mt-2 d-flex justify-content-between"><div class="text-muted small">Khoa/Phòng:</div><div id="deptVal" class="fw-bold small editable-field" style="cursor:pointer">Khoa CNTT</div></div>
+          <div class="d-flex justify-content-between"><div class="text-muted small">Mã nhân viên:</div><div id="empVal" class="fw-bold small editable-field" style="cursor:pointer">HCMUTE-123</div></div>
+        </div>
+
+        <div class="card-panel">
+          <div class="section-title">Hành động nhanh</div>
+          <div class="d-grid gap-2">
+            <button class="btn btn-outline-primary side-btn">Mở Dashboard</button>
+            <button class="btn btn-outline-secondary side-btn">Đổi mật khẩu</button>
+            <button class="btn btn-light side-btn" id="btnLogout">Đăng xuất</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:8000';
+    const token = localStorage.getItem('access_token');
+
+    function setAvatarLetter(name){ if(!name) return; document.getElementById('avatar').textContent = name.trim().charAt(0).toUpperCase(); }
+
+    // Lưu trữ tạm thời danh sách học phần
+    let courseList = ["Cơ sở dữ liệu", "Phân tích & Thiết kế hệ thống", "Quản lý dự án phần mềm", "Nhập môn AI"];
+
+    async function loadProfile(){
+      if(!token){return}
+      try{
+        const r = await fetch(`${API_URL}/users/me`,{headers:{'Authorization':`Bearer ${token}`}});
+        if(!r.ok) return;
+        const u = await r.json();
+        document.getElementById('profileName').textContent = u.full_name || u.email;
+        document.getElementById('profileEmail').textContent = u.email || '';
+        document.getElementById('departmentShort').textContent = u.department || '';
+        document.getElementById('phoneVal').textContent = u.phone || '09xx xxx xxx';
+        document.getElementById('deptVal').textContent = u.department || 'Khoa CNTT';
+        document.getElementById('empVal').textContent = u.employee_id || '-';
+        setAvatarLetter(u.full_name || u.email);
+        // Nếu backend trả về danh sách học phần, cập nhật courseList
+        if(u.courses && Array.isArray(u.courses)) courseList = u.courses;
+        renderCourseList();
+      }catch(e){console.error(e)}
+    }
+
+    function renderCourseList() {
+      const listEl = document.getElementById('courseList');
+      listEl.innerHTML = '';
+      courseList.forEach((course, idx) => {
+        const pill = document.createElement('span');
+        pill.className = 'course-pill';
+        pill.style.position = 'relative';
+        pill.textContent = course;
+        pill.setAttribute('data-idx', idx);
+        pill.style.cursor = 'pointer';
+        // Sửa tên học phần
+        pill.addEventListener('dblclick', function() {
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.value = course;
+          input.style.width = '160px';
+          input.className = 'form-control form-control-sm';
+          pill.textContent = '';
+          pill.appendChild(input);
+          input.focus();
+          input.addEventListener('blur', function() {
+            if(input.value.trim()) courseList[idx] = input.value.trim();
+            renderCourseList();
+          });
+          input.addEventListener('keydown', function(e){
+            if(e.key==='Enter'){input.blur();}
+            if(e.key==='Escape'){renderCourseList();}
+          });
+        });
+        // Nút xóa
+        const delBtn = document.createElement('span');
+        delBtn.textContent = ' ×';
+        delBtn.style.color = '#e11d48';
+        delBtn.style.cursor = 'pointer';
+        delBtn.style.marginLeft = '6px';
+        delBtn.title = 'Xóa học phần';
+        delBtn.onclick = function(e){
+          e.stopPropagation();
+          courseList.splice(idx,1); renderCourseList();
+        };
+        pill.appendChild(delBtn);
+        listEl.appendChild(pill);
+      });
+    }
+
+    document.getElementById('btnAddCourse').addEventListener('click', function(){
+      courseList.push('Học phần mới');
+      renderCourseList();
+    });
+
+    // Cho phép click vào các trường liên hệ để sửa trực tiếp
+    document.querySelectorAll('.editable-field').forEach(el=>{
+      el.addEventListener('click', function(){
+        if(el.querySelector('input')) return;
+        const oldVal = el.textContent;
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = oldVal;
+        input.className = 'form-control form-control-sm';
+        input.style.width = '140px';
+        el.textContent = '';
+        el.appendChild(input);
+        input.focus();
+        input.addEventListener('blur', function(){
+          el.textContent = input.value.trim() || oldVal;
+        });
+        input.addEventListener('keydown', function(e){
+          if(e.key==='Enter'){input.blur();}
+          if(e.key==='Escape'){el.textContent = oldVal;}
+        });
+      });
+    });
+
+    // Gọi lại renderCourseList khi tải trang
+    window.addEventListener('DOMContentLoaded', renderCourseList);
+
+    document.getElementById('btnLogout').addEventListener('click',()=>{localStorage.clear();location.href='/index.html'});
+
+    // Inline edit mode
+    const btnEdit = document.getElementById('btnEdit');
+    const btnSave = document.getElementById('btnSave');
+    const btnCancel = document.getElementById('btnCancel');
+    let editMode = false;
+
+    function toggleEdit(enable){
+      editMode = enable;
+      document.querySelectorAll('[data-editable]').forEach(el=>{
+        el.contentEditable = enable ? 'true' : 'false';
+        el.style.outline = enable ? '2px dashed rgba(90,100,200,0.18)' : 'none';
+        if(enable) el.classList.add('editable'); else el.classList.remove('editable');
+      });
+      // allow editing main fields
+      const nameEl = document.getElementById('profileName');
+      nameEl.contentEditable = enable ? 'true' : 'false';
+      nameEl.style.outline = enable ? '2px dashed rgba(90,100,200,0.18)' : 'none';
+
+      // phone/department/employee id
+      ['phoneVal','deptVal','empVal','introText'].forEach(id=>{
+        const e = document.getElementById(id);
+        if(e){ e.contentEditable = enable ? 'true' : 'false'; e.style.outline = enable ? '2px dashed rgba(90,100,200,0.18)' : 'none'; }
+      });
+
+      btnEdit.classList.toggle('d-none', enable);
+      btnSave.classList.toggle('d-none', !enable);
+      btnCancel.classList.toggle('d-none', !enable);
+    }
+
+    btnEdit.addEventListener('click',()=>{ toggleEdit(true); window.scrollTo({top:0,behavior:'smooth'}) });
+    btnCancel.addEventListener('click',()=>{ toggleEdit(false); loadProfile(); });
+
+    async function saveProfile(){
+      // Lấy giá trị mới nhất từ các trường liên hệ
+      const full_name = document.getElementById('profileName').textContent.trim();
+      const phone = document.getElementById('phoneVal').textContent.trim();
+      const department = document.getElementById('deptVal').textContent.trim();
+      const biography = document.getElementById('introText')?.textContent.trim() || '';
+      const employee_id = document.getElementById('empVal').textContent.trim();
+      // Chỉ gửi các trường backend hỗ trợ
+      const payload = { full_name, phone, department, biography, employee_id };
+      try{
+        const r = await fetch(`${API_URL}/users/me`,{
+          method: 'PUT',
+          headers: {'Content-Type':'application/json','Authorization':`Bearer ${token}`},
+          body: JSON.stringify(payload)
+        });
+        if(!r.ok) {
+          let msg = 'Lưu thất bại';
+          try {
+            const err = await r.json();
+            msg += err.detail ? (': ' + err.detail) : (typeof err === 'string' ? (': ' + err) : '');
+          } catch {}
+          throw new Error(msg);
+        }
+        toggleEdit(false);
+        loadProfile();
+        alert('Cập nhật hồ sơ thành công');
+      }catch(e){
+        console.error(e);
+        alert(e.message || 'Lưu thất bại');
+      }
+    }
+
+    btnSave.addEventListener('click', saveProfile);
+
+    document.getElementById('btnEdit').addEventListener('keydown', (e)=>{ if(e.key==='Enter') { e.preventDefault(); toggleEdit(true); } });
+
+    // allow adding intro default
+    document.getElementById('btnAddIntro').addEventListener('click', ()=>{ document.getElementById('introText').focus(); toggleEdit(true); });
+
+    document.getElementById('btnEdit').addEventListener('click', ()=>{});
+
+    loadProfile();
+  </script>
+</body>
+</html>

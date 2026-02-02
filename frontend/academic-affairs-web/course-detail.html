@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Course Detail</title>
+  <link href="./assets/css/soft-ui-dashboard.min.css?v=1.0.7" rel="stylesheet" />
+</head>
+<body class="bg-gray-100 p-4">
+
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h4 id="title"></h4>
+      </div>
+      <div class="card-body">
+        <p><strong>Department:</strong> <span id="department"></span></p>
+        <p><strong>Credits:</strong> <span id="credits"></span></p>
+        <p><strong>Semester:</strong> <span id="semester"></span></p>
+        <p><strong>Status:</strong> <span id="status"></span></p>
+
+        <a href="course-management.html" class="btn btn-secondary mt-3">Back</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+
+    document.getElementById('title').textContent =
+      `${params.get('code')} - ${params.get('name')}`;
+
+    document.getElementById('department').textContent = params.get('department');
+    document.getElementById('credits').textContent = params.get('credits');
+    document.getElementById('semester').textContent = params.get('semester');
+    document.getElementById('status').textContent = params.get('status');
+  </script>
+
+</body>
+</html>

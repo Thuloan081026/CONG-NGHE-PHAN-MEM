@@ -1,0 +1,634 @@
+/* Lecturer Dashboard Custom Styles */
+
+/* ===========================
+   Enhanced Sidebar Styling
+   =========================== */
+
+/* Sidebar Navigation Levels */
+.sidebar-menu .nav-level {
+    padding: 15px 20px 10px 20px;
+    color: #9ba2ab;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 15px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.sidebar-menu .nav-level:first-child {
+    border-top: none;
+    margin-top: 0;
+}
+
+.sidebar-menu .nav-level i {
+    margin-right: 8px;
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+/* Menu Items */
+.sidebar-menu > li > a {
+    padding: 12px 20px;
+    color: #b8c7ce;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-left: 3px solid transparent;
+    position: relative;
+    font-weight: 600;
+}
+
+.sidebar-menu > li > a i {
+    font-size: 18px;
+    margin-right: 12px;
+    width: 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.sidebar-menu > li > a span {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Hover Effects */
+.sidebar-menu > li > a:hover {
+    background: rgba(255,255,255,0.05);
+    border-left-color: #667eea;
+    color: #ffffff;
+    padding-left: 25px;
+}
+
+.sidebar-menu > li > a:hover i {
+    transform: scale(1.1);
+    color: #667eea;
+}
+
+/* Active State */
+.sidebar-menu > li.active > a {
+    background: linear-gradient(90deg, rgba(102, 126, 234, 0.15) 0%, transparent 100%);
+    border-left-color: #667eea;
+    color: #ffffff;
+    box-shadow: inset 0 0 20px rgba(102, 126, 234, 0.1);
+}
+
+.sidebar-menu > li.active > a i {
+    color: #667eea;
+    transform: scale(1.1);
+}
+
+/* Badges */
+.sidebar-menu .badge {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.sidebar-menu .badge-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.sidebar-menu .badge-warning {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    animation: pulse 2s infinite;
+}
+
+.sidebar-menu .badge-success {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.sidebar-menu .badge-danger {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    animation: bounce 2s infinite;
+}
+
+/* Submenu (Treeview) */
+.sidebar-menu .treeview-menu {
+    background: rgba(0,0,0,0.15);
+    padding: 5px 0;
+}
+
+.sidebar-menu .treeview-menu li a {
+    padding: 10px 20px 10px 50px;
+    color: #9ba2ab;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.sidebar-menu .treeview-menu li a i {
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+.sidebar-menu .treeview-menu li a:hover {
+    color: #ffffff;
+    background: rgba(102, 126, 234, 0.1);
+    padding-left: 55px;
+}
+
+.sidebar-menu .treeview-menu li a:hover i {
+    color: #667eea;
+}
+
+/* Treeview Arrow */
+.sidebar-menu .treeview > a .ti-angle-down {
+    transition: transform 0.3s ease;
+}
+
+.sidebar-menu .treeview.active > a .ti-angle-down {
+    transform: rotate(-180deg);
+}
+
+/* Logout Button Special Style */
+.sidebar-menu li a[onclick*="logout"] {
+    margin-top: 10px;
+    border-radius: 8px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-left: 15px;
+}
+
+.sidebar-menu li a[onclick*="logout"]:hover {
+    background: rgba(244, 67, 54, 0.1) !important;
+    border-left-color: #f44336 !important;
+}
+
+/* Animations */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+/* Smooth Scrollbar */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.1);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.5);
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.8);
+}
+
+/* ===========================
+   Original Sidebar Styling
+   =========================== */
+.pcoded-navbar {
+    background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%) !important;
+    transition: all 0.3s ease;
+    position: fixed;
+    height: 100vh;
+    z-index: 1000;
+}
+
+/* Sidebar collapsed state */
+body.sidebar-collapsed .pcoded-navbar {
+    margin-left: -240px;
+}
+
+body.sidebar-collapsed .pcoded-main-container {
+    margin-left: 0 !important;
+}
+
+/* Mobile menu toggle */
+.mobile-menu {
+    cursor: pointer;
+}
+
+.pcoded-navbar .pcoded-item > li > a {
+    color: #ecf0f1 !important;
+}
+
+.pcoded-navbar .pcoded-item > li.active > a,
+.pcoded-navbar .pcoded-item > li:hover > a {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+}
+
+.pcoded-navbar .pcoded-mtext {
+    color: #ecf0f1 !important;
+    font-weight: 500;
+}
+
+.pcoded-navbar .pcoded-micon {
+    color: #bdc3c7 !important;
+}
+
+.pcoded-navbar .pcoded-item > li.active .pcoded-micon,
+.pcoded-navbar .pcoded-item > li:hover .pcoded-micon {
+    color: white !important;
+}
+
+.pcoded-navbar .pcoded-submenu li a {
+    color: #bdc3c7 !important;
+    padding-left: 60px !important;
+}
+
+.pcoded-navbar .pcoded-submenu li a:hover {
+    color: white !important;
+    background: rgba(102, 126, 234, 0.3) !important;
+}
+
+/* ===========================
+   Header Styling
+   =========================== */
+.header-navbar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    box-shadow: 0 2px 15px rgba(102, 126, 234, 0.3) !important;
+}
+
+.navbar-logo h4 {
+    color: white !important;
+    font-weight: 700 !important;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.header-navbar .nav-right li a {
+    color: white !important;
+}
+
+.header-navbar .nav-right li a span {
+    color: white !important;
+    font-weight: 500;
+}
+
+.header-navbar .nav-right .user-profile a i {
+    color: white !important;
+}
+
+/* ===========================
+   Page Background
+   =========================== */
+.page-body {
+    background: #f5f7fa;
+}
+
+/* ===========================
+   Statistics Cards
+   =========================== */
+.stat-card {
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+    border-radius: 15px;
+    color: white;
+    padding: 30px 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.35), 
+                0 0 20px rgba(37, 99, 235, 0.15);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    transition: transform 0.6s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 35px rgba(37, 99, 235, 0.45),
+                0 0 30px rgba(37, 99, 235, 0.25);
+}
+
+.stat-card:hover::before {
+    transform: scale(1.2);
+}
+
+.stat-card.success {
+    background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.35),
+                0 0 20px rgba(16, 185, 129, 0.15);
+}
+
+.stat-card.success:hover {
+    box-shadow: 0 12px 35px rgba(16, 185, 129, 0.45),
+                0 0 30px rgba(16, 185, 129, 0.25);
+}
+
+.stat-card.warning {
+    background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.35),
+                0 0 20px rgba(239, 68, 68, 0.15);
+}
+
+.stat-card.warning:hover {
+    box-shadow: 0 12px 35px rgba(239, 68, 68, 0.45),
+                0 0 30px rgba(239, 68, 68, 0.25);
+}
+
+.stat-card.info {
+    background: linear-gradient(135deg, #0891b2 0%, #06b6d4 50%, #22d3ee 100%);
+    box-shadow: 0 8px 25px rgba(6, 182, 212, 0.35),
+                0 0 20px rgba(6, 182, 212, 0.15);
+}
+
+.stat-card.info:hover {
+    box-shadow: 0 12px 35px rgba(6, 182, 212, 0.45),
+                0 0 30px rgba(6, 182, 212, 0.25);
+}
+
+.stat-number {
+    font-size: 48px;
+    font-weight: 700;
+    margin: 15px 0 10px 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.stat-label {
+    font-size: 13px;
+    opacity: 0.95;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+}
+
+.stat-description {
+    font-size: 12px;
+    opacity: 0.85;
+    margin-top: 5px;
+}
+
+.stat-icon {
+    font-size: 60px;
+    opacity: 0.2;
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover .stat-icon {
+    opacity: 0.3;
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* ===========================
+   Enhanced Cards
+   =========================== */
+.card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    box-shadow: 0 8px 30px rgba(37, 99, 235, 0.25);
+}
+
+.card-header {
+    background: white;
+    border-bottom: 2px solid #f0f0f0;
+    padding: 20px 25px;
+    border-radius: 12px 12px 0 0 !important;
+}
+
+.card-header h5 {
+    margin: 0;
+    font-weight: 600;
+    color: #333;
+}
+
+/* ===========================
+   Recent Item Styling
+   =========================== */
+.recent-item {
+    padding: 18px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.recent-item:last-child {
+    border-bottom: none;
+}
+
+.recent-item:hover {
+    background: linear-gradient(to right, #f8f9fa, #ffffff);
+    transform: translateX(5px);
+}
+
+.recent-item-title {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+
+.recent-item-meta {
+    font-size: 13px;
+    color: #666;
+}
+
+.recent-item-meta i {
+    margin-right: 5px;
+    color: #999;
+}
+
+/* ===========================
+   Status Badges
+   =========================== */
+.status-badge {
+    padding: 5px 14px;
+    border-radius: 15px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+}
+
+.status-draft { 
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    color: #1565c0;
+}
+
+.status-in_review { 
+    background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+    color: #e65100;
+}
+
+.status-approved { 
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    color: #2e7d32;
+}
+
+.status-published { 
+    background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+    color: #6a1b9a;
+}
+
+.status-rejected { 
+    background: linear-gradient(135deg, #ffebee, #ffcdd2);
+    color: #c62828;
+}
+
+/* ===========================
+   Action Buttons
+   =========================== */
+.btn-action {
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    margin-bottom: 12px;
+}
+
+.btn-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
+
+.btn-action i {
+    margin-right: 8px;
+}
+
+.btn-primary-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-success-gradient {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+}
+
+.btn-info-gradient {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+}
+
+/* ===========================
+   Welcome Message
+   =========================== */
+.welcome-box {
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.35),
+                0 0 20px rgba(37, 99, 235, 0.15);
+}
+
+.welcome-box h4 {
+    margin: 0 0 10px 0;
+    font-weight: 700;
+}
+
+.welcome-box p {
+    margin: 0;
+    opacity: 0.95;
+}
+
+/* ===========================
+   Empty State
+   =========================== */
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.empty-state i {
+    font-size: 64px;
+    color: #ddd;
+    margin-bottom: 15px;
+}
+
+.empty-state p {
+    color: #999;
+    font-size: 15px;
+    margin: 0;
+}
+
+/* ===========================
+   Loading Animation
+   =========================== */
+.loading-spinner {
+    text-align: center;
+    padding: 40px;
+}
+
+.spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #667eea;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===========================
+   Review Items
+   =========================== */
+.review-item {
+    padding: 15px;
+    border-left: 3px solid #667eea;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+}
+
+.review-item:hover {
+    background: #f0f2f5;
+    transform: translateX(3px);
+}
+
+.review-item-title {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.review-item-meta {
+    font-size: 12px;
+    color: #666;
+}
+
+/* ===========================
+   Responsive Design
+   =========================== */
+@media (max-width: 768px) {
+    .stat-card {
+        margin-bottom: 15px;
+    }
+    
+    .stat-number {
+        font-size: 36px;
+    }
+    
+    .stat-icon {
+        font-size: 45px;
+    }
+}

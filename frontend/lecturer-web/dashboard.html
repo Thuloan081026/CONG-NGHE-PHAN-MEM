@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <title>Lecturer Dashboard - SMD System</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!-- Favicon icon -->
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="assets/icon/icofont/css/icofont.css">
+    <!-- Themify -->
+    <link rel="stylesheet" type="text/css" href="assets/icon/themify-icons/themify-icons.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-theme.min.css">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+    <!-- Main Styles -->
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/menu.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/color/color-1.css" id="color" />
+    <link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
+    
+    <!-- Custom Dashboard Styles -->
+    <link rel="stylesheet" type="text/css" href="assets/css/lecturer-dashboard.css">
+</head>
+
+<body class="sidebar-mini fixed">
+
+    <!-- Pre-loader start -->
+    <div class="loader-bg">
+        <div class="loader-bar"></div>
+    </div>
+    <!-- Pre-loader end -->
+
+    <div class="wrapper">
+        <!-- Navbar-->
+        <header class="main-header-top hidden-print">
+            <a href="dashboard.html" class="logo">
+                <h4 style="color: white; margin: 0; padding: 10px;">SMD - Lecturer</h4>
+            </a>
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#!" data-toggle="offcanvas" class="sidebar-toggle"></a>
+                
+                <!-- Navbar Right Menu-->
+                <div class="navbar-custom-menu f-right">
+                    <ul class="top-nav">
+                        <!-- Notifications -->
+                        <li class="dropdown notification-menu">
+                            <a href="#!" data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">
+                                <i class="icon-bell"></i>
+                                <span class="badge badge-danger header-badge">0</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="not-head">You have <b class="text-primary">0</b> new notifications.</li>
+                                <li class="not-footer">
+                                    <a href="notifications.html">See all notifications.</a>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                        <!-- User Menu-->
+                        <li class="dropdown">
+                            <a href="#!" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle drop icon-circle drop-image">
+                                <span><i class="ti-user"></i></span>
+                                <span id="userName">Lecturer</span> <i class="icofont icofont-simple-down"></i>
+                            </a>
+                            <ul class="dropdown-menu settings-menu">
+                                <li><a href="profile.html"><i class="icon-user"></i> Profile</a></li>
+                                <li><a href="#" onclick="logout()"><i class="icon-logout"></i> Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        
+        <!-- Side-Nav-->
+        <aside class="main-sidebar hidden-print">
+            <section class="sidebar" id="sidebar-scroll">
+                <!-- Sidebar Menu-->
+                <ul class="sidebar-menu">
+                    <li class="nav-level"><i class="ti-layout-grid2"></i> Navigation</li>
+                    <li class="active">
+                        <a class="waves-effect waves-dark" href="dashboard.html">
+                            <i class="ti-dashboard"></i><span> Dashboard</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-level"><i class="ti-files"></i> Syllabus Management</li>
+                    <li class="treeview">
+                        <a class="waves-effect waves-dark" href="#!">
+                            <i class="ti-book"></i><span> My Syllabuses</span>
+                            <span class="badge badge-primary" style="margin-left: 10px;">5</span>
+                            <i class="ti-angle-down" style="float: right; margin-top: 5px;"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a class="waves-effect waves-dark" href="syllabus-list.html"><i class="ti-list"></i> View All</a></li>
+                            <li><a class="waves-effect waves-dark" href="syllabus-create.html"><i class="ti-plus"></i> Create New</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-level"><i class="ti-comments"></i> Collaboration</li>
+                    <li>
+                        <a class="waves-effect waves-dark" href="comments-feedback.html">
+                            <i class="ti-comment-alt"></i><span> Reviews & Feedback</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark" href="search-reference.html">
+                            <i class="ti-search"></i><span> Search References</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-level"><i class="ti-settings"></i> Settings</li>
+                    <li>
+                        <a class="waves-effect waves-dark" href="profile.html">
+                            <i class="ti-user"></i><span> My Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-dark" href="notifications.html">
+                            <i class="ti-bell"></i><span> Notifications</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-level"><i class="ti-power-off"></i> Account</li>
+                    <li>
+                        <a class="waves-effect waves-dark" href="#!" onclick="logout()" style="color: #f44336;">
+                            <i class="ti-power-off"></i><span> Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        
+        <div class="content-wrapper">
+            <!-- Container-fluid starts -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="main-header">
+                        <h4>Lecturer Dashboard</h4>
+                    </div>
+                </div>
+                
+                <!-- Welcome Message -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="welcome-box">
+                            <h4>👋 Welcome back, <span id="welcomeName">Lecturer</span>!</h4>
+                            <p>Here's your syllabus overview and recent activities</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Statistics Cards -->
+                <div class="row dashboard-header">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card dashboard-product stat-card">
+                            <i class="ti-files stat-icon"></i>
+                            <div class="stat-label">Total Syllabuses</div>
+                            <div class="stat-number" id="totalSyllabuses">0</div>
+                            <div class="stat-description">All time created</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card dashboard-product stat-card success">
+                            <i class="ti-check-box stat-icon"></i>
+                            <div class="stat-label">Published</div>
+                            <div class="stat-number" id="publishedSyllabuses">0</div>
+                            <div class="stat-description">Live syllabuses</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card dashboard-product stat-card warning">
+                            <i class="ti-clipboard stat-icon"></i>
+                            <div class="stat-label">In Review</div>
+                            <div class="stat-number" id="reviewSyllabuses">0</div>
+                            <div class="stat-description">Awaiting approval</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card dashboard-product stat-card info">
+                            <i class="ti-pencil-alt stat-icon"></i>
+                            <div class="stat-label">Draft</div>
+                            <div class="stat-number" id="draftSyllabuses">0</div>
+                            <div class="stat-description">Work in progress</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Activity & Quick Actions -->
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-header-text"><i class="ti-files"></i> My Recent Syllabuses</h5>
+                            </div>
+                            <div class="card-block" style="padding: 15px;">
+                                <div id="recentSyllabuses">
+                                    <div style="text-align: center; color: #999;">
+                                        <p>Loading syllabuses...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-header-text"><i class="ti-layout-grid2"></i> Quick Actions</h5>
+                            </div>
+                            <div class="card-block">
+                                <a href="syllabus-create.html" class="btn btn-primary btn-block" style="margin-bottom: 10px;">
+                                    <i class="ti-plus"></i> Create New
+                                </a>
+                                <a href="syllabus-list.html" class="btn btn-outline-primary btn-block" style="margin-bottom: 10px;">
+                                    <i class="ti-files"></i> View All
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Container-fluid ends -->
+        </div>
+    </div>
+
+    <!-- Required Jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/tether/dist/js/tether.min.js"></script>
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Scrollbar JS-->
+    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <script src="assets/plugins/jquery.nicescroll/jquery.nicescroll.min.js"></script>
+    <!-- Custom js -->
+    <script type="text/javascript" src="assets/js/main.min.js"></script>
+    <script src="assets/js/menu.min.js"></script>
+    <script>
+        // ============ LECTURER DASHBOARD WITH MOCK DATA ============
+        const API_URL = 'http://localhost:8000';
+
+        // 📊 MOCK DATA - Real data for testing
+        const mockLecturerData = {
+          syllabuses: [
+            { id: 1, code: 'CS301', name: 'Cơ sở dữ liệu nâng cao', status: 'published', updated_at: '2026-01-25T10:00:00', faculty: 'CNTT' },
+            { id: 2, code: 'CS401', name: 'Trí tuệ nhân tạo', status: 'in_review', updated_at: '2026-01-24T14:30:00', faculty: 'CNTT' },
+            { id: 3, code: 'CS201', name: 'Cấu trúc dữ liệu', status: 'published', updated_at: '2026-01-23T09:15:00', faculty: 'CNTT' },
+            { id: 4, code: 'CS102', name: 'Lập trình hướng đối tượng', status: 'draft', updated_at: '2026-01-22T11:45:00', faculty: 'CNTT' },
+            { id: 5, code: 'CS303', name: 'Mạng máy tính', status: 'published', updated_at: '2026-01-21T15:20:00', faculty: 'CNTT' }
+          ]
+        };
+
+        // Get authentication token and user data
+        const token = localStorage.getItem('access_token');
+        let userData = null;
+
+        // 🔐 Try to get current user from API
+        async function fetchCurrentUser() {
+            if (!token) return null;
+            try {
+                const res = await fetch(`${API_URL}/users/me`, { headers: { 'Authorization': `Bearer ${token}` } });
+                if (!res.ok) throw new Error('Not authenticated');
+                return await res.json();
+            } catch (err) {
+                console.warn('Could not fetch user:', err.message);
+                return null;
+            }
+        }
+
+        // 🎯 Initialize dashboard on page load
+        (async () => {
+            // Get user data from API or localStorage
+            userData = await fetchCurrentUser() || JSON.parse(localStorage.getItem('user_data') || 'null');
+            
+            // Fallback to demo user if not authenticated
+            if (!userData) {
+                userData = { full_name: 'Lecturer Demo', email: 'lecturer@edu.vn', role: 'lecturer' };
+            }
+            
+            // Update UI with user name
+            const userName = userData.full_name || userData.email || 'Lecturer';
+            document.getElementById('userName').textContent = userName;
+            document.getElementById('welcomeName').textContent = userName;
+            
+            // Load and display mock data
+            loadLecturerData();
+        })();
+
+        // 🚪 Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.clear();
+                window.location.href = '../index.html';
+            }
+        }
+
+        // 📈 Load lecturer data and display it
+        function loadLecturerData() {
+            try {
+                const syllabuses = mockLecturerData.syllabuses;
+                
+                // Calculate statistics
+                const total = syllabuses.length;
+                const published = syllabuses.filter(s => s.status === 'published').length;
+                const inReview = syllabuses.filter(s => s.status === 'in_review').length;
+                const draft = syllabuses.filter(s => s.status === 'draft').length;
+                
+                // Animate numbers in stat cards
+                animateNumber(document.getElementById('totalSyllabuses'), total);
+                animateNumber(document.getElementById('publishedSyllabuses'), published);
+                animateNumber(document.getElementById('reviewSyllabuses'), inReview);
+                animateNumber(document.getElementById('draftSyllabuses'), draft);
+                
+                // Display the syllabuses table
+                displayRecentSyllabuses(syllabuses);
+                
+                console.log('✅ Lecturer data loaded successfully');
+            } catch (error) {
+                console.error('❌ Error loading lecturer data:', error);
+            }
+        }
+
+        // 📊 Display syllabuses in a table
+        function displayRecentSyllabuses(syllabuses) {
+            const container = document.getElementById('recentSyllabuses');
+            
+            if (!container) return;
+            
+            if (syllabuses.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999;">No syllabuses found</p>';
+                return;
+            }
+            
+            // Build HTML table
+            let html = '<table class="table table-sm table-hover" style="margin: 0;">';
+            html += '<thead><tr style="background: #f5f5f5;">';
+            html += '<th>Code</th><th>Name</th><th>Status</th><th>Faculty</th><th>Updated</th><th>Action</th>';
+            html += '</tr></thead><tbody>';
+            
+            syllabuses.forEach((s) => {
+                const statusColor = s.status === 'published' ? 'success' : 
+                                    s.status === 'in_review' ? 'warning' : 'secondary';
+                const statusText = s.status === 'published' ? 'Published' : 
+                                  s.status === 'in_review' ? 'In Review' : 'Draft';
+                const updatedDate = new Date(s.updated_at).toLocaleDateString('vi-VN');
+                
+                html += `<tr>
+                    <td><strong>${s.code}</strong></td>
+                    <td>${s.name}</td>
+                    <td><span class="badge badge-${statusColor}">${statusText}</span></td>
+                    <td>${s.faculty}</td>
+                    <td>${updatedDate}</td>
+                    <td><a href="#" class="btn btn-sm btn-info">View</a></td>
+                </tr>`;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+            console.log(`✅ Displayed ${syllabuses.length} syllabuses`);
+        }
+
+        // ✨ Animate number counting
+        function animateNumber(element, target) {
+            if (!element) return;
+            let current = 0;
+            const increment = target / 30;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 30);
+        }
+    </script>
+    <script>
+        // Handle link navigation
+        document.addEventListener('click', function (ev) {
+            try {
+                const a = ev.target.closest && ev.target.closest('a');
+                if (!a) return;
+                const href = a.getAttribute('href');
+                if (!href || href.startsWith('#')) return;
+                if (href.endsWith('.html') || href.includes('/')) {
+                    ev.preventDefault();
+                    window.location.assign(href);
+                }
+            } catch (e) {
+                console.warn('Navigation error', e);
+            }
+        }, false);
+    </script>
+</body>
+</html>
