@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Chi tiết Giáo trình - SMD System</title>
+  <link href="img/logo/logo.png" rel="icon">
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="css/ruang-admin.min.css" rel="stylesheet">
+  <style>
+    .subject-tree {
+      padding: 20px;
+      background: #f8f9fc;
+      border-radius: 10px;
+    }
+    .tree-node {
+      margin: 10px 0;
+      padding: 15px;
+      background: white;
+      border-left: 4px solid #4e73df;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .tree-node.current {
+      border-left-color: #1cc88a;
+      background: #d1f4e0;
+    }
+    .tree-node.prerequisite {
+      border-left-color: #f6c23e;
+    }
+    .tree-node.corequisite {
+      border-left-color: #36b9cc;
+    }
+    .plo-badge {
+      display: inline-block;
+      padding: 5px 10px;
+      margin: 3px;
+      background: #4e73df;
+      color: white;
+      border-radius: 15px;
+      font-size: 0.85em;
+    }
+  </style>
+</head>
+
+<body id="page-top">
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.html">
+        <div class="sidebar-brand-icon">
+          <img src="img/logo/logo.png" style="max-width: 40px;">
+        </div>
+        <div class="sidebar-brand-text mx-3">SMD Student</div>
+      </a>
+      <hr class="sidebar-divider my-0">
+      <li class="nav-item">
+        <a class="nav-link" href="dashboard.html">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dashboard</span></a>
+      </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">Syllabus</div>
+      <li class="nav-item">
+        <a class="nav-link" href="syllabus-search.html">
+          <i class="fas fa-fw fa-search"></i>
+          <span>Tìm kiếm Giáo trình</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="my-subscriptions.html">
+          <i class="fas fa-fw fa-star"></i>
+          <span>Giáo trình theo dõi</span>
+        </a>
+      </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">Account</div>
+      <li class="nav-item">
+        <a class="nav-link" href="profile.html">
+          <i class="fas fa-fw fa-user"></i>
+          <span>Thông tin cá nhân</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" onclick="handleLogout()">
+          <i class="fas fa-fw fa-sign-out-alt"></i>
+          <span>Đăng xuất</span>
+        </a>
+      </li>
+    </ul>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <!-- TopBar -->
+        <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+          <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown">
+                <img class="img-profile rounded-circle" src="img/logo/logo.png" style="max-width: 60px">
+                <span class="ml-2 d-none d-lg-inline text-white small" id="userFullName">Student</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
+                <a class="dropdown-item" href="profile.html">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Profile
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" onclick="handleLogout()">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Logout
+                </a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Container Fluid-->
+        <div class="container-fluid" id="container-wrapper">
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Chi tiết Giáo trình</h1>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="dashboard.html">Home</a></li>
+              <li class="breadcrumb-item"><a href="syllabus-search.html">Tìm kiếm</a></li>
+              <li class="breadcrumb-item active">Chi tiết</li>
+            </ol>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="row mb-3">
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h4 class="mb-0" id="syllabusTitle">CS301 - Cơ sở dữ liệu</h4>
+                      <p class="text-muted mb-0">TS. Nguyễn Văn A | Học kỳ 4 | 3 tín chỉ</p>
+                    </div>
+                    <div>
+                      <button class="btn btn-warning" onclick="toggleSubscribe()">
+                        <i class="fas fa-star"></i> Theo dõi
+                      </button>
+                      <button class="btn btn-primary" onclick="downloadPDF()">
+                        <i class="fas fa-download"></i> Tải PDF
+                      </button>
+                      <button class="btn btn-danger" onclick="reportError()">
+                        <i class="fas fa-exclamation-triangle"></i> Báo lỗi
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Summary -->
+          <div class="row mb-3">
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-header bg-gradient-primary text-white">
+                  <h6 class="m-0 font-weight-bold">
+                    <i class="fas fa-robot"></i> AI Summary - Tóm tắt thông minh
+                  </h6>
+                </div>
+                <div class="card-body">
+                  <div class="alert alert-info">
+                    <strong>Tóm tắt nội dung:</strong> Môn học Cơ sở dữ liệu cung cấp kiến thức nền tảng về thiết kế, 
+                    quản lý và truy vấn cơ sở dữ liệu quan hệ. Sinh viên sẽ học cách thiết kế mô hình ER, chuẩn hóa 
+                    CSDL, sử dụng SQL và các kỹ thuật tối ưu hóa truy vấn.
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h6 class="font-weight-bold">Kiến thức chính:</h6>
+                      <ul>
+                        <li>Mô hình dữ liệu quan hệ (Relational Model)</li>
+                        <li>Thiết kế cơ sở dữ liệu và chuẩn hóa</li>
+                        <li>Ngôn ngữ truy vấn SQL</li>
+                        <li>Quản lý giao dịch và bảo mật</li>
+                      </ul>
+                    </div>
+                    <div class="col-md-6">
+                      <h6 class="font-weight-bold">Kỹ năng đạt được:</h6>
+                      <ul>
+                        <li>Thiết kế CSDL cho ứng dụng thực tế</li>
+                        <li>Viết và tối ưu hóa câu truy vấn SQL</li>
+                        <li>Quản trị hệ quản trị CSDL</li>
+                        <li>Bảo mật và sao lưu dữ liệu</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subject Relationship Tree -->
+          <div class="row mb-3">
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-header bg-gradient-success text-white">
+                  <h6 class="m-0 font-weight-bold">
+                    <i class="fas fa-project-diagram"></i> Subject Tree - Cây môn học liên quan
+                  </h6>
+                </div>
+                <div class="card-body">
+                  <div class="subject-tree">
+                    <h6 class="text-muted mb-3">
+                      <i class="fas fa-arrow-up text-warning"></i> Môn tiên quyết (Prerequisite)
+                    </h6>
+                    <div class="tree-node prerequisite">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <h6 class="mb-1"><strong>CS101</strong> - Nhập môn lập trình</h6>
+                          <p class="mb-0 text-muted">
+                            <i class="fas fa-book"></i> 3 tín chỉ | Học kỳ 1
+                          </p>
+                        </div>
+                        <a href="syllabus-detail.html?id=CS101" class="btn btn-sm btn-outline-primary">Xem</a>
+                      </div>
+                    </div>
+                    <div class="tree-node prerequisite">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <h6 class="mb-1"><strong>CS201</strong> - Cấu trúc dữ liệu và giải thuật</h6>
+                          <p class="mb-0 text-muted">
+                            <i class="fas fa-book"></i> 4 tín chỉ | Học kỳ 3
+                          </p>
+                        </div>
+                        <a href="syllabus-detail.html?id=CS201" class="btn btn-sm btn-outline-primary">Xem</a>
+                      </div>
+                    </div>
+
+                    <h6 class="text-muted mb-3 mt-4">
+                      <i class="fas fa-check-circle text-success"></i> Môn đang xem (Current)
+                    </h6>
+                    <div class="tree-node current">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <h6 class="mb-1"><strong>CS301</strong> - Cơ sở dữ liệu</h6>
+                          <p class="mb-0 text-muted">
+                            <i class="fas fa-book"></i> 3 tín chỉ | Học kỳ 4
+                          </p>
+                        </div>
+                        <span class="badge badge-success">Đang xem</span>
+                      </div>
+                    </div>
+
+                    <h6 class="text-muted mb-3 mt-4">
+                      <i class="fas fa-arrow-down text-info"></i> Môn tiếp theo (Next Courses)
+                    </h6>
+                    <div class="tree-node">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <h6 class="mb-1"><strong>CS401</strong> - Phân tích và thiết kế hệ thống</h6>
+                          <p class="mb-0 text-muted">
+                            <i class="fas fa-book"></i> 3 tín chỉ | Học kỳ 6
+                          </p>
+                        </div>
+                        <a href="syllabus-detail.html?id=CS401" class="btn btn-sm btn-outline-primary">Xem</a>
+                      </div>
+                    </div>
+                    <div class="tree-node">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <h6 class="mb-1"><strong>CS402</strong> - Khai phá dữ liệu</h6>
+                          <p class="mb-0 text-muted">
+                            <i class="fas fa-book"></i> 3 tín chỉ | Học kỳ 7
+                          </p>
+                        </div>
+                        <a href="syllabus-detail.html?id=CS402" class="btn btn-sm btn-outline-primary">Xem</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PLO Mapping -->
+          <div class="row mb-3">
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-header bg-gradient-warning text-white">
+                  <h6 class="m-0 font-weight-bold">
+                    <i class="fas fa-map-marked-alt"></i> PLO Mapping - Chuẩn đầu ra chương trình
+                  </h6>
+                </div>
+                <div class="card-body">
+                  <p class="text-muted">Môn học này đáp ứng các chuẩn đầu ra sau:</p>
+                  <div class="mb-3">
+                    <span class="plo-badge">PLO1 - Kiến thức nền tảng CNTT</span>
+                    <span class="plo-badge">PLO2 - Kỹ năng thiết kế hệ thống</span>
+                    <span class="plo-badge">PLO4 - Làm việc nhóm</span>
+                    <span class="plo-badge">PLO6 - Tư duy logic</span>
+                  </div>
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>PLO Code</th>
+                        <th>Mô tả</th>
+                        <th>Mức độ đạt</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>PLO1</strong></td>
+                        <td>Kiến thức nền tảng về Công nghệ Thông tin</td>
+                        <td><span class="badge badge-success">Cao</span></td>
+                      </tr>
+                      <tr>
+                        <td><strong>PLO2</strong></td>
+                        <td>Kỹ năng thiết kế và phát triển hệ thống</td>
+                        <td><span class="badge badge-success">Cao</span></td>
+                      </tr>
+                      <tr>
+                        <td><strong>PLO4</strong></td>
+                        <td>Kỹ năng làm việc nhóm và giao tiếp</td>
+                        <td><span class="badge badge-warning">Trung bình</span></td>
+                      </tr>
+                      <tr>
+                        <td><strong>PLO6</strong></td>
+                        <td>Tư duy logic và giải quyết vấn đề</td>
+                        <td><span class="badge badge-success">Cao</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Syllabus Content -->
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h6 class="m-0 font-weight-bold text-primary">Nội dung giáo trình chi tiết</h6>
+                </div>
+                <div class="card-body">
+                  <div class="accordion" id="syllabusAccordion">
+                    <!-- Section 1 -->
+                    <div class="card">
+                      <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne">
+                            <i class="fas fa-chevron-down"></i> 1. Giới thiệu môn học
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseOne" class="collapse show" data-parent="#syllabusAccordion">
+                        <div class="card-body">
+                          <p><strong>Mục tiêu:</strong> Cung cấp kiến thức tổng quan về cơ sở dữ liệu và hệ quản trị CSDL</p>
+                          <p><strong>Nội dung:</strong></p>
+                          <ul>
+                            <li>Khái niệm cơ sở dữ liệu</li>
+                            <li>Hệ quản trị cơ sở dữ liệu (DBMS)</li>
+                            <li>Các mô hình dữ liệu</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Section 2 -->
+                    <div class="card">
+                      <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo">
+                            <i class="fas fa-chevron-down"></i> 2. Mô hình quan hệ
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseTwo" class="collapse" data-parent="#syllabusAccordion">
+                        <div class="card-body">
+                          <p><strong>Mục tiêu:</strong> Hiểu rõ mô hình dữ liệu quan hệ</p>
+                          <p><strong>Nội dung:</strong></p>
+                          <ul>
+                            <li>Bảng, bộ, thuộc tính</li>
+                            <li>Khóa chính, khóa ngoại</li>
+                            <li>Ràng buộc toàn vẹn</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Section 3 -->
+                    <div class="card">
+                      <div class="card-header" id="headingThree">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree">
+                            <i class="fas fa-chevron-down"></i> 3. Ngôn ngữ SQL
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseThree" class="collapse" data-parent="#syllabusAccordion">
+                        <div class="card-body">
+                          <p><strong>Mục tiêu:</strong> Thành thạo ngôn ngữ truy vấn SQL</p>
+                          <p><strong>Nội dung:</strong></p>
+                          <ul>
+                            <li>Câu lệnh SELECT, WHERE, JOIN</li>
+                            <li>Hàm tổng hợp (COUNT, SUM, AVG)</li>
+                            <li>Sub-query và View</li>
+                            <li>INSERT, UPDATE, DELETE</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Report Error Modal -->
+          <div class="modal fade" id="reportModal" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Báo lỗi giáo trình</h5>
+                  <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                  <form id="reportForm">
+                    <div class="form-group">
+                      <label>Loại lỗi</label>
+                      <select class="form-control" required>
+                        <option value="">Chọn loại lỗi...</option>
+                        <option>Nội dung sai</option>
+                        <option>Thiếu thông tin</option>
+                        <option>Lỗi chính tả</option>
+                        <option>Khác</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Mô tả chi tiết</label>
+                      <textarea class="form-control" rows="4" required placeholder="Mô tả lỗi bạn phát hiện..."></textarea>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                  <button class="btn btn-primary" onclick="submitReport()">Gửi báo cáo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - SMD System</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="js/ruang-admin.min.js"></script>
+
+  <script>
+    const API_BASE_URL = 'http://localhost:8000';
+
+    async function checkAuth() {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        window.location.href = '/index.html';
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/users/me`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+          const user = await response.json();
+          if (user.role !== 'student') {
+            alert('Bạn không có quyền truy cập!');
+            window.location.href = '/index.html';
+            return;
+          }
+          document.getElementById('userFullName').textContent = user.full_name || 'Student';
+        } else {
+          localStorage.removeItem('access_token');
+          window.location.href = '/index.html';
+        }
+      } catch (error) {
+        console.error('Auth error:', error);
+      }
+    }
+
+    function handleLogout() {
+      if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+        localStorage.removeItem('access_token');
+        window.location.href = '/index.html';
+      }
+    }
+
+    function toggleSubscribe() {
+      alert('Đã thêm vào danh sách theo dõi!');
+    }
+
+    function downloadPDF() {
+      alert('Đang tải xuống file PDF... (Tính năng sẽ được kết nối với backend)');
+    }
+
+    function reportError() {
+      $('#reportModal').modal('show');
+    }
+
+    function submitReport() {
+      alert('Cảm ơn bạn đã báo lỗi. Chúng tôi sẽ xem xét và cập nhật sớm nhất!');
+      $('#reportModal').modal('hide');
+    }
+
+    // Load syllabus details
+    function loadSyllabusDetails() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const syllabusId = urlParams.get('id');
+      
+      if (syllabusId) {
+        // TODO: Fetch syllabus details from API
+        console.log('Loading syllabus:', syllabusId);
+      }
+    }
+
+    $(document).ready(function() {
+      checkAuth();
+      loadSyllabusDetails();
+    });
+  </script>
+</body>
+
+</html>

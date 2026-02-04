@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HoD Dashboard - SMD System</title>
+  <link rel="shortcut icon" href="./img/svg/logo.svg" type="image/x-icon">
+  <link rel="stylesheet" href="./css/style.min.css">
+  <style>
+    .stats-card { background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .stats-card h3 { margin: 0 0 10px 0; color: #666; font-size: 14px; }
+    .stats-card .number { font-size: 32px; font-weight: bold; color: #333; }
+    .stats-card .label { color: #999; font-size: 12px; }
+    .pending-badge { background: #ffc107; color: #000; padding: 2px 8px; border-radius: 12px; font-size: 11px; }
+    .approved-badge { background: #28a745; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 11px; }
+    .rejected-badge { background: #dc3545; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 11px; }
+    .review-badge { background: #17a2b8; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 11px; }
+    .action-btn { padding: 6px 12px; border-radius: 4px; border: none; cursor: pointer; font-size: 12px; }
+    .btn-primary { background: #007bff; color: #fff; }
+    .btn-success { background: #28a745; color: #fff; }
+    .btn-danger { background: #dc3545; color: #fff; }
+    .recent-table { width: 100%; border-collapse: collapse; }
+    .recent-table th { background: #f8f9fa; padding: 12px; text-align: left; font-size: 12px; color: #666; }
+    .recent-table td { padding: 12px; border-bottom: 1px solid #eee; font-size: 13px; }
+    .priority-high { color: #dc3545; font-weight: bold; }
+    .priority-medium { color: #ffc107; font-weight: bold; }
+    .priority-low { color: #28a745; }
+  </style>
+</head>
+
+<body>
+  <div class="layer"></div>
+  <a class="skip-link sr-only" href="#skip-target">Skip to content</a>
+  <div class="page-flex">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-start">
+        <div class="sidebar-head">
+          <a href="/hod-web/dashboard.html" class="logo-wrapper" title="Home">
+            <span class="sr-only">Home</span>
+            <div class="logo-text">
+              <span class="logo-title">SMD System</span>
+              <span class="logo-subtitle">Head of Department</span>
+            </div>
+          </a>
+          <button class="sidebar-toggle transparent-btn" title="Menu" type="button">
+            <span class="sr-only">Toggle menu</span>
+            <span class="icon menu-toggle" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="sidebar-body">
+          <ul class="sidebar-body-menu">
+            <li>
+              <a class="active" href="dashboard.html"><span class="icon home" aria-hidden="true"></span>Dashboard</a>
+            </li>
+            <li>
+              <a class="show-cat-btn" href="##">
+                <span class="icon document" aria-hidden="true"></span>Syllabus Review
+                <span class="category__btn transparent-btn" title="Open list">
+                  <span class="sr-only">Open list</span>
+                  <span class="icon arrow-down" aria-hidden="true"></span>
+                </span>
+              </a>
+              <ul class="cat-sub-menu">
+                <li><a href="syllabus-pending.html">Pending Review</a></li>
+                <li><a href="syllabus-reviewed.html">Reviewed</a></li>
+                <li><a href="syllabus-all.html">All Syllabus</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="collaborative-review.html">
+                <span class="icon message" aria-hidden="true"></span>Collaborative Review
+              </a>
+              <span class="msg-counter" id="collaborative-count">0</span>
+            </li>
+            <li>
+              <a class="show-cat-btn" href="##">
+                <span class="icon folder" aria-hidden="true"></span>Lookup & Analysis
+                <span class="category__btn transparent-btn" title="Open list">
+                  <span class="sr-only">Open list</span>
+                  <span class="icon arrow-down" aria-hidden="true"></span>
+                </span>
+              </a>
+              <ul class="cat-sub-menu">
+                <li><a href="syllabus-search.html">Search Syllabus</a></li>
+                <li><a href="syllabus-compare.html">Version Comparison</a></li>
+                <li><a href="department-reports.html">Department Reports</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="notifications.html">
+                <span class="icon bell" aria-hidden="true"></span>Notifications
+              </a>
+              <span class="msg-counter" id="notification-count">0</span>
+            </li>
+          </ul>
+          <span class="system-menu__title">System</span>
+          <ul class="sidebar-body-menu">
+            <li>
+              <a href="profile.html"><span class="icon user-3" aria-hidden="true"></span>Profile</a>
+            </li>
+            <li>
+              <a href="settings.html"><span class="icon edit" aria-hidden="true"></span>Settings</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <a href="##" class="sidebar-user">
+          <span class="sidebar-user-img">
+            <picture><source srcset="./img/avatar/avatar-illustrated-01.webp" type="image/webp"><img src="./img/avatar/avatar-illustrated-01.png" alt="User name"></picture>
+          </span>
+          <div class="sidebar-user-info">
+            <span class="sidebar-user__title" id="user-name">HoD Name</span>
+            <span class="sidebar-user__subtitle" id="user-dept">Department</span>
+          </div>
+        </a>
+      </div>
+    </aside>
+
+    <div class="main-wrapper">
+      <!-- Header -->
+      <nav class="main-nav--bg">
+        <div class="container main-nav">
+          <div class="main-nav-start">
+            <h1>Dashboard Overview</h1>
+          </div>
+          <div class="main-nav-end">
+            <button class="sidebar-toggle transparent-btn" title="Menu" type="button">
+              <span class="sr-only">Toggle menu</span>
+              <span class="icon menu-toggle--gray" aria-hidden="true"></span>
+            </button>
+            <button class="theme-switcher gray-circle-btn" type="button" title="Switch theme">
+              <span class="sr-only">Switch theme</span>
+              <i class="sun-icon" data-feather="sun" aria-hidden="true"></i>
+              <i class="moon-icon" data-feather="moon" aria-hidden="true"></i>
+            </button>
+            <div class="nav-user-wrapper">
+              <button href="##" class="nav-user-btn dropdown-btn" title="My profile" type="button">
+                <span class="sr-only">My profile</span>
+                <span class="nav-user-img">
+                  <picture><source srcset="./img/avatar/avatar-illustrated-01.webp" type="image/webp"><img src="./img/avatar/avatar-illustrated-01.png" alt="User name"></picture>
+                </span>
+              </button>
+              <ul class="users-item-dropdown nav-user-dropdown dropdown">
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="settings.html">Settings</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="main users chart-page" id="skip-target">
+        <div class="container">
+          <!-- Statistics Cards -->
+          <div class="row">
+            <div class="col-lg-3 col-md-6">
+              <div class="stats-card">
+                <h3>Pending Review</h3>
+                <div class="number" id="pending-count">0</div>
+                <div class="label">Syllabuses awaiting review</div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="stats-card">
+                <h3>In Collaborative Review</h3>
+                <div class="number" id="collab-count">0</div>
+                <div class="label">Active collaborative sessions</div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="stats-card">
+                <h3>Approved This Month</h3>
+                <div class="number" id="approved-count">0</div>
+                <div class="label">Successfully approved</div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="stats-card">
+                <h3>Total Syllabus</h3>
+                <div class="number" id="total-count">0</div>
+                <div class="label">In department</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Priority Syllabus Review -->
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="stats-card">
+                <h3>🚨 Priority Syllabus - Require Immediate Review</h3>
+                <table class="recent-table" id="priority-table">
+                  <thead>
+                    <tr>
+                      <th>Priority</th>
+                      <th>Subject Code</th>
+                      <th>Subject Name</th>
+                      <th>Lecturer</th>
+                      <th>Submitted Date</th>
+                      <th>Days Pending</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="priority-tbody">
+                    <tr>
+                      <td colspan="8" style="text-align: center; padding: 40px;">Loading...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Activities -->
+          <div class="row">
+            <div class="col-lg-8">
+              <div class="stats-card">
+                <h3>📋 Recent Submissions</h3>
+                <table class="recent-table" id="recent-table">
+                  <thead>
+                    <tr>
+                      <th>Subject</th>
+                      <th>Lecturer</th>
+                      <th>Type</th>
+                      <th>Submitted</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recent-tbody">
+                    <tr>
+                      <td colspan="6" style="text-align: center; padding: 40px;">Loading...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="stats-card">
+                <h3>🔔 Recent Notifications</h3>
+                <div id="notifications-list">
+                  <p style="text-align: center; padding: 20px; color: #999;">Loading notifications...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="container footer--flex">
+          <div class="footer-start">
+            <p>© SMD System 2026. Syllabus Management & Digitalization.</p>
+          </div>
+          <ul class="footer-end">
+            <li><a href="##">About</a></li>
+            <li><a href="##">Support</a></li>
+            <li><a href="##">Documentation</a></li>
+          </ul>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="./plugins/chart.min.js"></script>
+  <script src="./plugins/feather.min.js"></script>
+  <script src="./js/script.js"></script>
+  <script>
+    const API_BASE_URL = 'http://localhost:8000';
+    
+    // Check authentication
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      window.location.href = '/index.html';
+    }
+
+    // Load user info
+    async function loadUserInfo() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/users/me`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (response.ok) {
+          const user = await response.json();
+          if (user.role !== 'hod') {
+            alert('Access denied. This page is for Head of Department only.');
+            window.location.href = '/index.html';
+            return;
+          }
+          document.getElementById('user-name').textContent = user.full_name || user.email;
+          document.getElementById('user-dept').textContent = user.department || 'Head of Department';
+        } else {
+          throw new Error('Failed to load user info');
+        }
+      } catch (error) {
+        console.error('Error loading user info:', error);
+        localStorage.removeItem('access_token');
+        window.location.href = '/index.html';
+      }
+    }
+
+    // Load dashboard statistics
+    async function loadStatistics() {
+      try {
+        // Load syllabuses with different statuses
+        const headers = { 'Authorization': `Bearer ${token}` };
+        
+        let pending = [];
+        let collab = [];
+        let approved = [];
+        let all = [];
+        let useMockData = false;
+
+        try {
+          // Get pending syllabuses (status: pending_hod_review)
+          const pendingRes = await fetch(`${API_BASE_URL}/syllabuses/?status=pending_hod_review`, { headers });
+          if (pendingRes.ok) {
+            pending = await pendingRes.json();
+          }
+
+          // Get collaborative review syllabuses
+          const collabRes = await fetch(`${API_BASE_URL}/syllabuses/?status=collaborative_review`, { headers });
+          if (collabRes.ok) {
+            collab = await collabRes.json();
+          }
+
+          // Get approved this month
+          const approvedRes = await fetch(`${API_BASE_URL}/syllabuses/?status=approved`, { headers });
+          if (approvedRes.ok) {
+            approved = await approvedRes.json();
+          }
+
+          // Get total syllabuses in department
+          const allRes = await fetch(`${API_BASE_URL}/syllabuses/`, { headers });
+          if (allRes.ok) {
+            all = await allRes.json();
+          }
+
+          // If all arrays are empty, use mock data
+          if (pending.length === 0 && collab.length === 0 && approved.length === 0 && all.length === 0) {
+            useMockData = true;
+          }
+        } catch (apiError) {
+          console.log('API not available, loading mock data...', apiError);
+          useMockData = true;
+        }
+
+        // Load mock data if needed
+        if (useMockData) {
+          const mockData = generateMockData();
+          pending = mockData.pending;
+          collab = mockData.collab;
+          approved = mockData.approved;
+          all = mockData.all;
+          console.log('Using mock data for dashboard');
+        }
+
+        document.getElementById('pending-count').textContent = pending.length || 0;
+        document.getElementById('collab-count').textContent = collab.length || 0;
+        document.getElementById('collaborative-count').textContent = collab.length || 0;
+
+        const thisMonth = approved.filter(s => {
+          const date = new Date(s.updated_at);
+          const now = new Date();
+          return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+        });
+        document.getElementById('approved-count').textContent = thisMonth.length;
+        document.getElementById('total-count').textContent = all.length;
+
+        // Load priority and recent tables
+        loadPriorityTable(pending);
+        loadRecentTable([...pending, ...collab].slice(0, 10));
+        
+      } catch (error) {
+        console.error('Error loading statistics:', error);
+        // Fallback to mock data on any error
+        const mockData = generateMockData();
+        document.getElementById('pending-count').textContent = mockData.pending.length;
+        document.getElementById('collab-count').textContent = mockData.collab.length;
+        document.getElementById('collaborative-count').textContent = mockData.collab.length;
+        document.getElementById('approved-count').textContent = mockData.approved.length;
+        document.getElementById('total-count').textContent = mockData.all.length;
+        loadPriorityTable(mockData.pending);
+        loadRecentTable([...mockData.pending, ...mockData.collab].slice(0, 10));
+      }
+    }
+
+    // Generate mock data for demo
+    function generateMockData() {
+      const now = new Date();
+      const pending = [
+        {
+          id: 1,
+          subject_code: 'CSC301',
+          subject_name: 'Cấu trúc Dữ liệu và Giải thuật',
+          lecturer_name: 'TS. Nguyễn Văn A',
+          version: 'v2.0',
+          status: 'pending_hod_review',
+          created_at: new Date(now - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date(now - 10 * 24 * 60 * 60 * 1000).toISOString()
+        },
+        {
+          id: 2,
+          subject_code: 'CSC205',
+          subject_name: 'Lập trình Hướng đối tượng',
+          lecturer_name: 'TS. Trần Thị B',
+          version: 'v1.5',
+          status: 'pending_hod_review',
+          created_at: new Date(now - 5 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date(now - 5 * 24 * 60 * 60 * 1000).toISOString()
+        },
+        {
+          id: 3,
+          subject_code: 'CSC102',
+          subject_name: 'Cơ sở Dữ liệu',
+          lecturer_name: 'TS. Phạm Thị D',
+          version: 'v2.1',
+          status: 'pending_hod_review',
+          created_at: new Date(now - 2 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date(now - 2 * 24 * 60 * 60 * 1000).toISOString()
+        }
+      ];
+
+      const collab = [
+        {
+          id: 4,
+          subject_code: 'SWE401',
+          subject_name: 'Công nghệ Phần mềm',
+          lecturer_name: 'PGS. Lê Văn C',
+          version: 'v3.0',
+          status: 'collaborative_review',
+          created_at: new Date(now - 7 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date(now - 3 * 24 * 60 * 60 * 1000).toISOString()
+        },
+        {
+          id: 5,
+          subject_code: 'SWE302',
+          subject_name: 'Phát triển Ứng dụng Web',
+          lecturer_name: 'TS. Hoàng Văn E',
+          version: 'v1.8',
+          status: 'collaborative_review',
+          created_at: new Date(now - 4 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date(now - 1 * 24 * 60 * 60 * 1000).toISOString()
+        }
+      ];
+
+      const approved = [
+        {
+          id: 6,
+          subject_code: 'CSC401',
+          subject_name: 'Trí tuệ Nhân tạo',
+          lecturer_name: 'TS. Nguyễn Văn A',
+          version: 'v1.0',
+          status: 'approved',
+          created_at: new Date(now - 15 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date(now - 8 * 24 * 60 * 60 * 1000).toISOString()
+        },
+        {
+          id: 7,
+          subject_code: 'CSC303',
+          subject_name: 'Mạng máy tính',
+          lecturer_name: 'TS. Trần Thị B',
+          version: 'v2.5',
+          status: 'approved',
+          created_at: new Date(now - 20 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date(now - 5 * 24 * 60 * 60 * 1000).toISOString()
+        },
+        {
+          id: 8,
+          subject_code: 'MAT201',
+          subject_name: 'Toán rời rạc',
+          lecturer_name: 'PGS. Lê Văn C',
+          version: 'v1.2',
+          status: 'approved',
+          created_at: new Date(now - 25 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date(now - 12 * 24 * 60 * 60 * 1000).toISOString()
+        }
+      ];
+
+      const all = [...pending, ...collab, ...approved];
+
+      return { pending, collab, approved, all };
+    }
+
+    // Load priority table
+    function loadPriorityTable(syllabuses) {
+      const tbody = document.getElementById('priority-tbody');
+      
+      // Calculate days pending and sort by priority
+      const prioritized = syllabuses.map(s => {
+        const submitted = new Date(s.created_at);
+        const daysPending = Math.floor((new Date() - submitted) / (1000 * 60 * 60 * 24));
+        let priority = 'LOW';
+        if (daysPending > 7) priority = 'HIGH';
+        else if (daysPending > 3) priority = 'MEDIUM';
+        return { ...s, daysPending, priority };
+      }).sort((a, b) => b.daysPending - a.daysPending).slice(0, 5);
+
+      if (prioritized.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px; color: #999;">✅ No pending syllabuses. Great work!</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = prioritized.map(s => `
+        <tr>
+          <td><span class="priority-${s.priority.toLowerCase()}">${s.priority}</span></td>
+          <td><strong>${s.subject_code || 'N/A'}</strong></td>
+          <td>${s.subject_name || 'Untitled'}</td>
+          <td>${s.lecturer_name || 'Unknown'}</td>
+          <td>${new Date(s.created_at).toLocaleDateString('vi-VN')}</td>
+          <td><strong>${s.daysPending} days</strong></td>
+          <td><span class="pending-badge">${s.status}</span></td>
+          <td>
+            <button class="action-btn btn-primary" onclick="reviewSyllabus(${s.id})">Review Now</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Load recent table
+    function loadRecentTable(syllabuses) {
+      const tbody = document.getElementById('recent-tbody');
+      
+      if (syllabuses.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px; color: #999;">No recent submissions</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = syllabuses.map(s => {
+        const statusBadge = s.status === 'pending_hod_review' ? 'pending-badge' : 
+                           s.status === 'approved' ? 'approved-badge' : 
+                           s.status === 'rejected' ? 'rejected-badge' : 'review-badge';
+        return `
+          <tr>
+            <td>
+              <strong>${s.subject_code || 'N/A'}</strong><br>
+              <small>${s.subject_name || 'Untitled'}</small>
+            </td>
+            <td>${s.lecturer_name || 'Unknown'}</td>
+            <td><span class="review-badge">${s.version || 'v1.0'}</span></td>
+            <td>${new Date(s.created_at).toLocaleDateString('vi-VN')}</td>
+            <td><span class="${statusBadge}">${s.status}</span></td>
+            <td>
+              <button class="action-btn btn-primary" onclick="viewSyllabus(${s.id})">View</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Load notifications
+    function loadNotifications() {
+      const container = document.getElementById('notifications-list');
+      
+      if (!container) {
+        console.error('Notifications container not found');
+        return;
+      }
+
+      // Use mock data directly for demo
+      const notifications = [
+        {
+          id: 1,
+          title: '🎉 Giáo trình mới được phê duyệt',
+          message: 'Giáo trình "Cấu trúc Dữ liệu và Giải thuật v2.0" đã được phê duyệt bởi Admin',
+          created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+          is_read: false
+        },
+        {
+          id: 2,
+          title: '📝 Yêu cầu review mới',
+          message: 'TS. Nguyễn Văn A đã gửi giáo trình "Lập trình Web nâng cao" để bạn review',
+          created_at: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
+          is_read: false
+        },
+        {
+          id: 3,
+          title: '💬 Bình luận mới trong Collaborative Review',
+          message: 'PGS. Lê Văn C đã thêm nhận xét vào giáo trình "Công nghệ Phần mềm"',
+          created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+          is_read: true
+        }
+      ];
+
+      container.innerHTML = notifications.map(n => `
+        <div style="padding: 12px; border-bottom: 1px solid #eee; ${!n.is_read ? 'background: #f0f8ff;' : ''}">
+          <div style="font-weight: bold; font-size: 13px;">${n.title}</div>
+          <div style="font-size: 12px; color: #666; margin-top: 4px;">${n.message}</div>
+          <div style="font-size: 11px; color: #999; margin-top: 4px;">${new Date(n.created_at).toLocaleString('vi-VN')}</div>
+        </div>
+      `).join('');
+      
+      const unreadCount = notifications.filter(n => !n.is_read).length;
+      const notifCountEl = document.getElementById('notification-count');
+      if (notifCountEl) {
+        notifCountEl.textContent = unreadCount;
+      }
+      console.log(`Loaded ${notifications.length} notifications (${unreadCount} unread)`);
+    }
+
+    // Actions
+    function reviewSyllabus(id) {
+      window.location.href = `syllabus-review.html?id=${id}`;
+    }
+
+    function viewSyllabus(id) {
+      window.location.href = `syllabus-view.html?id=${id}`;
+    }
+
+    function logout() {
+      localStorage.removeItem('access_token');
+      window.location.href = '/index.html';
+    }
+
+    // Initialize
+    loadUserInfo();
+    loadStatistics();
+    loadNotifications();
+
+    // Auto refresh every 60 seconds
+    setInterval(() => {
+      loadStatistics();
+      loadNotifications();
+    }, 60000);
+  </script>
+</body>
+</html>

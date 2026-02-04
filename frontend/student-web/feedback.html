@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Gửi Phản hồi - SMD System</title>
+  <link href="img/logo/logo.png" rel="icon">
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="css/ruang-admin.min.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.html">
+        <div class="sidebar-brand-icon">
+          <img src="img/logo/logo.png" style="max-width: 40px;">
+        </div>
+        <div class="sidebar-brand-text mx-3">SMD Student</div>
+      </a>
+      <hr class="sidebar-divider my-0">
+      <li class="nav-item">
+        <a class="nav-link" href="dashboard.html">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dashboard</span></a>
+      </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">Syllabus</div>
+      <li class="nav-item">
+        <a class="nav-link" href="syllabus-search.html">
+          <i class="fas fa-fw fa-search"></i>
+          <span>Tìm kiếm Giáo trình</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="my-subscriptions.html">
+          <i class="fas fa-fw fa-star"></i>
+          <span>Giáo trình theo dõi</span>
+        </a>
+      </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">Hỗ trợ</div>
+      <li class="nav-item active">
+        <a class="nav-link" href="feedback.html">
+          <i class="fas fa-fw fa-comments"></i>
+          <span>Gửi Phản hồi</span>
+        </a>
+      </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">Account</div>
+      <li class="nav-item">
+        <a class="nav-link" href="profile.html">
+          <i class="fas fa-fw fa-user"></i>
+          <span>Thông tin cá nhân</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" onclick="handleLogout()">
+          <i class="fas fa-fw fa-sign-out-alt"></i>
+          <span>Đăng xuất</span>
+        </a>
+      </li>
+    </ul>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <!-- TopBar -->
+        <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+          <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown">
+                <img class="img-profile rounded-circle" src="img/logo/logo.png" style="max-width: 60px">
+                <span class="ml-2 d-none d-lg-inline text-white small" id="userFullName">Student</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
+                <a class="dropdown-item" href="profile.html">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Profile
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" onclick="handleLogout()">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Logout
+                </a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Container Fluid-->
+        <div class="container-fluid" id="container-wrapper">
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Gửi Phản hồi / Báo lỗi</h1>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="dashboard.html">Home</a></li>
+              <li class="breadcrumb-item active">Gửi Phản hồi</li>
+            </ol>
+          </div>
+
+          <!-- Feedback Form -->
+          <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Form Gửi Phản hồi</h6>
+                </div>
+                <div class="card-body">
+                  <form id="feedbackForm">
+                    <div class="form-group">
+                      <label>Loại phản hồi <span class="text-danger">*</span></label>
+                      <select class="form-control" id="feedbackType" required>
+                        <option value="">-- Chọn loại phản hồi --</option>
+                        <option value="bug">Báo lỗi</option>
+                        <option value="suggestion">Gợi ý cải thiện</option>
+                        <option value="content">Thắc mắc về nội dung</option>
+                        <option value="other">Khác</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Môn học liên quan <span class="text-muted">(tùy chọn)</span></label>
+                      <select class="form-control" id="syllabusCode">
+                        <option value="">-- Chọn môn học --</option>
+                        <option value="CS101">CS101 - Nhập môn lập trình</option>
+                        <option value="CS102">CS102 - Lập trình hướng đối tượng</option>
+                        <option value="CS201">CS201 - Cấu trúc dữ liệu và giải thuật</option>
+                        <option value="CS301">CS301 - Cơ sở dữ liệu</option>
+                        <option value="CS302">CS302 - Hệ điều hành</option>
+                        <option value="CS303">CS303 - Mạng máy tính</option>
+                        <option value="CS401">CS401 - Trí tuệ nhân tạo</option>
+                        <option value="CS402">CS402 - Học máy</option>
+                        <option value="SE101">SE101 - Kiến trúc phần mềm</option>
+                        <option value="SE201">SE201 - Testing và QA</option>
+                        <option value="IT101">IT101 - Hệ thống thông tin</option>
+                        <option value="IT201">IT201 - Quản lý hệ thống</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Tiêu đề <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control" id="feedbackTitle" placeholder="Nhập tiêu đề phản hồi..." required>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Nội dung chi tiết <span class="text-danger">*</span></label>
+                      <textarea class="form-control" id="feedbackContent" rows="6" placeholder="Mô tả chi tiết phản hồi của bạn..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Mức độ ưu tiên</label>
+                      <select class="form-control" id="feedbackPriority">
+                        <option value="low">Thấp</option>
+                        <option value="normal" selected>Bình thường</option>
+                        <option value="high">Cao</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Gửi Phản hồi
+                      </button>
+                      <button type="reset" class="btn btn-secondary ml-2">
+                        <i class="fas fa-redo"></i> Xóa
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Feedbacks -->
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Phản hồi của bạn</h6>
+                </div>
+                <div class="table-responsive p-3">
+                  <table class="table align-items-center table-flush table-hover" id="feedbackTable">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Ngày gửi</th>
+                        <th>Loại</th>
+                        <th>Tiêu đề</th>
+                        <th>Môn học</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                      </tr>
+                    </thead>
+                    <tbody id="feedbackTableBody">
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Logout -->
+          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Đăng xuất?</h5>
+                  <button class="close" type="button" data-dismiss="modal">
+                    <span>&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">Bạn có chắc chắn muốn đăng xuất?</div>
+                <div class="modal-footer">
+                  <button class="btn btn-outline-primary" type="button" data-dismiss="modal">Hủy</button>
+                  <button class="btn btn-primary" onclick="confirmLogout()">Đăng xuất</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - SMD System</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="js/ruang-admin.min.js"></script>
+
+  <script>
+    const API_BASE_URL = 'http://localhost:8000';
+
+    async function checkAuth() {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        window.location.href = '/index.html';
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/users/me`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+          const user = await response.json();
+          if (user.role !== 'student') {
+            alert('Bạn không có quyền truy cập!');
+            window.location.href = '/index.html';
+            return;
+          }
+          document.getElementById('userFullName').textContent = user.full_name || 'Student';
+        } else {
+          localStorage.removeItem('access_token');
+          window.location.href = '/index.html';
+        }
+      } catch (error) {
+        console.error('Auth error:', error);
+      }
+    }
+
+    function handleLogout() {
+      $('#logoutModal').modal('show');
+    }
+
+    function confirmLogout() {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('user_data');
+      localStorage.clear();
+      window.location.href = 'http://localhost:3000';
+    }
+
+    function saveFeedback() {
+      const feedback = {
+        id: Date.now(),
+        date: new Date().toLocaleDateString('vi-VN'),
+        type: document.getElementById('feedbackType').value,
+        title: document.getElementById('feedbackTitle').value,
+        content: document.getElementById('feedbackContent').value,
+        syllabus: document.getElementById('syllabusCode').value,
+        priority: document.getElementById('feedbackPriority').value,
+        status: 'Chờ xử lý',
+        user: document.getElementById('userFullName').textContent
+      };
+
+      let feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+      feedbacks.push(feedback);
+      localStorage.setItem('feedbacks', JSON.stringify(feedbacks));
+
+      return feedback;
+    }
+
+    function displayFeedbacks() {
+      const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+      const tbody = document.getElementById('feedbackTableBody');
+      tbody.innerHTML = '';
+
+      if (feedbacks.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Chưa có phản hồi nào</td></tr>';
+        return;
+      }
+
+      feedbacks.reverse().forEach(fb => {
+        const typeText = {
+          'bug': 'Báo lỗi',
+          'suggestion': 'Gợi ý',
+          'content': 'Thắc mắc',
+          'other': 'Khác'
+        }[fb.type] || fb.type;
+
+        const statusBadge = fb.status === 'Chờ xử lý' 
+          ? '<span class="badge badge-warning">Chờ xử lý</span>'
+          : '<span class="badge badge-success">Đã xử lý</span>';
+
+        const row = `
+          <tr>
+            <td>${fb.date}</td>
+            <td>${typeText}</td>
+            <td>${fb.title}</td>
+            <td>${fb.syllabus || '-'}</td>
+            <td>${statusBadge}</td>
+            <td>
+              <button class="btn btn-sm btn-info" onclick="viewFeedback('${fb.id}')">
+                <i class="fas fa-eye"></i> Xem
+              </button>
+            </td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
+    }
+
+    function viewFeedback(id) {
+      const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+      const fb = feedbacks.find(f => f.id == id);
+      if (fb) {
+        alert(`Tiêu đề: ${fb.title}\n\nNội dung: ${fb.content}\n\nTrạng thái: ${fb.status}`);
+      }
+    }
+
+    $(document).ready(function() {
+      checkAuth();
+      displayFeedbacks();
+
+      $('#feedbackForm').submit(function(e) {
+        e.preventDefault();
+        const feedback = saveFeedback();
+        alert('Phản hồi đã được gửi thành công!');
+        document.getElementById('feedbackForm').reset();
+        displayFeedbacks();
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <title>Create Syllabus - SMD System</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!-- Favicon icon -->
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="assets/icon/icofont/css/icofont.css">
+    <!-- Themify -->
+    <link rel="stylesheet" type="text/css" href="assets/icon/themify-icons/themify-icons.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+    <!-- Main Styles -->
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/menu.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/color/color-1.css" id="color" />
+    <link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/lecturer-dashboard.css">
+</head>
+
+<body class="sidebar-mini fixed">
+    <div class="loader-bg">
+        <div class="loader-bar"></div>
+    </div>
+
+    <div class="wrapper">
+        <header class="main-header-top hidden-print">
+            <a href="dashboard.html" class="logo">
+                <h4 style="color: white; margin: 0; padding: 10px;">SMD - Lecturer</h4>
+            </a>
+            <nav class="navbar navbar-static-top">
+                <a href="#!" data-toggle="offcanvas" class="sidebar-toggle"></a>
+                <div class="navbar-custom-menu f-right">
+                    <ul class="top-nav">
+                        <li class="dropdown">
+                            <a href="#!" data-toggle="dropdown" role="button" class="dropdown-toggle">
+                                <span><i class="ti-user"></i></span>
+                                <span id="userName">Lecturer</span> <i class="icofont icofont-simple-down"></i>
+                            </a>
+                            <ul class="dropdown-menu settings-menu">
+                                <li><a href="profile.html"><i class="icon-user"></i> Profile</a></li>
+                                <li><a href="#" onclick="logout()"><i class="icon-logout"></i> Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        
+        <aside class="main-sidebar hidden-print">
+            <section class="sidebar">
+                <ul class="sidebar-menu">
+                    <li class="nav-level">--- Navigation</li>
+                    <li><a href="dashboard.html"><i class="icon-speedometer"></i><span> Dashboard</span></a></li>
+                    <li class="nav-level">--- Syllabus Management</li>
+                    <li class="active"><a href="syllabus-create.html"><i class="icon-plus"></i><span> Create Syllabus</span></a></li>
+                    <li><a href="syllabus-list.html"><i class="icon-docs"></i><span> My Syllabuses</span></a></li>
+                </ul>
+            </section>
+        </aside>
+        
+        <div class="content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5><i class="ti-plus"></i> Create New Syllabus</h5>
+                            </div>
+                            <div class="card-block">
+                                <!-- Input Method Selection -->
+                                <div class="alert alert-info">
+                                    <h6><i class="ti-info-alt"></i> Choose Input Method:</h6>
+                                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                        <label class="btn btn-outline-primary active" onclick="switchInputMode('manual')">
+                                            <input type="radio" name="inputMode" id="manualMode" checked> <i class="ti-pencil"></i> Manual Input
+                                        </label>
+                                        <label class="btn btn-outline-primary" onclick="switchInputMode('upload')">
+                                            <input type="radio" name="inputMode" id="uploadMode"> <i class="ti-upload"></i> Import from File (AI-Assisted)
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Upload Mode -->
+                                <div id="uploadModeSection" style="display: none;">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h6><i class="ti-cloud-up"></i> Upload Syllabus File (PDF/Word)</h6>
+                                            <p class="text-muted">AI will automatically extract and suggest CLO, PLO, objectives, and content from your file.</p>
+                                            <div class="form-group">
+                                                <label>Upload File (PDF, DOCX)</label>
+                                                <input type="file" class="form-control" id="syllabusFile" accept=".pdf,.doc,.docx">
+                                            </div>
+                                            <button type="button" class="btn btn-primary" onclick="uploadAndExtract()">
+                                                <i class="ti-cloud-up"></i> Upload & Extract with AI
+                                            </button>
+                                            <div id="uploadProgress" style="display: none; margin-top: 15px;">
+                                                <div class="progress">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                                                </div>
+                                                <small class="text-muted">Processing with AI... This may take 30-60 seconds</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Manual Input Form -->
+                                <form id="syllabusCreateForm" autocomplete="off">
+                                    <div id="syllabusAlert"></div>
+                                    
+                                    <!-- Tab Navigation -->
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#basicInfo">Basic Info</a></li>
+                                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#contentTab">Content & Methods</a></li>
+                                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#cloTab">CLO & PLO</a></li>
+                                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#assessmentTab">Assessment</a></li>
+                                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#prerequisitesTab">Prerequisites</a></li>
+                                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#resourcesTab">Resources</a></li>
+                                    </ul>
+                                    
+                                    <div class="tab-content" style="padding: 20px 0;">
+                                        <!-- Tab 1: Basic Info -->
+                                        <div id="basicInfo" class="tab-pane active">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Subject Code <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="subject_code" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Subject Name <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="subject_name" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Credits <span class="text-danger">*</span></label>
+                                                        <input type="number" class="form-control" id="credits" min="1" max="20" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Semester</label>
+                                                        <input type="number" class="form-control" id="semester" min="1" max="12">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Academic Year</label>
+                                                        <input type="text" class="form-control" id="academic_year" placeholder="e.g., 2024-2025">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Department</label>
+                                                <input type="text" class="form-control" id="department">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Description</label>
+                                                <textarea class="form-control" id="description" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Tab 2: Content & Methods -->
+                                        <div id="contentTab" class="tab-pane">
+                                            <div class="form-group">
+                                                <label>Objectives (Mục tiêu học tập)</label>
+                                                <textarea class="form-control" id="objectives" rows="4" placeholder="Enter learning objectives..."></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Content (Nội dung giảng dạy)</label>
+                                                <textarea class="form-control" id="content" rows="6" placeholder="Enter course content..."></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Teaching Methods (Phương pháp giảng dạy)</label>
+                                                <textarea class="form-control" id="teaching_methods" rows="4" placeholder="Enter teaching methods..."></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Assessment Methods (Phương pháp đánh giá)</label>
+                                                <textarea class="form-control" id="assessment_methods" rows="4" placeholder="Enter assessment methods..."></textarea>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Tab 3: CLO & PLO -->
+                                        <div id="cloTab" class="tab-pane">
+                                            <h6>Course Learning Outcomes (CLO)</h6>
+                                            <div id="closContainer"></div>
+                                            <button type="button" class="btn btn-sm btn-success mb-3" onclick="addCLO()">
+                                                <i class="ti-plus"></i> Add CLO
+                                            </button>
+                                            
+                                            <h6 class="mt-4">Program Learning Outcomes (PLO)</h6>
+                                            <div id="plosContainer"></div>
+                                            <button type="button" class="btn btn-sm btn-success mb-3" onclick="addPLO()">
+                                                <i class="ti-plus"></i> Add PLO
+                                            </button>
+                                            
+                                            <h6 class="mt-4">CLO-PLO Mapping</h6>
+                                            <small class="text-muted">Map which CLOs align with which PLOs</small>
+                                            <div id="mappingContainer" class="mt-2"></div>
+                                        </div>
+                                        
+                                        <!-- Tab 4: Assessment Weights -->
+                                        <div id="assessmentTab" class="tab-pane">
+                                            <h6>Assessment Weights (Trọng số đánh giá) - Total must equal 100%</h6>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Attendance</label>
+                                                        <input type="number" class="form-control assessment-weight" id="weight_attendance" min="0" max="100" value="0">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Assignment</label>
+                                                        <input type="number" class="form-control assessment-weight" id="weight_assignment" min="0" max="100" value="0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Midterm Exam</label>
+                                                        <input type="number" class="form-control assessment-weight" id="weight_midterm" min="0" max="100" value="0">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Final Exam</label>
+                                                        <input type="number" class="form-control assessment-weight" id="weight_final" min="0" max="100" value="0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Project</label>
+                                                        <input type="number" class="form-control assessment-weight" id="weight_project" min="0" max="100" value="0">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Other</label>
+                                                        <input type="number" class="form-control assessment-weight" id="weight_other" min="0" max="100" value="0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="alert alert-info">
+                                                <strong>Total: <span id="totalWeight">0</span>%</strong>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Tab 5: Prerequisites -->
+                                        <div id="prerequisitesTab" class="tab-pane">
+                                            <h6>Prerequisites (Môn tiên quyết)</h6>
+                                            <div id="prerequisitesContainer"></div>
+                                            <button type="button" class="btn btn-sm btn-success mb-3" onclick="addPrerequisite()">
+                                                <i class="ti-plus"></i> Add Prerequisite
+                                            </button>
+                                            
+                                            <h6 class="mt-4">Corequisites (Môn song hành)</h6>
+                                            <div id="corequisitesContainer"></div>
+                                            <button type="button" class="btn btn-sm btn-success mb-3" onclick="addCorequisite()">
+                                                <i class="ti-plus"></i> Add Corequisite
+                                            </button>
+                                            
+                                            <h6 class="mt-4">Related Subjects (Môn liên quan)</h6>
+                                            <div id="relatedContainer"></div>
+                                            <button type="button" class="btn btn-sm btn-success" onclick="addRelated()">
+                                                <i class="ti-plus"></i> Add Related Subject
+                                            </button>
+                                        </div>
+                                        
+                                        <!-- Tab 6: Resources -->
+                                        <div id="resourcesTab" class="tab-pane">
+                                            <h6>Textbooks</h6>
+                                            <div id="textbooksContainer"></div>
+                                            <button type="button" class="btn btn-sm btn-success mb-3" onclick="addTextbook()">
+                                                <i class="ti-plus"></i> Add Textbook
+                                            </button>
+                                            
+                                            <h6 class="mt-4">References</h6>
+                                            <div id="referencesContainer"></div>
+                                            <button type="button" class="btn btn-sm btn-success mb-3" onclick="addReference()">
+                                                <i class="ti-plus"></i> Add Reference
+                                            </button>
+                                            
+                                            <h6 class="mt-4">Learning Materials (Tài liệu học tập)</h6>
+                                            <p class="text-muted">Upload lecture slides, documents, videos, etc.</p>
+                                            <div id="learningMaterialsContainer"></div>
+                                            <button type="button" class="btn btn-sm btn-success mb-3" onclick="addLearningMaterial()">
+                                                <i class="ti-upload"></i> Add Learning Material
+                                            </button>
+                                            
+                                            <h6 class="mt-4">Course Files (File giáo trình đính kèm)</h6>
+                                            <p class="text-muted">Attach syllabus PDF, lecture notes, or other course documents</p>
+                                            <div id="courseFilesContainer"></div>
+                                            <button type="button" class="btn btn-sm btn-success" onclick="addCourseFile()">
+                                                <i class="ti-file"></i> Attach Course File
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Submit Buttons -->
+                                    <div class="form-group text-right mt-4">
+                                        <button type="button" class="btn btn-secondary mr-2" onclick="window.location.href='dashboard.html'">
+                                            <i class="ti-arrow-left"></i> Cancel
+                                        </button>
+                                        <button type="button" class="btn btn-info mr-2" onclick="saveDraft()">
+                                            <i class="ti-save"></i> Save as Draft
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="ti-check"></i> Submit for Review
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        // Hide loader immediately
+        $(document).ready(function() {
+            console.log('jQuery loaded, hiding loader...');
+            $('.loader-bg').fadeOut();
+            
+            // Simple sidebar toggle
+            $('.sidebar-toggle').on('click', function() {
+                $('body').toggleClass('sidebar-collapse');
+            });
+        });
+        
+        const token = localStorage.getItem('token') || localStorage.getItem('access_token');
+        console.log('Token exists?', !!token);
+        if (!token) {
+            // Redirect to local login page in this project
+            window.location.href = 'login1.html';
+        }
+        
+        // Safely parse response bodies that may be JSON or plain text
+        async function parseResponse(res) {
+            try {
+                const json = await res.json();
+                return json;
+            } catch (e) {
+                try { const txt = await res.text(); return { detail: txt }; } catch (_) { return { detail: 'Unknown response' }; }
+            }
+        }
+        async function refreshUser() {
+            try {
+                const res = await fetch('http://localhost:8000/users/me', { headers: { 'Authorization': `Bearer ${token}` } });
+                if (res.ok) {
+                    const u = await res.json();
+                    localStorage.setItem('user_data', JSON.stringify(u));
+                    if (document.getElementById('userName')) document.getElementById('userName').textContent = (u.full_name || u.email || 'Lecturer');
+                }
+            } catch (e) { console.warn('refreshUser failed', e); }
+        }
+        refreshUser();
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.clear();
+                window.location.href = 'home.html';
+            }
+        }
+
+        let closCount = 0, plosCount = 0, prereqCount = 0, coreqCount = 0, relatedCount = 0, textbookCount = 0, refCount = 0;
+
+        // CLO Management
+        function addCLO() {
+            closCount++;
+            const html = `<div class="card mb-2 clo-item" data-index="${closCount}">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2"><input type="text" class="form-control" placeholder="CLO${closCount}" id="clo_id_${closCount}" value="CLO${closCount}"></div>
+                        <div class="col-md-7"><textarea class="form-control" placeholder="Description" id="clo_desc_${closCount}" rows="2"></textarea></div>
+                        <div class="col-md-2"><input type="text" class="form-control" placeholder="Level (K1-K6)" id="clo_level_${closCount}" value="K3"></div>
+                        <div class="col-md-1"><button type="button" class="btn btn-danger btn-sm" onclick="$(this).closest('.clo-item').remove(); updateMapping();"><i class="ti-trash"></i></button></div>
+                    </div>
+                </div>
+            </div>`;
+            $('#closContainer').append(html);
+            updateMapping();
+        }
+
+        // PLO Management
+        function addPLO() {
+            plosCount++;
+            const html = `<div class="card mb-2 plo-item" data-index="${plosCount}">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2"><input type="text" class="form-control" placeholder="PLO${plosCount}" id="plo_id_${plosCount}" value="PLO${plosCount}"></div>
+                        <div class="col-md-9"><textarea class="form-control" placeholder="Description" id="plo_desc_${plosCount}" rows="2"></textarea></div>
+                        <div class="col-md-1"><button type="button" class="btn btn-danger btn-sm" onclick="$(this).closest('.plo-item').remove(); updateMapping();"><i class="ti-trash"></i></button></div>
+                    </div>
+                </div>
+            </div>`;
+            $('#plosContainer').append(html);
+            updateMapping();
+        }
+
+        // Update CLO-PLO Mapping UI
+        function updateMapping() {
+            const clos = $('.clo-item').map(function() { return $(this).find('input[id^="clo_id_"]').val(); }).get();
+            const plos = $('.plo-item').map(function() { return $(this).find('input[id^="plo_id_"]').val(); }).get();
+            let html = '<table class="table table-bordered"><thead><tr><th>CLO</th>';
+            plos.forEach(plo => html += `<th>${plo}</th>`);
+            html += '</tr></thead><tbody>';
+            clos.forEach(clo => {
+                html += `<tr><td><strong>${clo}</strong></td>`;
+                plos.forEach(plo => {
+                    html += `<td><input type="checkbox" class="mapping-check" data-clo="${clo}" data-plo="${plo}"></td>`;
+                });
+                html += '</tr>';
+            });
+            html += '</tbody></table>';
+            $('#mappingContainer').html(html);
+        }
+
+        // Prerequisites, Corequisites, Related
+        function addPrerequisite() {
+            prereqCount++;
+            const html = `<div class="input-group mb-2 prereq-item">
+                <input type="text" class="form-control" placeholder="Subject Code" id="prereq_code_${prereqCount}">
+                <input type="text" class="form-control" placeholder="Subject Name" id="prereq_name_${prereqCount}">
+                <div class="input-group-append"><button class="btn btn-danger" type="button" onclick="$(this).closest('.prereq-item').remove()"><i class="ti-trash"></i></button></div>
+            </div>`;
+            $('#prerequisitesContainer').append(html);
+        }
+
+        function addCorequisite() {
+            coreqCount++;
+            const html = `<div class="input-group mb-2 coreq-item">
+                <input type="text" class="form-control" placeholder="Subject Code" id="coreq_code_${coreqCount}">
+                <input type="text" class="form-control" placeholder="Subject Name" id="coreq_name_${coreqCount}">
+                <div class="input-group-append"><button class="btn btn-danger" type="button" onclick="$(this).closest('.coreq-item').remove()"><i class="ti-trash"></i></button></div>
+            </div>`;
+            $('#corequisitesContainer').append(html);
+        }
+
+        function addRelated() {
+            relatedCount++;
+            const html = `<div class="input-group mb-2 related-item">
+                <input type="text" class="form-control" placeholder="Subject Code" id="related_code_${relatedCount}">
+                <input type="text" class="form-control" placeholder="Subject Name" id="related_name_${relatedCount}">
+                <div class="input-group-append"><button class="btn btn-danger" type="button" onclick="$(this).closest('.related-item').remove()"><i class="ti-trash"></i></button></div>
+            </div>`;
+            $('#relatedContainer').append(html);
+        }
+
+        function addTextbook() {
+            textbookCount++;
+            const html = `<div class="card mb-2 textbook-item">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3"><input type="text" class="form-control mb-1" placeholder="Title" id="tb_title_${textbookCount}"></div>
+                        <div class="col-md-2"><input type="text" class="form-control mb-1" placeholder="Author" id="tb_author_${textbookCount}"></div>
+                        <div class="col-md-1"><input type="number" class="form-control mb-1" placeholder="Year" id="tb_year_${textbookCount}"></div>
+                        <div class="col-md-2"><input type="text" class="form-control mb-1" placeholder="ISBN" id="tb_isbn_${textbookCount}"></div>
+                        <div class="col-md-3">
+                            <input type="file" class="form-control-file mb-1" id="tb_file_${textbookCount}" accept=".pdf,.doc,.docx">
+                            <small class="text-muted">Optional: Upload PDF/Word</small>
+                        </div>
+                        <div class="col-md-1"><button type="button" class="btn btn-danger btn-sm" onclick="$(this).closest('.textbook-item').remove()"><i class="ti-trash"></i></button></div>
+                    </div>
+                </div>
+            </div>`;
+            $('#textbooksContainer').append(html);
+        }
+
+        function addReference() {
+            refCount++;
+            const html = `<div class="card mb-2 ref-item">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3"><input type="text" class="form-control mb-1" placeholder="Title" id="ref_title_${refCount}"></div>
+                        <div class="col-md-2"><input type="text" class="form-control mb-1" placeholder="Author" id="ref_author_${refCount}"></div>
+                        <div class="col-md-1"><input type="number" class="form-control mb-1" placeholder="Year" id="ref_year_${refCount}"></div>
+                        <div class="col-md-2"><input type="text" class="form-control mb-1" placeholder="ISBN" id="ref_isbn_${refCount}"></div>
+                        <div class="col-md-3">
+                            <input type="file" class="form-control-file mb-1" id="ref_file_${refCount}" accept=".pdf,.doc,.docx">
+                            <small class="text-muted">Optional: Upload PDF/Word</small>
+                        </div>
+                        <div class="col-md-1"><button type="button" class="btn btn-danger btn-sm" onclick="$(this).closest('.ref-item').remove()"><i class="ti-trash"></i></button></div>
+                    </div>
+                </div>
+            </div>`;
+            $('#referencesContainer').append(html);
+        }
+
+        let learningMaterialCount = 0, courseFileCount = 0;
+
+        function addLearningMaterial() {
+            learningMaterialCount++;
+            const html = `<div class="card mb-2 material-item">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control mb-1" placeholder="Material Name (e.g., Lecture 1 Slides)" id="material_name_${learningMaterialCount}">
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control mb-1" id="material_type_${learningMaterialCount}">
+                                <option value="slides">Slides</option>
+                                <option value="document">Document</option>
+                                <option value="video">Video</option>
+                                <option value="audio">Audio</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="file" class="form-control-file" id="material_file_${learningMaterialCount}" accept=".pdf,.ppt,.pptx,.doc,.docx,.mp4,.mp3,.zip">
+                            <small class="text-muted">Upload file (PDF, PPT, Video, etc.)</small>
+                        </div>
+                        <div class="col-md-1"><button type="button" class="btn btn-danger btn-sm" onclick="$(this).closest('.material-item').remove()"><i class="ti-trash"></i></button></div>
+                    </div>
+                </div>
+            </div>`;
+            $('#learningMaterialsContainer').append(html);
+        }
+
+        function addCourseFile() {
+            courseFileCount++;
+            const html = `<div class="card mb-2 course-file-item">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <input type="text" class="form-control mb-1" placeholder="File Description" id="course_file_desc_${courseFileCount}">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="file" class="form-control-file" id="course_file_${courseFileCount}" accept=".pdf,.doc,.docx,.zip">
+                            <small class="text-muted">Upload course document (PDF, Word, ZIP)</small>
+                        </div>
+                        <div class="col-md-1"><button type="button" class="btn btn-danger btn-sm" onclick="$(this).closest('.course-file-item').remove()"><i class="ti-trash"></i></button></div>
+                    </div>
+                </div>
+            </div>`;
+            $('#courseFilesContainer').append(html);
+        }
+
+        // Assessment weight calculation
+        $(document).on('input', '.assessment-weight', function() {
+            const total = Array.from(document.querySelectorAll('.assessment-weight')).reduce((sum, el) => sum + (parseFloat(el.value) || 0), 0);
+            $('#totalWeight').text(total.toFixed(1));
+            if (Math.abs(total - 100) > 0.1) {
+                $('#totalWeight').parent().removeClass('alert-info').addClass('alert-warning');
+            } else {
+                $('#totalWeight').parent().removeClass('alert-warning').addClass('alert-info');
+            }
+        });
+
+        // Collect form data
+        function collectFormData() {
+            try {
+                // CLOs - ensure proper format
+                const clos = [];
+                $('.clo-item').each(function() {
+                    try {
+                        const idx = $(this).data('index');
+                        const id = $(`#clo_id_${idx}`).val();
+                        const desc = $(`#clo_desc_${idx}`).val();
+                        const level = $(`#clo_level_${idx}`).val();
+                        if (id && desc) {
+                            clos.push({id: id.trim(), description: desc.trim(), level: level?.trim() || 'K3'});
+                        }
+                    } catch (e) { console.error('Error collecting CLO:', e); }
+                });
+                
+                // PLOs - ensure proper format
+                const plos = [];
+                $('.plo-item').each(function() {
+                    try {
+                        const idx = $(this).data('index');
+                        const id = $(`#plo_id_${idx}`).val();
+                        const desc = $(`#plo_desc_${idx}`).val();
+                        if (id && desc) {
+                            plos.push({id: id.trim(), description: desc.trim()});
+                        }
+                    } catch (e) { console.error('Error collecting PLO:', e); }
+                });
+                
+                // CLO-PLO Mapping
+                const mapping = {};
+                $('.mapping-check:checked').each(function() {
+                    try {
+                        const clo = $(this).data('clo'), plo = $(this).data('plo');
+                        if (!mapping[clo]) mapping[clo] = [];
+                        mapping[clo].push(plo);
+                    } catch (e) { console.error('Error collecting mapping:', e); }
+                });
+                
+                // Prerequisites
+                const prerequisites = [];
+                $('.prereq-item').each(function() {
+                    try {
+                        const code = $(this).find('input[type="text"]').first().val()?.trim();
+                        const name = $(this).find('input[type="text"]').last().val()?.trim();
+                        if (code && name) prerequisites.push({code, name});
+                    } catch (e) { console.error('Error collecting prereq:', e); }
+                });
+                
+                // Corequisites
+                const corequisites = [];
+                $('.coreq-item').each(function() {
+                    try {
+                        const code = $(this).find('input[type="text"]').first().val()?.trim();
+                        const name = $(this).find('input[type="text"]').last().val()?.trim();
+                        if (code && name) corequisites.push({code, name});
+                    } catch (e) { console.error('Error collecting coreq:', e); }
+                });
+                
+                // Related subjects
+                const related = [];
+                $('.related-item').each(function() {
+                    try {
+                        const code = $(this).find('input[type="text"]').first().val()?.trim();
+                        const name = $(this).find('input[type="text"]').last().val()?.trim();
+                        if (code && name) related.push({code, name});
+                    } catch (e) { console.error('Error collecting related:', e); }
+                });
+                
+                // Textbooks
+                const textbooks = [];
+                $('.textbook-item').each(function() {
+                    try {
+                        const inputs = $(this).find('input[type="text"], input[type="number"]');
+                        const title = inputs.eq(0).val()?.trim();
+                        if (title) {
+                            textbooks.push({
+                                title,
+                                author: inputs.eq(1).val()?.trim() || '',
+                                year: parseInt(inputs.eq(2).val()) || null,
+                                isbn: inputs.eq(3).val()?.trim() || ''
+                            });
+                        }
+                    } catch (e) { console.error('Error collecting textbook:', e); }
+                });
+                
+                // References
+                const references = [];
+                $('.ref-item').each(function() {
+                    try {
+                        const inputs = $(this).find('input[type="text"], input[type="number"]');
+                        const title = inputs.eq(0).val()?.trim();
+                        if (title) {
+                            references.push({
+                                title,
+                                author: inputs.eq(1).val()?.trim() || '',
+                                year: parseInt(inputs.eq(2).val()) || null,
+                                isbn: inputs.eq(3).val()?.trim() || ''
+                            });
+                        }
+                    } catch (e) { console.error('Error collecting reference:', e); }
+                });
+                
+                // Learning Materials
+                const learningMaterials = [];
+                $('.material-item').each(function() {
+                    try {
+                        const name = $(this).find('input[type="text"]').val()?.trim();
+                        const type = $(this).find('select').val();
+                        if (name) learningMaterials.push({name, type: type || 'other'});
+                    } catch (e) { console.error('Error collecting material:', e); }
+                });
+                
+                // Build clean data object
+                const data = {
+                    subject_code: $('#subject_code').val()?.trim() || '',
+                    subject_name: $('#subject_name').val()?.trim() || '',
+                    credits: parseInt($('#credits').val()) || 0
+                };
+                
+                // Add optional fields only if they have values
+                const semester = parseInt($('#semester').val());
+                if (semester) data.semester = semester;
+                
+                const academicYear = $('#academic_year').val()?.trim();
+                if (academicYear) data.academic_year = academicYear;
+                
+                const department = $('#department').val()?.trim();
+                if (department) data.department = department;
+                
+                const description = $('#description').val()?.trim();
+                if (description) data.description = description;
+                
+                const objectives = $('#objectives').val()?.trim();
+                if (objectives) data.objectives = objectives;
+                
+                const content = $('#content').val()?.trim();
+                if (content) data.content = content;
+                
+                const teachingMethods = $('#teaching_methods').val()?.trim();
+                if (teachingMethods) data.teaching_methods = teachingMethods;
+                
+                const assessmentMethods = $('#assessment_methods').val()?.trim();
+                if (assessmentMethods) data.assessment_methods = assessmentMethods;
+                
+                // Add arrays/objects only if they have data
+                if (clos.length > 0) data.clos = clos;
+                if (plos.length > 0) data.plos = plos;
+                if (Object.keys(mapping).length > 0) data.clo_plo_mapping = mapping;
+                if (prerequisites.length > 0) data.prerequisites = prerequisites;
+                if (corequisites.length > 0) data.corequisites = corequisites;
+                if (related.length > 0) data.related_subjects = related;
+                if (textbooks.length > 0) data.textbooks = textbooks;
+                if (references.length > 0) data.references = references;
+                if (learningMaterials.length > 0) data.learning_materials = learningMaterials;
+                
+                // Assessment weights (always include even if all zeros)
+                data.assessment_weights = {
+                    attendance: parseFloat($('#weight_attendance').val()) || 0,
+                    assignment: parseFloat($('#weight_assignment').val()) || 0,
+                    midterm: parseFloat($('#weight_midterm').val()) || 0,
+                    final_exam: parseFloat($('#weight_final').val()) || 0,
+                    project: parseFloat($('#weight_project').val()) || 0,
+                    other: parseFloat($('#weight_other').val()) || 0
+                };
+                
+                return data;
+            } catch (error) {
+                console.error('Error in collectFormData:', error);
+                throw error;
+            }
+        }
+
+        // Upload files to server (saved in data folder)
+        async function uploadFiles(syllabusId) {
+            try {
+                const formData = new FormData();
+                let hasFiles = false;
+
+                // Collect textbook files
+                $('.textbook-item').each(function() {
+                    try {
+                        const fileInput = $(this).find('input[type="file"]')[0];
+                        if (fileInput && fileInput.files && fileInput.files[0]) {
+                            formData.append('textbook_files', fileInput.files[0]);
+                            hasFiles = true;
+                        }
+                    } catch (e) { console.error('Error collecting textbook file:', e); }
+                });
+
+                // Collect reference files
+                $('.ref-item').each(function() {
+                    try {
+                        const fileInput = $(this).find('input[type="file"]')[0];
+                        if (fileInput && fileInput.files && fileInput.files[0]) {
+                            formData.append('reference_files', fileInput.files[0]);
+                            hasFiles = true;
+                        }
+                    } catch (e) { console.error('Error collecting reference file:', e); }
+                });
+
+                // Collect learning material files
+                $('.material-item').each(function() {
+                    try {
+                        const fileInput = $(this).find('input[type="file"]').get(0);
+                        if (fileInput && fileInput.files && fileInput.files[0]) {
+                            formData.append('learning_material_files', fileInput.files[0]);
+                            hasFiles = true;
+                        }
+                    } catch (e) { console.error('Error collecting material file:', e); }
+                });
+
+                // Collect course files
+                $('.course-file-item').each(function() {
+                    try {
+                        const fileInput = $(this).find('input[type="file"]').get(0);
+                        if (fileInput && fileInput.files && fileInput.files[0]) {
+                            formData.append('course_files', fileInput.files[0]);
+                            hasFiles = true;
+                        }
+                    } catch (e) { console.error('Error collecting course file:', e); }
+                });
+
+                if (!hasFiles) {
+                    console.log('No files to upload');
+                    return true;
+                }
+
+                console.log('Uploading files for syllabus:', syllabusId);
+                const res = await fetch(`http://127.0.0.1:8000/syllabus/${syllabusId}/upload-files`, {
+                    method: 'POST',
+                    headers: {'Authorization': 'Bearer ' + token},
+                    body: formData
+                });
+                
+                console.log('Upload response status:', res.status);
+                const responseData = await res.text();
+                console.log('Upload response body:', responseData);
+                
+                if (!res.ok) {
+                    console.error('Upload failed:', res.status, responseData);
+                }
+                
+                return res.ok;
+            } catch (err) {
+                console.error('File upload error:', err);
+                return false;
+            }
+        }
+
+        // Save as draft
+        async function saveDraft() {
+            const data = collectFormData();
+            const alertDiv = $('#syllabusAlert');
+            alertDiv.html('');
+            if (!data.subject_code || !data.subject_name || !data.credits) {
+                alertDiv.html('<div class="alert alert-danger">Please fill in required fields: Subject Code, Name, and Credits.</div>');
+                return;
+            }
+            
+            alertDiv.html('<div class="alert alert-info"><i class="ti-reload"></i> Saving syllabus and uploading files...</div>');
+            
+            try {
+                // Step 1: Create syllabus
+                console.log('Creating syllabus with data:', JSON.stringify(data, null, 2));
+                
+                const res = await fetch('http://localhost:8000/syllabus/', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token},
+                    body: JSON.stringify(data)
+                });
+                
+                console.log('Response status:', res.status);
+                const result = await parseResponse(res);
+                console.log('Response data:', result);
+                
+                if (res.ok) {
+                    // Step 2: Upload files to data folder
+                    const uploadSuccess = await uploadFiles(result.id);
+                    
+                    if (uploadSuccess) {
+                        alertDiv.html('<div class="alert alert-success">Syllabus and files saved successfully!</div>');
+                    } else {
+                        alertDiv.html('<div class="alert alert-warning">Syllabus saved, but some files failed to upload.</div>');
+                    }
+                    setTimeout(() => window.location.href = 'syllabus-list.html', 1500);
+                } else {
+                    const message = result?.detail || result?.message || 'Failed to save.';
+                    alertDiv.html(`<div class="alert alert-danger">${message}</div>`);
+                }
+            } catch (err) {
+                console.error('Error creating syllabus:', err);
+                alertDiv.html(`<div class="alert alert-danger">Connection error: ${err.message}. Check console for details.</div>`);
+            }
+        }
+
+        // Submit for review
+        $('#syllabusCreateForm').on('submit', async function(e) {
+            e.preventDefault();
+            const data = collectFormData();
+            const alertDiv = $('#syllabusAlert');
+            alertDiv.html('');
+            if (!data.subject_code || !data.subject_name || !data.credits) {
+                alertDiv.html('<div class="alert alert-danger">Please fill in required fields.</div>');
+                return;
+            }
+            
+            alertDiv.html('<div class="alert alert-info"><i class="ti-reload"></i> Submitting syllabus and uploading files...</div>');
+            
+            try {
+                // Step 1: Create syllabus
+                const res = await fetch('http://localhost:8000/syllabus/', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token},
+                    body: JSON.stringify(data)
+                });
+                const result = await parseResponse(res);
+                
+                if (res.ok) {
+                    // Step 2: Upload files to data folder
+                    const uploadSuccess = await uploadFiles(result.id);
+                    
+                    if (uploadSuccess) {
+                        alertDiv.html('<div class="alert alert-success">Syllabus submitted for review with files uploaded!</div>');
+                    } else {
+                        alertDiv.html('<div class="alert alert-warning">Syllabus submitted, but some files failed to upload.</div>');
+                    }
+                    setTimeout(() => window.location.href = 'syllabus-list.html', 1500);
+                } else {
+                    const message = result?.detail || result?.message || 'Failed to submit.';
+                    alertDiv.html(`<div class="alert alert-danger">${message}</div>`);
+                }
+            } catch (err) {
+                alertDiv.html('<div class="alert alert-danger">Connection error.</div>');
+            }
+        });
+
+        // Initialize with one CLO and PLO (or load existing if editing)
+        $(document).ready(function() {
+            // Check for ?id= parameter to load existing syllabus for edit
+            const params = new URLSearchParams(window.location.search);
+            const editId = params.get('id');
+            if (editId) {
+                loadSyllabusForEdit(editId);
+            } else {
+                addCLO();
+                addPLO();
+            }
+        });
+
+        // Load existing syllabus data into form for editing
+        async function loadSyllabusForEdit(id) {
+            try {
+                const res = await fetch(`http://localhost:8000/syllabus/${id}`, { headers: { 'Authorization': 'Bearer ' + token } });
+                if (!res.ok) throw new Error('Failed to load syllabus');
+                const s = await res.json();
+                // Basic fields
+                $('#subject_code').val(s.subject_code || '');
+                $('#subject_name').val(s.subject_name || '');
+                $('#credits').val(s.credits || '');
+                $('#semester').val(s.semester || '');
+                $('#academic_year').val(s.academic_year || '');
+                $('#department').val(s.department || '');
+                $('#description').val(s.description || '');
+                $('#objectives').val(s.objectives || '');
+                $('#content').val(s.content || '');
+                $('#teaching_methods').val(s.teaching_methods || '');
+                $('#assessment_methods').val(s.assessment_methods || '');
+
+                // Populate CLOs
+                $('#closContainer').empty(); closCount = 0;
+                (s.clos || []).forEach(clo => {
+                    closCount++;
+                    const html = `<div class="card mb-2 clo-item" data-index="${closCount}">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2"><input type="text" class="form-control" id="clo_id_${closCount}" value="${clo.id || ''}"></div>
+                                <div class="col-md-7"><textarea class="form-control" id="clo_desc_${closCount}" rows="2">${clo.description || ''}</textarea></div>
+                                <div class="col-md-2"><input type="text" class="form-control" id="clo_level_${closCount}" value="${clo.level || 'K3'}"></div>
+                                <div class="col-md-1"><button type="button" class="btn btn-danger btn-sm" onclick="$(this).closest('.clo-item').remove(); updateMapping();"><i class="ti-trash"></i></button></div>
+                            </div>
+                        </div>
+                    </div>`;
+                    $('#closContainer').append(html);
+                });
+
+                // Populate PLOs
+                $('#plosContainer').empty(); plosCount = 0;
+                (s.plos || []).forEach(plo => {
+                    plosCount++;
+                    const html = `<div class="card mb-2 plo-item" data-index="${plosCount}">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2"><input type="text" class="form-control" id="plo_id_${plosCount}" value="${plo.id || ''}"></div>
+                                <div class="col-md-9"><textarea class="form-control" id="plo_desc_${plosCount}" rows="2">${plo.description || ''}</textarea></div>
+                                <div class="col-md-1"><button type="button" class="btn btn-danger btn-sm" onclick="$(this).closest('.plo-item').remove(); updateMapping();"><i class="ti-trash"></i></button></div>
+                            </div>
+                        </div>
+                    </div>`;
+                    $('#plosContainer').append(html);
+                });
+
+                updateMapping();
+
+                // Assessment weights
+                if (s.assessment_weights) {
+                    $('#weight_attendance').val(s.assessment_weights.attendance || 0);
+                    $('#weight_assignment').val(s.assessment_weights.assignment || 0);
+                    $('#weight_midterm').val(s.assessment_weights.midterm || 0);
+                    $('#weight_final').val(s.assessment_weights.final_exam || 0);
+                    $('#weight_project').val(s.assessment_weights.project || 0);
+                    $('#weight_other').val(s.assessment_weights.other || 0);
+                    $(document).trigger('input');
+                }
+
+                // Set form submit to update existing syllabus instead of create
+                $('#syllabusCreateForm').off('submit').on('submit', async function(e) {
+                    e.preventDefault();
+                    await submitSyllabusUpdate(id);
+                });
+
+            } catch (err) {
+                console.error('Failed to load syllabus for edit:', err);
+                $('#syllabusAlert').html('<div class="alert alert-danger">Không thể tải dữ liệu giáo trình để chỉnh sửa.</div>');
+            }
+        }
+
+        // Submit update
+        async function submitSyllabusUpdate(id) {
+            const data = collectFormData();
+            const alertDiv = $('#syllabusAlert'); alertDiv.html('');
+            if (!data.subject_code || !data.subject_name || !data.credits) {
+                alertDiv.html('<div class="alert alert-danger">Please fill in required fields.</div>');
+                return;
+            }
+            alertDiv.html('<div class="alert alert-info"><i class="ti-reload"></i> Updating syllabus...</div>');
+            try {
+                const res = await fetch(`http://localhost:8000/syllabus/${id}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token},
+                    body: JSON.stringify(data)
+                });
+                const result = await res.json();
+                if (res.ok) {
+                    const uploadSuccess = await uploadFiles(id);
+                    alertDiv.html('<div class="alert alert-success">Syllabus updated successfully.</div>');
+                    setTimeout(() => window.location.href = 'syllabus-list.html', 1200);
+                } else {
+                    alertDiv.html(`<div class="alert alert-danger">${result.detail || 'Failed to update.'}</div>`);
+                }
+            } catch (err) {
+                console.error('Update error:', err);
+                alertDiv.html('<div class="alert alert-danger">Connection error.</div>');
+            }
+        }
+
+        // Switch input mode
+        function switchInputMode(mode) {
+            if (mode === 'upload') {
+                $('#uploadModeSection').show();
+                $('#syllabusCreateForm').hide();
+            } else {
+                $('#uploadModeSection').hide();
+                $('#syllabusCreateForm').show();
+            }
+        }
+
+        // Upload and extract with AI
+        async function uploadAndExtract() {
+            const fileInput = document.getElementById('syllabusFile');
+            if (!fileInput.files || !fileInput.files[0]) {
+                alert('Please select a file first.');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+
+            $('#uploadProgress').show();
+            $('.progress-bar').css('width', '30%');
+
+            try {
+                // Call AI extraction API
+                const res = await fetch('http://localhost:8000/ai/extract-syllabus', {
+                    method: 'POST',
+                    headers: {'Authorization': 'Bearer ' + token},
+                    body: formData
+                });
+
+                $('.progress-bar').css('width', '70%');
+
+                if (res.ok) {
+                    const extracted = await res.json();
+                    $('.progress-bar').css('width', '100%');
+                    
+                    // Populate form with extracted data
+                    $('#subject_code').val(extracted.subject_code || '');
+                    $('#subject_name').val(extracted.subject_name || '');
+                    $('#credits').val(extracted.credits || '');
+                    $('#semester').val(extracted.semester || '');
+                    $('#academic_year').val(extracted.academic_year || '');
+                    $('#department').val(extracted.department || '');
+                    $('#description').val(extracted.description || '');
+                    $('#objectives').val(extracted.objectives || '');
+                    $('#content').val(extracted.content || '');
+                    $('#teaching_methods').val(extracted.teaching_methods || '');
+                    $('#assessment_methods').val(extracted.assessment_methods || '');
+
+                    // Populate CLOs
+                    if (extracted.clos && extracted.clos.length > 0) {
+                        $('#closContainer').empty();
+                        closCount = 0;
+                        extracted.clos.forEach(clo => {
+                            closCount++;
+                            const html = `<div class="card mb-2 clo-item" data-index="${closCount}">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-2"><input type="text" class="form-control" id="clo_id_${closCount}" value="${clo.id}"></div>
+                                        <div class="col-md-7"><textarea class="form-control" id="clo_desc_${closCount}" rows="2">${clo.description}</textarea></div>
+                                        <div class="col-md-2"><input type="text" class="form-control" id="clo_level_${closCount}" value="${clo.level || 'K3'}"></div>
+                                        <div class="col-md-1"><button type="button" class="btn btn-danger btn-sm" onclick="$(this).closest('.clo-item').remove(); updateMapping();"><i class="ti-trash"></i></button></div>
+                                    </div>
+                                </div>
+                            </div>`;
+                            $('#closContainer').append(html);
+                        });
+                    }
+
+                    // Populate PLOs
+                    if (extracted.plos && extracted.plos.length > 0) {
+                        $('#plosContainer').empty();
+                        plosCount = 0;
+                        extracted.plos.forEach(plo => {
+                            plosCount++;
+                            const html = `<div class="card mb-2 plo-item" data-index="${plosCount}">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-2"><input type="text" class="form-control" id="plo_id_${plosCount}" value="${plo.id}"></div>
+                                        <div class="col-md-9"><textarea class="form-control" id="plo_desc_${plosCount}" rows="2">${plo.description}</textarea></div>
+                                        <div class="col-md-1"><button type="button" class="btn btn-danger btn-sm" onclick="$(this).closest('.plo-item').remove(); updateMapping();"><i class="ti-trash"></i></button></div>
+                                    </div>
+                                </div>
+                            </div>`;
+                            $('#plosContainer').append(html);
+                        });
+                    }
+
+                    updateMapping();
+
+                    // Populate assessment weights
+                    if (extracted.assessment_weights) {
+                        $('#weight_attendance').val(extracted.assessment_weights.attendance || 0);
+                        $('#weight_assignment').val(extracted.assessment_weights.assignment || 0);
+                        $('#weight_midterm').val(extracted.assessment_weights.midterm || 0);
+                        $('#weight_final').val(extracted.assessment_weights.final_exam || 0);
+                        $('#weight_project').val(extracted.assessment_weights.project || 0);
+                        $('#weight_other').val(extracted.assessment_weights.other || 0);
+                    }
+
+                    // Switch to manual mode for review
+                    switchInputMode('manual');
+                    $('#uploadProgress').hide();
+                    $('.progress-bar').css('width', '0%');
+                    
+                    $('#syllabusAlert').html('<div class="alert alert-success"><i class="ti-check"></i> AI extraction completed! Please review and edit the extracted data below.</div>');
+                    $('html, body').animate({scrollTop: $('#syllabusAlert').offset().top - 100}, 500);
+                } else {
+                    throw new Error('AI extraction failed');
+                }
+            } catch (err) {
+                $('#uploadProgress').hide();
+                $('.progress-bar').css('width', '0%');
+                alert('Failed to extract syllabus data. Please try manual input or contact support.');
+                console.error(err);
+            }
+        }
+    </script>
+</body>
+</html>

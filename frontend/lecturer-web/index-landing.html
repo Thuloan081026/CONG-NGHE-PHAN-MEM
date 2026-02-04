@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <title>SMD System - Lecturer Portal</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/icon/themify-icons/themify-icons.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .landing-container {
+            text-align: center;
+            color: white;
+            max-width: 700px;
+            padding: 40px;
+        }
+        .landing-logo {
+            font-size: 72px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .landing-title {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .landing-subtitle {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        .landing-btn {
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 30px;
+            background: white;
+            color: #667eea;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-decoration: none;
+            display: inline-block;
+        }
+        .landing-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            color: #667eea;
+            text-decoration: none;
+        }
+        .features {
+            margin-top: 50px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        .feature-item {
+            background: rgba(255,255,255,0.15);
+            padding: 25px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        .feature-item:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-5px);
+        }
+        .feature-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        .feature-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .feature-desc {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+        .system-status {
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+            animation: pulse 2s infinite;
+        }
+        .status-online { background: #4caf50; }
+        .status-offline { background: #f44336; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        @media (max-width: 768px) {
+            .features {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .landing-title {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="landing-container">
+        <div class="landing-logo">
+            <i class="ti-book"></i>
+        </div>
+        <h1 class="landing-title">SMD System</h1>
+        <p class="landing-subtitle">Syllabus Management & Digitalization</p>
+        <p style="font-size: 16px; opacity: 0.9; margin-bottom: 30px;">
+            <strong>Lecturer Portal</strong> - Manage and digitalize your course syllabuses efficiently
+        </p>
+        
+        <a href="authentication-login.html" class="landing-btn">
+            <i class="ti-lock"></i> Access Lecturer Portal
+        </a>
+        
+        <div class="features">
+            <div class="feature-item">
+                <div class="feature-icon"><i class="ti-files"></i></div>
+                <div class="feature-title">Create Syllabuses</div>
+                <div class="feature-desc">Multi-step wizard for easy syllabus creation</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"><i class="ti-comments"></i></div>
+                <div class="feature-title">Collaborate</div>
+                <div class="feature-desc">Review and feedback from colleagues</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"><i class="ti-check-box"></i></div>
+                <div class="feature-title">Track Approval</div>
+                <div class="feature-desc">Monitor syllabus approval workflow</div>
+            </div>
+        </div>
+        
+        <div class="system-status">
+            <span class="status-indicator status-online" id="statusDot"></span>
+            <span id="statusText">Checking system status...</span>
+        </div>
+        
+        <div style="margin-top: 30px; font-size: 13px; opacity: 0.7;">
+            <p>Demo Credentials: lecturer@test.com / lecturer123</p>
+            <p>© 2025 HCMUTE - Syllabus Management & Digitalization System</p>
+        </div>
+    </div>
+
+    <script>
+        // Check backend status
+        async function checkBackendStatus() {
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            
+            try {
+                const response = await fetch('http://127.0.0.1:8000/', {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    statusDot.className = 'status-indicator status-online';
+                    statusText.textContent = 'System Online - Backend API Ready';
+                } else {
+                    throw new Error('Backend responded with error');
+                }
+            } catch (error) {
+                statusDot.className = 'status-indicator status-offline';
+                statusText.textContent = 'System Offline - Please start the backend server';
+                console.error('Backend check failed:', error);
+            }
+        }
+        
+        // Check if already logged in
+        const token = localStorage.getItem('token');
+        const userRole = localStorage.getItem('userRole');
+        
+        if (token && userRole === 'lecturer') {
+            // Redirect to dashboard if already logged in
+            window.location.href = 'dashboard.html';
+        } else {
+            // Check backend status on load
+            checkBackendStatus();
+            // Recheck every 30 seconds
+            setInterval(checkBackendStatus, 30000);
+        }
+    </script>
+</body>
+</html>

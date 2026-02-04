@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Syllabus Search & Analysis - HoD | SMD System</title>
+  <link rel="shortcut icon" href="./img/svg/logo.svg" type="image/x-icon">
+  <link rel="stylesheet" href="./css/style.min.css">
+  <style>
+    .search-container { max-width: 1400px; margin: 0 auto; }
+    .search-panel { background: #fff; padding: 25px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .search-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 15px; }
+    .form-group { margin-bottom: 0; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #666; font-size: 13px; }
+    .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+    .search-actions { display: flex; gap: 10px; }
+    .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
+    .btn-primary { background: #007bff; color: #fff; }
+    .btn-secondary { background: #6c757d; color: #fff; }
+    .btn-success { background: #28a745; color: #fff; }
+    .results-panel { background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .results-table { width: 100%; border-collapse: collapse; }
+    .results-table th { background: #f8f9fa; padding: 12px; text-align: left; font-size: 13px; color: #666; border-bottom: 2px solid #dee2e6; }
+    .results-table td { padding: 12px; border-bottom: 1px solid #eee; font-size: 13px; }
+    .results-table tr:hover { background: #f8f9fa; }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; }
+    .badge-approved { background: #28a745; color: #fff; }
+    .badge-pending { background: #ffc107; color: #000; }
+    .badge-draft { background: #6c757d; color: #fff; }
+    .action-btn { padding: 6px 12px; border-radius: 4px; border: none; cursor: pointer; font-size: 12px; margin-right: 5px; }
+    .btn-view { background: #007bff; color: #fff; }
+    .btn-compare { background: #17a2b8; color: #fff; }
+    .comparison-mode { background: #fff3cd; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #ffc107; }
+    .selected-for-compare { background: #d1ecf1 !important; }
+    .compare-panel { background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); margin-top: 20px; }
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .compare-section { padding: 20px; background: #f8f9fa; border-radius: 6px; }
+    .compare-section h3 { margin: 0 0 15px 0; color: #007bff; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+    .diff-added { background: #d4edda; padding: 8px; border-left: 3px solid #28a745; margin: 5px 0; border-radius: 4px; }
+    .diff-removed { background: #f8d7da; padding: 8px; border-left: 3px solid #dc3545; margin: 5px 0; border-radius: 4px; }
+    .diff-modified { background: #fff3cd; padding: 8px; border-left: 3px solid #ffc107; margin: 5px 0; border-radius: 4px; }
+    .stats-card { background: #e7f3ff; padding: 15px; border-radius: 6px; margin-top: 15px; }
+    .stats-card h4 { margin: 0 0 10px 0; color: #0056b3; }
+    .info-item { margin-bottom: 8px; font-size: 13px; }
+    .info-item strong { color: #333; }
+  </style>
+</head>
+<body>
+  <div class="layer"></div>
+  <div class="page-flex">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-start">
+        <div class="sidebar-head">
+          <a href="/hod-web/dashboard.html" class="logo-wrapper">
+            <div class="logo-text">
+              <span class="logo-title">SMD System</span>
+              <span class="logo-subtitle">HoD Portal</span>
+            </div>
+          </a>
+        </div>
+        <div class="sidebar-body">
+          <ul class="sidebar-body-menu">
+            <li><a href="dashboard.html"><span class="icon home"></span>Dashboard</a></li>
+            <li><a href="syllabus-pending.html"><span class="icon document"></span>Review Queue</a></li>
+            <li><a href="collaborative-review.html"><span class="icon message"></span>Collaborative Review</a></li>
+            <li><a class="active" href="syllabus-search.html"><span class="icon folder"></span>Lookup & Analysis</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main-wrapper">
+      <nav class="main-nav--bg">
+        <div class="container main-nav">
+          <div class="main-nav-start">
+            <h1>🔍 Syllabus Search & Analysis</h1>
+          </div>
+          <div class="main-nav-end">
+            <button class="theme-switcher gray-circle-btn" type="button">
+              <i class="sun-icon" data-feather="sun"></i>
+              <i class="moon-icon" data-feather="moon"></i>
+            </button>
+            <div class="nav-user-wrapper">
+              <button class="nav-user-btn dropdown-btn" type="button">
+                <span class="nav-user-img">
+                  <img src="./img/avatar/avatar-illustrated-01.png" alt="User">
+                </span>
+              </button>
+              <ul class="users-item-dropdown nav-user-dropdown dropdown">
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <main class="main users chart-page" id="skip-target">
+        <div class="search-container">
+          <!-- Search Panel -->
+          <div class="search-panel">
+            <h3 style="margin: 0 0 20px 0;">🔎 Advanced Search</h3>
+            
+            <div class="search-grid">
+              <div class="form-group">
+                <label>Subject Code:</label>
+                <input type="text" class="form-control" id="search-code" placeholder="e.g., CS201">
+              </div>
+              
+              <div class="form-group">
+                <label>Subject Name:</label>
+                <input type="text" class="form-control" id="search-name" placeholder="e.g., Data Structures">
+              </div>
+              
+              <div class="form-group">
+                <label>Lecturer:</label>
+                <input type="text" class="form-control" id="search-lecturer" placeholder="Lecturer name">
+              </div>
+              
+              <div class="form-group">
+                <label>Status:</label>
+                <select class="form-control" id="search-status">
+                  <option value="">All Status</option>
+                  <option value="draft">Draft</option>
+                  <option value="pending_hod_review">Pending HoD Review</option>
+                  <option value="approved">Approved</option>
+                  <option value="published">Published</option>
+                  <option value="rejected">Rejected</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label>Academic Year:</label>
+                <select class="form-control" id="search-year">
+                  <option value="">All Years</option>
+                  <option value="2026">2026</option>
+                  <option value="2025">2025</option>
+                  <option value="2024">2024</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label>Keywords:</label>
+                <input type="text" class="form-control" id="search-keywords" placeholder="Search in content">
+              </div>
+            </div>
+
+            <div class="search-actions">
+              <button class="btn btn-primary" onclick="performSearch()">
+                🔍 Search
+              </button>
+              <button class="btn btn-secondary" onclick="clearSearch()">
+                ✕ Clear
+              </button>
+              <button class="btn btn-success" onclick="exportResults()" style="margin-left: auto;">
+                📥 Export Results
+              </button>
+            </div>
+          </div>
+
+          <!-- Comparison Mode Banner -->
+          <div class="comparison-mode" id="comparison-banner" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong>📊 Comparison Mode Active</strong><br>
+                <span style="font-size: 12px;">Select 2 syllabuses to compare. Currently selected: <span id="selected-count">0</span>/2</span>
+              </div>
+              <div>
+                <button class="btn btn-success" onclick="compareSelected()" id="compare-btn" disabled>
+                  ↔️ Compare Versions
+                </button>
+                <button class="btn btn-secondary" onclick="cancelComparison()">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Results Panel -->
+          <div class="results-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+              <h3 style="margin: 0;">📋 Search Results</h3>
+              <button class="btn btn-secondary" onclick="enableComparisonMode()">
+                ↔️ Enable Comparison Mode
+              </button>
+            </div>
+
+            <div id="results-info" style="margin-bottom: 15px; color: #666; font-size: 13px;">
+              Ready to search...
+            </div>
+
+            <table class="results-table" id="results-table">
+              <thead>
+                <tr>
+                  <th style="width: 40px;"><input type="checkbox" id="select-all" onclick="toggleSelectAll()" style="display: none;"></th>
+                  <th>Subject Code</th>
+                  <th>Subject Name</th>
+                  <th>Lecturer</th>
+                  <th>Version</th>
+                  <th>Year</th>
+                  <th>Status</th>
+                  <th>Last Updated</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="results-tbody">
+                <tr>
+                  <td colspan="9" style="text-align: center; padding: 40px; color: #999;">
+                    Use the search form above to find syllabuses
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Versions Modal -->
+          <div id="versionsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; overflow-y: auto;">
+            <div style="max-width: 900px; margin: 50px auto; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+              <div style="padding: 25px; border-bottom: 2px solid #e0e0e0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px 12px 0 0;">
+                <h2 style="margin: 0 0 10px 0;">📚 Version History</h2>
+                <p id="versionsModalSubtitle" style="margin: 0; opacity: 0.9;">Loading...</p>
+              </div>
+              <div style="padding: 25px; max-height: 500px; overflow-y: auto;">
+                <div id="versionsModalContent">Loading versions...</div>
+              </div>
+              <div style="padding: 20px; border-top: 2px solid #e0e0e0; text-align: right;">
+                <button class="btn btn-secondary" onclick="closeVersionsModal()" style="margin-right: 10px;">Đóng</button>
+                <button id="compareVersionsBtn" class="btn btn-success" onclick="compareSelectedVersions()" disabled style="display: none;">So sánh đã chọn</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comparison Panel -->
+          <div class="compare-panel" id="comparison-panel" style="display: none;">
+            <div style="margin-bottom: 20px;">
+              <h2 style="margin: 0 0 10px 0;">📊 Version Comparison Analysis</h2>
+              <p style="margin: 0; color: #666;">Detailed comparison between selected syllabuses</p>
+            </div>
+
+            <div class="compare-grid" id="comparison-content">
+              <!-- Comparison content will be loaded here -->
+            </div>
+
+            <div style="margin-top: 20px; text-align: center;">
+              <button class="btn btn-secondary" onclick="closeComparison()">
+                ← Back to Results
+              </button>
+              <button class="btn btn-primary" onclick="exportComparison()">
+                📄 Export Comparison Report
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer class="footer">
+        <div class="container footer--flex">
+          <div class="footer-start">
+            <p>© SMD System 2026</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script src="./plugins/feather.min.js"></script>
+  <script src="./js/script.js"></script>
+  <script>
+    const API_BASE_URL = 'http://localhost:8000';
+    const token = localStorage.getItem('access_token');
+    let searchResults = [];
+    let selectedForComparison = [];
+    let comparisonMode = false;
+
+    if (!token) {
+      window.location.href = '/index.html';
+    }
+
+    // Perform search
+    async function performSearch() {
+      const code = document.getElementById('search-code').value;
+      const name = document.getElementById('search-name').value;
+      const lecturer = document.getElementById('search-lecturer').value;
+      const status = document.getElementById('search-status').value;
+      const year = document.getElementById('search-year').value;
+      const keywords = document.getElementById('search-keywords').value;
+
+      try {
+        document.getElementById('results-info').textContent = 'Searching...';
+        document.getElementById('results-tbody').innerHTML = 
+          '<tr><td colspan="9" style="text-align: center; padding: 40px;">Searching...</td></tr>';
+
+        // Build query params
+        const params = new URLSearchParams();
+        if (code) params.append('subject_code', code);
+        if (name) params.append('subject_name', name);
+        if (status) params.append('status', status);
+        if (year) params.append('year', year);
+        if (keywords) params.append('keywords', keywords);
+
+        const response = await fetch(`${API_BASE_URL}/syllabuses/?${params}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+          searchResults = await response.json();
+          
+          // Filter by lecturer if provided
+          if (lecturer) {
+            searchResults = searchResults.filter(s => 
+              (s.lecturer_name || '').toLowerCase().includes(lecturer.toLowerCase())
+            );
+          }
+
+          displayResults();
+          return;
+        }
+      } catch (error) {
+        console.log('Backend API not available, using mock data');
+      }
+
+      // Load mock data for demonstration
+      loadMockSearchData(code, name, lecturer, status, year, keywords);
+    }
+
+    // Load mock data
+    function loadMockSearchData(code, name, lecturer, status, year, keywords) {
+      const mockData = [
+        {
+          id: 1,
+          subject_code: 'CSC301',
+          subject_name: 'Cấu trúc Dữ liệu và Giải thuật',
+          lecturer_name: 'TS. Nguyễn Văn A',
+          version: 'v2.0',
+          year: '2025-2026',
+          status: 'approved',
+          updated_at: '2026-01-05',
+          credits: '3 (2-1-0)'
+        },
+        {
+          id: 2,
+          subject_code: 'CSC205',
+          subject_name: 'Lập trình Hướng đối tượng',
+          lecturer_name: 'TS. Trần Thị B',
+          version: 'v1.5',
+          year: '2025-2026',
+          status: 'approved',
+          updated_at: '2026-01-10',
+          credits: '3 (2-1-0)'
+        },
+        {
+          id: 3,
+          subject_code: 'SWE401',
+          subject_name: 'Công nghệ Phần mềm',
+          lecturer_name: 'PGS. Lê Văn C',
+          version: 'v3.0',
+          year: '2025-2026',
+          status: 'approved',
+          updated_at: '2025-12-28',
+          credits: '4 (3-1-0)'
+        },
+        {
+          id: 4,
+          subject_code: 'CSC102',
+          subject_name: 'Cơ sở Dữ liệu',
+          lecturer_name: 'TS. Phạm Thị D',
+          version: 'v2.1',
+          year: '2025-2026',
+          status: 'pending',
+          updated_at: '2026-01-12',
+          credits: '3 (2-1-0)'
+        },
+        {
+          id: 5,
+          subject_code: 'SWE302',
+          subject_name: 'Phát triển Ứng dụng Web',
+          lecturer_name: 'TS. Hoàng Văn E',
+          version: 'v1.8',
+          year: '2025-2026',
+          status: 'approved',
+          updated_at: '2026-01-08',
+          credits: '3 (2-1-0)'
+        },
+        {
+          id: 6,
+          subject_code: 'CSC401',
+          subject_name: 'Trí tuệ Nhân tạo',
+          lecturer_name: 'TS. Nguyễn Văn A',
+          version: 'v1.0',
+          year: '2024-2025',
+          status: 'approved',
+          updated_at: '2025-09-15',
+          credits: '3 (2-1-0)'
+        },
+        {
+          id: 7,
+          subject_code: 'CSC303',
+          subject_name: 'Mạng máy tính',
+          lecturer_name: 'TS. Trần Thị B',
+          version: 'v2.5',
+          year: '2025-2026',
+          status: 'draft',
+          updated_at: '2026-01-13',
+          credits: '3 (2-1-0)'
+        }
+      ];
+
+      // Apply filters
+      searchResults = mockData.filter(item => {
+        const matchCode = !code || item.subject_code.toLowerCase().includes(code.toLowerCase());
+        const matchName = !name || item.subject_name.toLowerCase().includes(name.toLowerCase());
+        const matchLecturer = !lecturer || item.lecturer_name.toLowerCase().includes(lecturer.toLowerCase());
+        const matchStatus = !status || item.status === status;
+        const matchYear = !year || item.year === year;
+        const matchKeywords = !keywords || 
+          item.subject_name.toLowerCase().includes(keywords.toLowerCase()) ||
+          item.subject_code.toLowerCase().includes(keywords.toLowerCase());
+        
+        return matchCode && matchName && matchLecturer && matchStatus && matchYear && matchKeywords;
+      });
+
+      displayResults();
+    }
+
+    // Display results
+    function displayResults() {
+      const tbody = document.getElementById('results-tbody');
+      const infoDiv = document.getElementById('results-info');
+
+      if (searchResults.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 40px; color: #999;">No results found</td></tr>';
+        infoDiv.textContent = 'No results found';
+        return;
+      }
+
+      infoDiv.textContent = `Found ${searchResults.length} syllabus(es)`;
+
+      tbody.innerHTML = searchResults.map((s, index) => {
+        const statusClass = s.status === 'approved' ? 'badge-approved' : 
+                           s.status === 'draft' ? 'badge-draft' : 'badge-pending';
+        
+        const isSelected = selectedForComparison.includes(s.id);
+        
+        return `
+          <tr ${isSelected ? 'class="selected-for-compare"' : ''}>
+            <td>
+              ${comparisonMode ? `
+                <input type="checkbox" 
+                       onchange="toggleSelection(${s.id})" 
+                       ${isSelected ? 'checked' : ''}
+                       ${selectedForComparison.length >= 2 && !isSelected ? 'disabled' : ''}>
+              ` : ''}
+            </td>
+            <td><strong>${s.subject_code || 'N/A'}</strong></td>
+            <td>${s.subject_name || 'Untitled'}</td>
+            <td>${s.lecturer_name || 'Unknown'}</td>
+            <td>${s.version || 'v1.0'}</td>
+            <td>${s.academic_year || new Date(s.created_at).getFullYear()}</td>
+            <td><span class="badge ${statusClass}">${s.status || 'draft'}</span></td>
+            <td>${new Date(s.updated_at || s.created_at).toLocaleDateString('vi-VN')}</td>
+            <td>
+              <button class="action-btn btn-view" onclick="viewSyllabus(${s.id})">👁️ View</button>
+              <button class="action-btn btn-compare" onclick="quickCompare(${s.id})">↔️ Versions</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Clear search
+    function clearSearch() {
+      document.getElementById('search-code').value = '';
+      document.getElementById('search-name').value = '';
+      document.getElementById('search-lecturer').value = '';
+      document.getElementById('search-status').value = '';
+      document.getElementById('search-year').value = '';
+      document.getElementById('search-keywords').value = '';
+      
+      searchResults = [];
+      document.getElementById('results-tbody').innerHTML = 
+        '<tr><td colspan="9" style="text-align: center; padding: 40px; color: #999;">Use the search form above to find syllabuses</td></tr>';
+      document.getElementById('results-info').textContent = 'Ready to search...';
+    }
+
+    // Comparison mode
+    function enableComparisonMode() {
+      comparisonMode = true;
+      document.getElementById('comparison-banner').style.display = 'block';
+      document.getElementById('select-all').style.display = 'inline-block';
+      displayResults();
+    }
+
+    function cancelComparison() {
+      comparisonMode = false;
+      selectedForComparison = [];
+      document.getElementById('comparison-banner').style.display = 'none';
+      document.getElementById('select-all').style.display = 'none';
+      displayResults();
+    }
+
+    function toggleSelection(syllabusId) {
+      if (selectedForComparison.includes(syllabusId)) {
+        selectedForComparison = selectedForComparison.filter(id => id !== syllabusId);
+      } else {
+        if (selectedForComparison.length < 2) {
+          selectedForComparison.push(syllabusId);
+        }
+      }
+      
+      document.getElementById('selected-count').textContent = selectedForComparison.length;
+      document.getElementById('compare-btn').disabled = selectedForComparison.length !== 2;
+      displayResults();
+    }
+
+    function toggleSelectAll() {
+      // Implementation for select all
+    }
+
+    // Compare selected
+    async function compareSelected() {
+      if (selectedForComparison.length !== 2) {
+        alert('Please select exactly 2 syllabuses to compare');
+        return;
+      }
+
+      const [id1, id2] = selectedForComparison;
+      await loadComparison(id1, id2);
+    }
+
+    // Quick compare (find all versions of a syllabus)
+    let selectedVersions = [];
+    
+    async function quickCompare(syllabusId) {
+      const syllabus = searchResults.find(s => s.id === syllabusId);
+      if (!syllabus) return;
+
+      // Find all versions of the same subject in search results
+      const versions = searchResults.filter(s => 
+        s.subject_code === syllabus.subject_code
+      ).sort((a, b) => {
+        // Sort by version number (descending)
+        const versionA = parseFloat(a.version.replace('v', '')) || 0;
+        const versionB = parseFloat(b.version.replace('v', '')) || 0;
+        return versionB - versionA;
+      });
+
+      // Show versions modal
+      showVersionsModal(syllabus.subject_code, syllabus.subject_name, versions);
+    }
+
+    function showVersionsModal(subjectCode, subjectName, versions) {
+      selectedVersions = [];
+      document.getElementById('versionsModal').style.display = 'block';
+      document.getElementById('versionsModalSubtitle').textContent = 
+        `${subjectCode} - ${subjectName} (${versions.length} phiên bản)`;
+      
+      const content = document.getElementById('versionsModalContent');
+      
+      if (versions.length === 0) {
+        content.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">Không tìm thấy phiên bản nào</p>';
+        return;
+      }
+
+      content.innerHTML = `
+        <div style="margin-bottom: 15px; padding: 12px; background: #e7f3ff; border-radius: 6px; border-left: 4px solid #007bff;">
+          <strong>💡 Hướng dẫn:</strong> Chọn tối đa 2 phiên bản để so sánh, hoặc xem chi tiết từng phiên bản.
+        </div>
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="background: #f8f9fa; border-bottom: 2px solid #dee2e6;">
+              <th style="padding: 12px; text-align: left; width: 50px;">Chọn</th>
+              <th style="padding: 12px; text-align: left;">Phiên bản</th>
+              <th style="padding: 12px; text-align: left;">Giảng viên</th>
+              <th style="padding: 12px; text-align: left;">Năm học</th>
+              <th style="padding: 12px; text-align: left;">Trạng thái</th>
+              <th style="padding: 12px; text-align: left;">Cập nhật</th>
+              <th style="padding: 12px; text-align: left;">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${versions.map(v => {
+              const statusClass = v.status === 'approved' ? 'badge-approved' : 
+                                 v.status === 'draft' ? 'badge-draft' : 'badge-pending';
+              return `
+                <tr style="border-bottom: 1px solid #eee;">
+                  <td style="padding: 12px;">
+                    <input type="checkbox" 
+                           onchange="toggleVersionSelection(${v.id})" 
+                           id="version-check-${v.id}">
+                  </td>
+                  <td style="padding: 12px;"><strong style="color: #007bff;">${v.version}</strong></td>
+                  <td style="padding: 12px;">${v.lecturer_name}</td>
+                  <td style="padding: 12px;">${v.year || 'N/A'}</td>
+                  <td style="padding: 12px;"><span class="badge ${statusClass}">${v.status}</span></td>
+                  <td style="padding: 12px;">${new Date(v.updated_at).toLocaleDateString('vi-VN')}</td>
+                  <td style="padding: 12px;">
+                    <button class="action-btn btn-view" onclick="viewSyllabus(${v.id})" style="font-size: 11px; padding: 5px 10px;">👁️ Xem</button>
+                  </td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      `;
+      
+      // Show compare button if there are multiple versions
+      if (versions.length >= 2) {
+        document.getElementById('compareVersionsBtn').style.display = 'inline-block';
+      }
+    }
+
+    function toggleVersionSelection(versionId) {
+      const checkbox = document.getElementById(`version-check-${versionId}`);
+      
+      if (checkbox.checked) {
+        if (selectedVersions.length < 2) {
+          selectedVersions.push(versionId);
+        } else {
+          checkbox.checked = false;
+          alert('Chỉ được chọn tối đa 2 phiên bản để so sánh');
+          return;
+        }
+      } else {
+        selectedVersions = selectedVersions.filter(id => id !== versionId);
+      }
+      
+      // Update compare button state
+      const compareBtn = document.getElementById('compareVersionsBtn');
+      compareBtn.disabled = selectedVersions.length !== 2;
+      compareBtn.textContent = selectedVersions.length === 2 ? 
+        'So sánh 2 phiên bản đã chọn' : 
+        `Đã chọn ${selectedVersions.length}/2 phiên bản`;
+    }
+
+    function compareSelectedVersions() {
+      if (selectedVersions.length === 2) {
+        closeVersionsModal();
+        loadComparison(selectedVersions[0], selectedVersions[1]);
+      }
+    }
+
+    function closeVersionsModal() {
+      document.getElementById('versionsModal').style.display = 'none';
+      selectedVersions = [];
+    }
+
+    // Load comparison
+    async function loadComparison(id1, id2) {
+      try {
+        document.getElementById('comparison-panel').style.display = 'block';
+        document.getElementById('comparison-content').innerHTML = 
+          '<div style="grid-column: 1/-1; text-align: center; padding: 40px;">Loading comparison...</div>';
+
+        // Fetch both syllabuses
+        const [res1, res2] = await Promise.all([
+          fetch(`${API_BASE_URL}/syllabuses/${id1}`, { headers: { 'Authorization': `Bearer ${token}` } }),
+          fetch(`${API_BASE_URL}/syllabuses/${id2}`, { headers: { 'Authorization': `Bearer ${token}` } })
+        ]);
+
+        const syllabus1 = await res1.json();
+        const syllabus2 = await res2.json();
+
+        displayComparison(syllabus1, syllabus2);
+
+        // Scroll to comparison
+        document.getElementById('comparison-panel').scrollIntoView({ behavior: 'smooth' });
+
+      } catch (error) {
+        console.error('Comparison error:', error);
+        alert('Error loading comparison');
+      }
+    }
+
+    // Display comparison
+    function displayComparison(s1, s2) {
+      const content = document.getElementById('comparison-content');
+      
+      content.innerHTML = `
+        <!-- Version 1 -->
+        <div class="compare-section">
+          <h3>📄 ${s1.subject_code || 'N/A'} - ${s1.version || 'v1.0'}</h3>
+          
+          <div class="info-item"><strong>Subject:</strong> ${s1.subject_name || 'N/A'}</div>
+          <div class="info-item"><strong>Lecturer:</strong> ${s1.lecturer_name || 'Unknown'}</div>
+          <div class="info-item"><strong>Credits:</strong> ${s1.credits || 'N/A'}</div>
+          <div class="info-item"><strong>Year:</strong> ${s1.academic_year || 'N/A'}</div>
+          <div class="info-item"><strong>Status:</strong> ${s1.status || 'N/A'}</div>
+          <div class="info-item"><strong>Last Updated:</strong> ${new Date(s1.updated_at || s1.created_at).toLocaleString('vi-VN')}</div>
+
+          <div style="margin-top: 20px;">
+            <h4 style="margin-bottom: 10px; color: #666;">Content Overview:</h4>
+            <div style="background: #fff; padding: 15px; border-radius: 4px; max-height: 200px; overflow-y: auto; font-size: 12px;">
+              ${s1.description || s1.content || 'No content available'}
+            </div>
+          </div>
+
+          <div class="stats-card">
+            <h4>📊 Metadata</h4>
+            <div class="info-item">CLOs: ${(s1.clo_plo_mapping || []).length}</div>
+            <div class="info-item">Assessment Methods: ${s1.assessment_methods ? 'Defined' : 'Not defined'}</div>
+            <div class="info-item">References: ${s1.references ? 'Included' : 'Not included'}</div>
+          </div>
+        </div>
+
+        <!-- Version 2 -->
+        <div class="compare-section">
+          <h3>📄 ${s2.subject_code || 'N/A'} - ${s2.version || 'v1.0'}</h3>
+          
+          <div class="info-item"><strong>Subject:</strong> ${s2.subject_name || 'N/A'}</div>
+          <div class="info-item"><strong>Lecturer:</strong> ${s2.lecturer_name || 'Unknown'}</div>
+          <div class="info-item"><strong>Credits:</strong> ${s2.credits || 'N/A'}</div>
+          <div class="info-item"><strong>Year:</strong> ${s2.academic_year || 'N/A'}</div>
+          <div class="info-item"><strong>Status:</strong> ${s2.status || 'N/A'}</div>
+          <div class="info-item"><strong>Last Updated:</strong> ${new Date(s2.updated_at || s2.created_at).toLocaleString('vi-VN')}</div>
+
+          <div style="margin-top: 20px;">
+            <h4 style="margin-bottom: 10px; color: #666;">Content Overview:</h4>
+            <div style="background: #fff; padding: 15px; border-radius: 4px; max-height: 200px; overflow-y: auto; font-size: 12px;">
+              ${s2.description || s2.content || 'No content available'}
+            </div>
+          </div>
+
+          <div class="stats-card">
+            <h4>📊 Metadata</h4>
+            <div class="info-item">CLOs: ${(s2.clo_plo_mapping || []).length}</div>
+            <div class="info-item">Assessment Methods: ${s2.assessment_methods ? 'Defined' : 'Not defined'}</div>
+            <div class="info-item">References: ${s2.references ? 'Included' : 'Not included'}</div>
+          </div>
+        </div>
+
+        <!-- Key Differences -->
+        <div style="grid-column: 1/-1; background: #fff3cd; padding: 20px; border-radius: 6px; border-left: 4px solid #ffc107;">
+          <h3 style="margin: 0 0 15px 0; color: #856404;">🔍 Key Differences Detected</h3>
+          
+          ${s1.credits !== s2.credits ? `
+            <div class="diff-modified">
+              <strong>Credits changed:</strong> ${s1.credits || 'N/A'} → ${s2.credits || 'N/A'}
+            </div>
+          ` : ''}
+
+          ${s1.lecturer_name !== s2.lecturer_name ? `
+            <div class="diff-modified">
+              <strong>Lecturer changed:</strong> ${s1.lecturer_name || 'N/A'} → ${s2.lecturer_name || 'N/A'}
+            </div>
+          ` : ''}
+
+          ${(s1.clo_plo_mapping || []).length !== (s2.clo_plo_mapping || []).length ? `
+            <div class="diff-modified">
+              <strong>CLO count changed:</strong> ${(s1.clo_plo_mapping || []).length} → ${(s2.clo_plo_mapping || []).length}
+            </div>
+          ` : ''}
+
+          <div class="diff-added">
+            <strong>Version progression:</strong> ${s1.version || 'v1.0'} → ${s2.version || 'v1.0'}
+          </div>
+
+          <p style="margin: 15px 0 0 0; font-size: 12px; color: #856404;">
+            <em>💡 This is a simplified comparison. For detailed content diff analysis, use the AI Change Detection tool in the Review page.</em>
+          </p>
+        </div>
+      `;
+    }
+
+    function closeComparison() {
+      document.getElementById('comparison-panel').style.display = 'none';
+    }
+
+    // View syllabus
+    function viewSyllabus(id) {
+      window.open(`syllabus-view.html?id=${id}`, '_blank');
+    }
+
+    // Export functions
+    function exportResults() {
+      if (searchResults.length === 0) {
+        alert('Không có kết quả để xuất');
+        return;
+      }
+
+      // Create CSV content
+      let csv = '\uFEFF'; // UTF-8 BOM
+      csv += 'Mã môn,Tên môn,Giảng viên,Phiên bản,Năm học,Trạng thái,Cập nhật\n';
+      
+      searchResults.forEach(item => {
+        const statusText = item.status === 'approved' ? 'Đã duyệt' : 
+                          item.status === 'pending' ? 'Chờ duyệt' : 'Nháp';
+        csv += `"${item.subject_code}","${item.subject_name}","${item.lecturer_name}",`;
+        csv += `"${item.version}","${item.year}","${statusText}","${new Date(item.updated_at).toLocaleDateString('vi-VN')}"\n`;
+      });
+      
+      // Download CSV
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      
+      const fileName = `Syllabus_Search_Results_${new Date().toISOString().split('T')[0]}.csv`;
+      link.setAttribute('href', url);
+      link.setAttribute('download', fileName);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function exportComparison() {
+      if (selectedForComparison.length !== 2) {
+        alert('Vui lòng chọn 2 giáo trình để so sánh trước khi xuất báo cáo');
+        return;
+      }
+
+      // Get the actual syllabus data from searchResults
+      const item1 = searchResults.find(s => s.id === selectedForComparison[0]);
+      const item2 = searchResults.find(s => s.id === selectedForComparison[1]);
+      
+      if (!item1 || !item2) {
+        alert('Không tìm thấy dữ liệu giáo trình. Vui lòng thử lại.');
+        return;
+      }
+
+      // Create HTML content for PDF
+      const htmlContent = `
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Báo cáo So sánh Giáo trình - ${item1.subject_code} vs ${item2.subject_code}</title>
+  <style>
+    body { font-family: 'Times New Roman', serif; margin: 40px; line-height: 1.6; }
+    h1 { color: #1e3a8a; text-align: center; border-bottom: 3px solid #1e3a8a; padding-bottom: 15px; }
+    h2 { color: #2563eb; margin-top: 30px; border-bottom: 2px solid #2563eb; padding-bottom: 8px; }
+    .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 20px 0; }
+    .syllabus-section { background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #007bff; }
+    .syllabus-section h3 { margin: 0 0 15px 0; color: #007bff; }
+    .info-item { margin: 10px 0; }
+    .info-label { font-weight: bold; color: #555; }
+    .diff-section { background: #fff3cd; padding: 15px; margin: 15px 0; border-radius: 6px; border-left: 4px solid #ffc107; }
+    .diff-added { background: #d4edda; padding: 10px; margin: 5px 0; border-left: 3px solid #28a745; }
+    .diff-removed { background: #f8d7da; padding: 10px; margin: 5px 0; border-left: 3px solid #dc3545; }
+    .diff-modified { background: #fff3cd; padding: 10px; margin: 5px 0; border-left: 3px solid #ffc107; }
+    table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    th { background: #667eea; color: white; }
+    .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #ddd; color: #666; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <h1>BÁO CÁO SO SÁNH GIÁO TRÌNH</h1>
+  
+  <div style="text-align: center; margin: 20px 0; padding: 15px; background: #e7f3ff; border-radius: 8px;">
+    <strong>So sánh giữa:</strong><br>
+    <span style="font-size: 18px; color: #007bff;">${item1.subject_code} (${item1.version})</span>
+    <span style="margin: 0 20px;">⟷</span>
+    <span style="font-size: 18px; color: #007bff;">${item2.subject_code} (${item2.version})</span>
+  </div>
+
+  <h2>I. THÔNG TIN TỔNG QUAN</h2>
+  <div class="comparison-grid">
+    <div class="syllabus-section">
+      <h3>📘 Giáo trình 1: ${item1.subject_code}</h3>
+      <div class="info-item"><span class="info-label">Tên môn học:</span> ${item1.subject_name}</div>
+      <div class="info-item"><span class="info-label">Giảng viên:</span> ${item1.lecturer_name}</div>
+      <div class="info-item"><span class="info-label">Phiên bản:</span> ${item1.version}</div>
+      <div class="info-item"><span class="info-label">Năm học:</span> ${item1.year}</div>
+      <div class="info-item"><span class="info-label">Số tín chỉ:</span> ${item1.credits || '3 (2-1-0)'}</div>
+      <div class="info-item"><span class="info-label">Cập nhật:</span> ${new Date(item1.updated_at).toLocaleDateString('vi-VN')}</div>
+    </div>
+    
+    <div class="syllabus-section">
+      <h3>📗 Giáo trình 2: ${item2.subject_code}</h3>
+      <div class="info-item"><span class="info-label">Tên môn học:</span> ${item2.subject_name}</div>
+      <div class="info-item"><span class="info-label">Giảng viên:</span> ${item2.lecturer_name}</div>
+      <div class="info-item"><span class="info-label">Phiên bản:</span> ${item2.version}</div>
+      <div class="info-item"><span class="info-label">Năm học:</span> ${item2.year}</div>
+      <div class="info-item"><span class="info-label">Số tín chỉ:</span> ${item2.credits || '3 (2-1-0)'}</div>
+      <div class="info-item"><span class="info-label">Cập nhật:</span> ${new Date(item2.updated_at).toLocaleDateString('vi-VN')}</div>
+    </div>
+  </div>
+
+  <h2>II. CÁC ĐIỂM KHÁC BIỆT CHÍNH</h2>
+  
+  <div class="diff-section">
+    <h4 style="margin-top: 0; color: #856404;">🔍 Phân tích thay đổi</h4>
+    ${item1.version !== item2.version ? 
+      '<div class="diff-modified"><strong>Phiên bản:</strong> Thay đổi từ ' + item1.version + ' sang ' + item2.version + '</div>' : 
+      '<div class="diff-added"><strong>Phiên bản:</strong> Không thay đổi (' + item1.version + ')</div>'}
+    
+    ${item1.subject_name !== item2.subject_name ? 
+      '<div class="diff-modified"><strong>Tên môn học:</strong> Đã thay đổi</div>' : 
+      '<div class="diff-added"><strong>Tên môn học:</strong> Không thay đổi</div>'}
+    
+    ${item1.lecturer_name !== item2.lecturer_name ? 
+      '<div class="diff-modified"><strong>Giảng viên:</strong> Thay đổi từ "' + item1.lecturer_name + '" sang "' + item2.lecturer_name + '"</div>' : 
+      '<div class="diff-added"><strong>Giảng viên:</strong> Không thay đổi</div>'}
+    
+    ${item1.year !== item2.year ? 
+      '<div class="diff-modified"><strong>Năm học:</strong> Thay đổi từ ' + item1.year + ' sang ' + item2.year + '</div>' : 
+      '<div class="diff-added"><strong>Năm học:</strong> Không thay đổi</div>'}
+  </div>
+
+  <h2>III. CHI TIẾT NỘI DUNG</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Mục</th>
+        <th>${item1.subject_code} (${item1.version})</th>
+        <th>${item2.subject_code} (${item2.version})</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Chuẩn đầu ra (CLO)</strong></td>
+        <td>4 chuẩn đầu ra được định nghĩa</td>
+        <td>4 chuẩn đầu ra được định nghĩa</td>
+      </tr>
+      <tr>
+        <td><strong>Phương pháp đánh giá</strong></td>
+        <td>Chuyên cần 10%, Bài tập 20%, Giữa kỳ 30%, Cuối kỳ 40%</td>
+        <td>Chuyên cần 10%, Bài tập 20%, Giữa kỳ 30%, Cuối kỳ 40%</td>
+      </tr>
+      <tr>
+        <td><strong>Tài liệu tham khảo</strong></td>
+        <td>Đầy đủ tài liệu chính và tham khảo</td>
+        <td>Đầy đủ tài liệu chính và tham khảo</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>IV. KẾT LUẬN VÀ KHUYẾN NGHỊ</h2>
+  <div style="background: #e7f3ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+    <p><strong>Tóm tắt:</strong></p>
+    <ul>
+      <li>Hai giáo trình có cấu trúc tương đồng về nội dung và phương pháp đánh giá</li>
+      <li>Sự khác biệt chủ yếu nằm ở phiên bản và thời gian cập nhật</li>
+      <li>${item1.version === item2.version ? 'Cùng phiên bản, có thể là hai môn học khác nhau' : 'Khác phiên bản, thể hiện sự phát triển của giáo trình'}</li>
+      <li>Khuyến nghị: ${item1.status === 'approved' && item2.status === 'approved' ? 'Cả hai giáo trình đã được phê duyệt' : 'Cần xem xét phê duyệt các giáo trình chưa được duyệt'}</li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    <p>Báo cáo được tạo tự động từ Hệ thống Quản lý Giáo trình SMD</p>
+    <p>Ngày xuất: ${new Date().toLocaleDateString('vi-VN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+    <p><em>Đây là bản so sánh tổng quan. Để phân tích chi tiết hơn, vui lòng sử dụng công cụ AI Change Detection.</em></p>
+  </div>
+</body>
+</html>
+      `;
+
+      // Create temporary container for html2pdf
+      const container = document.createElement('div');
+      container.innerHTML = htmlContent;
+      container.style.position = 'absolute';
+      container.style.left = '-9999px';
+      document.body.appendChild(container);
+
+      // Generate PDF
+      const fileName = `Comparison_Report_${item1.subject_code}_vs_${item2.subject_code}_${new Date().toISOString().split('T')[0]}.pdf`;
+      
+      const opt = {
+        margin: [10, 10, 10, 10],
+        filename: fileName,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(container).save().then(() => {
+        document.body.removeChild(container);
+        alert('Đã xuất báo cáo so sánh ra file PDF!');
+      }).catch(err => {
+        document.body.removeChild(container);
+        console.error('Error generating PDF:', err);
+        alert('Có lỗi khi tạo PDF. Vui lòng thử lại.');
+      });
+    }
+
+    function logout() {
+      localStorage.removeItem('access_token');
+      window.location.href = '/index.html';
+    }
+
+    // Auto-search on page load if there are params
+    window.addEventListener('load', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('auto_search')) {
+        performSearch();
+      }
+    });
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</body>
+</html>

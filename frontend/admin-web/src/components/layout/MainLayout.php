@@ -1,33 +1,39 @@
-<?php
-
-
-if (!isset($pageContent)) {
-    die('Page content not defined');
-}
-?>
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>SMD Admin System</title>
-    <link rel="stylesheet" href="../styles/admin.css">
+    <title>Admin Web - SMD</title>
+
+    <!-- CSS chung -->
+    <link rel="stylesheet" href="/admin-web/public/styles/main.css">
 </head>
+
 <body>
 
-<?php include __DIR__ . '/Header.php'; ?>
+    <!-- HEADER -->
+    <?php include __DIR__ . "/Header.php"; ?>
 
-<div class="app-container">
-    <?php include __DIR__ . '/Sidebar.php'; ?>
+    <div class="layout-container">
 
-    <main class="app-content">
-        <?php include $pageContent; ?>
-    </main>
-</div>
+        <!-- SIDEBAR -->
+        <?php include __DIR__ . "/Sidebar.php"; ?>
 
-<?php include __DIR__ . '/Footer.php'; ?>
+        <!-- NỘI DUNG CHÍNH -->
+        <div class="main-content">
+            <?php
+                // Đây là nơi load trang con (Dashboard, User, ...)
+                if (isset($pageContent)) {
+                    include $pageContent;
+                } else {
+                    echo "<h3>Không có nội dung</h3>";
+                }
+            ?>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <?php include __DIR__ . "/Footer.php"; ?>
 
 </body>
 </html>
-
-
