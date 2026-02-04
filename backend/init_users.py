@@ -2,11 +2,11 @@
 Script to initialize test users in the database
 Run this after creating the database and tables
 """
-from app.core.config import settings
-from app.core.security import get_password_hash
-from app.models.user import User
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from app.models.user import User
+from app.core.security import get_password_hash
+from app.core.config import settings
 
 # Create engine and session
 engine = create_engine(settings.DATABASE_URL)
