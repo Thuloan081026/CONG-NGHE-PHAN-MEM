@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-python.debugpy",
+    "ms-vscode.makefile-tools",
+    "charliermarsh.ruff",
+    "ms-python.black-formatter",
+    "ms-vscode.powershell",
+    "eamodio.gitlens",
+    "ms-vscode.rest-client",
+    "ritwickdey.liveserver"
+  ]
+}

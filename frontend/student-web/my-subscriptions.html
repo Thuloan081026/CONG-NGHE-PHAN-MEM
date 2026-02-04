@@ -377,6 +377,7 @@
                 </div>
               </div>
             </div>
+          <div class="row" id="syllabusContainer">
           </div>
 
         </div>
@@ -403,6 +404,93 @@
 
   <script>
     const API_BASE_URL = 'http://localhost:8000';
+
+// Store all syllabus data
+    const allSyllabuses = [
+      { id: 'CS101', name: 'Nhập môn lập trình', credits: 3, lecturer: 'TS. Nguyễn Văn A', semester: 1, updated: false },
+      { id: 'CS102', name: 'Lập trình hướng đối tượng', credits: 3, lecturer: 'ThS. Phạm Văn D', semester: 2, updated: false },
+      { id: 'CS201', name: 'Cấu trúc dữ liệu và giải thuật', credits: 4, lecturer: 'TS. Lê Văn C', semester: 3, updated: true },
+      { id: 'CS301', name: 'Cơ sở dữ liệu', credits: 3, lecturer: 'TS. Nguyễn Văn A', semester: 4, updated: true },
+      { id: 'CS302', name: 'Hệ điều hành', credits: 3, lecturer: 'TS. Trần Thị B', semester: 4, updated: false },
+      { id: 'CS303', name: 'Mạng máy tính', credits: 3, lecturer: 'TS. Hoàng Thị E', semester: 5, updated: true },
+      { id: 'CS401', name: 'Trí tuệ nhân tạo', credits: 4, lecturer: 'TS. Trần Thị B', semester: 6, updated: false },
+      { id: 'CS402', name: 'Học máy', credits: 4, lecturer: 'TS. Lê Văn C', semester: 7, updated: false },
+      { id: 'SE101', name: 'Kiến trúc phần mềm', credits: 3, lecturer: 'TS. Hoàng Văn F', semester: 1, updated: false },
+      { id: 'SE201', name: 'Testing và QA', credits: 3, lecturer: 'ThS. Tạ Văn G', semester: 3, updated: false },
+      { id: 'IT101', name: 'Hệ thống thông tin', credits: 3, lecturer: 'TS. Vũ Thị H', semester: 1, updated: false },
+      { id: 'IT201', name: 'Quản lý hệ thống', credits: 3, lecturer: 'TS. Phạm Thị I', semester: 3, updated: false },
+    ];
+
+    let subscriptions = new Set();
+
+    function renderSubscribedSyllabuses() {
+      const container = $('#syllabusContainer');
+      container.empty();
+
+      if (subscriptions.size === 0) {
+        updateStatistics();
+        return;
+      }
+
+      const subscribedSyllabuses = allSyllabuses.filter(s => subscriptions.has(s.id));
+
+      subscribedSyllabuses.forEach(syllabus => {
+        const headerClass = syllabus.updated ? 'bg-warning' : 'bg-secondary';
+        const updateBadge = syllabus.updated ? `<span class="badge badge-light"><i class="fas fa-bell"></i> Có cập nhật</span>` : '';
+        const alertClass = syllabus.updated ? 'alert-success' : 'alert-secondary';
+        const alertIcon = syllabus.updated ? '<i class="fas fa-check-circle"></i> Đã cập nhật nội dung mới' : '<i class="fas fa-clock"></i> Chưa có cập nhật mới';
+        
+        const card = `
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow h-100">
+              <div class="card-header ${headerClass} text-white d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold">${syllabus.id}</h6>
+                ${updateBadge}
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">${syllabus.name}</h5>
+                <p class="card-text text-muted">
+                  <i class="fas fa-user"></i> ${syllabus.lecturer}<br>
+                  <i class="fas fa-book"></i> ${syllabus.credits} tín chỉ | Học kỳ ${syllabus.semester}<br>
+                </p>
+                <div class="alert ${alertClass} py-2">
+                  <small>${alertIcon}</small>
+                </div>
+              </div>
+              <div class="card-footer d-flex justify-content-between">
+                <a href="syllabus-detail.html?id=${syllabus.id}" class="btn btn-sm btn-primary">
+                  <i class="fas fa-eye"></i> Xem chi tiết
+                </a>
+                <button class="btn btn-sm btn-danger" onclick="unsubscribe('${syllabus.id}')">
+                  <i class="fas fa-star"></i> Bỏ theo dõi
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        container.append(card);
+      });
+
+      updateStatistics();
+    }
+
+    function updateStatistics() {
+      const subscribed = allSyllabuses.filter(s => subscriptions.has(s.id));
+      const updated = subscribed.filter(s => s.updated).length;
+      const notUpdated = subscribed.length - updated;
+
+      $('#totalCount').text(subscribed.length);
+      $('#updatedCount').text(updated);
+      $('#notUpdatedCount').text(notUpdated);
+    }
+
+    function loadSubscriptions() {
+      const saved = localStorage.getItem('subscriptions');
+      if (saved) {
+        subscriptions = new Set(JSON.parse(saved));
+      }
+      renderSubscribedSyllabuses();
+    }
 
     async function checkAuth() {
       const token = localStorage.getItem('access_token');
@@ -442,14 +530,16 @@
 
     function unsubscribe(subjectCode) {
       if (confirm(`Bỏ theo dõi môn ${subjectCode}?`)) {
+subscriptions.delete(subjectCode);
+        localStorage.setItem('subscriptions', JSON.stringify(Array.from(subscriptions)));
+        renderSubscribedSyllabuses();
         alert('Đã bỏ theo dõi thành công!');
-        // TODO: Call API to unsubscribe
-        location.reload();
       }
     }
 
     $(document).ready(function() {
       checkAuth();
+loadSubscriptions();
     });
   </script>
 </body>

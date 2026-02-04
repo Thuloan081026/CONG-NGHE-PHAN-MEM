@@ -213,7 +213,6 @@
               </tbody>
             </table>
           </div>
-
           <!-- Versions Modal -->
           <div id="versionsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; overflow-y: auto;">
             <div style="max-width: 900px; margin: 50px auto; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
@@ -230,7 +229,6 @@
               </div>
             </div>
           </div>
-
           <!-- Comparison Panel -->
           <div class="compare-panel" id="comparison-panel" style="display: none;">
             <div style="margin-bottom: 20px;">
@@ -303,124 +301,24 @@
           headers: { 'Authorization': `Bearer ${token}` }
         });
 
-        if (response.ok) {
-          searchResults = await response.json();
-          
-          // Filter by lecturer if provided
-          if (lecturer) {
-            searchResults = searchResults.filter(s => 
-              (s.lecturer_name || '').toLowerCase().includes(lecturer.toLowerCase())
-            );
-          }
+if (!response.ok) throw new Error('Search failed');
 
-          displayResults();
-          return;
-        }
-      } catch (error) {
-        console.log('Backend API not available, using mock data');
-      }
-
-      // Load mock data for demonstration
-      loadMockSearchData(code, name, lecturer, status, year, keywords);
-    }
-
-    // Load mock data
-    function loadMockSearchData(code, name, lecturer, status, year, keywords) {
-      const mockData = [
-        {
-          id: 1,
-          subject_code: 'CSC301',
-          subject_name: 'Cấu trúc Dữ liệu và Giải thuật',
-          lecturer_name: 'TS. Nguyễn Văn A',
-          version: 'v2.0',
-          year: '2025-2026',
-          status: 'approved',
-          updated_at: '2026-01-05',
-          credits: '3 (2-1-0)'
-        },
-        {
-          id: 2,
-          subject_code: 'CSC205',
-          subject_name: 'Lập trình Hướng đối tượng',
-          lecturer_name: 'TS. Trần Thị B',
-          version: 'v1.5',
-          year: '2025-2026',
-          status: 'approved',
-          updated_at: '2026-01-10',
-          credits: '3 (2-1-0)'
-        },
-        {
-          id: 3,
-          subject_code: 'SWE401',
-          subject_name: 'Công nghệ Phần mềm',
-          lecturer_name: 'PGS. Lê Văn C',
-          version: 'v3.0',
-          year: '2025-2026',
-          status: 'approved',
-          updated_at: '2025-12-28',
-          credits: '4 (3-1-0)'
-        },
-        {
-          id: 4,
-          subject_code: 'CSC102',
-          subject_name: 'Cơ sở Dữ liệu',
-          lecturer_name: 'TS. Phạm Thị D',
-          version: 'v2.1',
-          year: '2025-2026',
-          status: 'pending',
-          updated_at: '2026-01-12',
-          credits: '3 (2-1-0)'
-        },
-        {
-          id: 5,
-          subject_code: 'SWE302',
-          subject_name: 'Phát triển Ứng dụng Web',
-          lecturer_name: 'TS. Hoàng Văn E',
-          version: 'v1.8',
-          year: '2025-2026',
-          status: 'approved',
-          updated_at: '2026-01-08',
-          credits: '3 (2-1-0)'
-        },
-        {
-          id: 6,
-          subject_code: 'CSC401',
-          subject_name: 'Trí tuệ Nhân tạo',
-          lecturer_name: 'TS. Nguyễn Văn A',
-          version: 'v1.0',
-          year: '2024-2025',
-          status: 'approved',
-          updated_at: '2025-09-15',
-          credits: '3 (2-1-0)'
-        },
-        {
-          id: 7,
-          subject_code: 'CSC303',
-          subject_name: 'Mạng máy tính',
-          lecturer_name: 'TS. Trần Thị B',
-          version: 'v2.5',
-          year: '2025-2026',
-          status: 'draft',
-          updated_at: '2026-01-13',
-          credits: '3 (2-1-0)'
-        }
-      ];
-
-      // Apply filters
-      searchResults = mockData.filter(item => {
-        const matchCode = !code || item.subject_code.toLowerCase().includes(code.toLowerCase());
-        const matchName = !name || item.subject_name.toLowerCase().includes(name.toLowerCase());
-        const matchLecturer = !lecturer || item.lecturer_name.toLowerCase().includes(lecturer.toLowerCase());
-        const matchStatus = !status || item.status === status;
-        const matchYear = !year || item.year === year;
-        const matchKeywords = !keywords || 
-          item.subject_name.toLowerCase().includes(keywords.toLowerCase()) ||
-          item.subject_code.toLowerCase().includes(keywords.toLowerCase());
+        searchResults = await response.json();
         
-        return matchCode && matchName && matchLecturer && matchStatus && matchYear && matchKeywords;
-      });
+        // Filter by lecturer if provided
+        if (lecturer) {
+          searchResults = searchResults.filter(s => 
+            (s.lecturer_name || '').toLowerCase().includes(lecturer.toLowerCase())
+          );
+        }
 
-      displayResults();
+        displayResults();
+
+      } catch (error) {
+        console.error('Search error:', error);
+        document.getElementById('results-tbody').innerHTML = 
+          '<tr><td colspan="9" style="text-align: center; padding: 40px; color: #dc3545;">Error performing search</td></tr>';
+      }
     }
 
     // Display results
@@ -529,120 +427,23 @@
     }
 
     // Quick compare (find all versions of a syllabus)
-    let selectedVersions = [];
-    
     async function quickCompare(syllabusId) {
       const syllabus = searchResults.find(s => s.id === syllabusId);
       if (!syllabus) return;
 
-      // Find all versions of the same subject in search results
+// Find other versions of the same subject
       const versions = searchResults.filter(s => 
-        s.subject_code === syllabus.subject_code
-      ).sort((a, b) => {
-        // Sort by version number (descending)
-        const versionA = parseFloat(a.version.replace('v', '')) || 0;
-        const versionB = parseFloat(b.version.replace('v', '')) || 0;
-        return versionB - versionA;
-      });
+        s.subject_code === syllabus.subject_code && s.id !== syllabusId
+      );
 
-      // Show versions modal
-      showVersionsModal(syllabus.subject_code, syllabus.subject_name, versions);
-    }
-
-    function showVersionsModal(subjectCode, subjectName, versions) {
-      selectedVersions = [];
-      document.getElementById('versionsModal').style.display = 'block';
-      document.getElementById('versionsModalSubtitle').textContent = 
-        `${subjectCode} - ${subjectName} (${versions.length} phiên bản)`;
-      
-      const content = document.getElementById('versionsModalContent');
-      
       if (versions.length === 0) {
-        content.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">Không tìm thấy phiên bản nào</p>';
+        alert('No other versions found for this subject');
         return;
       }
 
-      content.innerHTML = `
-        <div style="margin-bottom: 15px; padding: 12px; background: #e7f3ff; border-radius: 6px; border-left: 4px solid #007bff;">
-          <strong>💡 Hướng dẫn:</strong> Chọn tối đa 2 phiên bản để so sánh, hoặc xem chi tiết từng phiên bản.
-        </div>
-        <table style="width: 100%; border-collapse: collapse;">
-          <thead>
-            <tr style="background: #f8f9fa; border-bottom: 2px solid #dee2e6;">
-              <th style="padding: 12px; text-align: left; width: 50px;">Chọn</th>
-              <th style="padding: 12px; text-align: left;">Phiên bản</th>
-              <th style="padding: 12px; text-align: left;">Giảng viên</th>
-              <th style="padding: 12px; text-align: left;">Năm học</th>
-              <th style="padding: 12px; text-align: left;">Trạng thái</th>
-              <th style="padding: 12px; text-align: left;">Cập nhật</th>
-              <th style="padding: 12px; text-align: left;">Thao tác</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${versions.map(v => {
-              const statusClass = v.status === 'approved' ? 'badge-approved' : 
-                                 v.status === 'draft' ? 'badge-draft' : 'badge-pending';
-              return `
-                <tr style="border-bottom: 1px solid #eee;">
-                  <td style="padding: 12px;">
-                    <input type="checkbox" 
-                           onchange="toggleVersionSelection(${v.id})" 
-                           id="version-check-${v.id}">
-                  </td>
-                  <td style="padding: 12px;"><strong style="color: #007bff;">${v.version}</strong></td>
-                  <td style="padding: 12px;">${v.lecturer_name}</td>
-                  <td style="padding: 12px;">${v.year || 'N/A'}</td>
-                  <td style="padding: 12px;"><span class="badge ${statusClass}">${v.status}</span></td>
-                  <td style="padding: 12px;">${new Date(v.updated_at).toLocaleDateString('vi-VN')}</td>
-                  <td style="padding: 12px;">
-                    <button class="action-btn btn-view" onclick="viewSyllabus(${v.id})" style="font-size: 11px; padding: 5px 10px;">👁️ Xem</button>
-                  </td>
-                </tr>
-              `;
-            }).join('')}
-          </tbody>
-        </table>
-      `;
-      
-      // Show compare button if there are multiple versions
-      if (versions.length >= 2) {
-        document.getElementById('compareVersionsBtn').style.display = 'inline-block';
-      }
-    }
-
-    function toggleVersionSelection(versionId) {
-      const checkbox = document.getElementById(`version-check-${versionId}`);
-      
-      if (checkbox.checked) {
-        if (selectedVersions.length < 2) {
-          selectedVersions.push(versionId);
-        } else {
-          checkbox.checked = false;
-          alert('Chỉ được chọn tối đa 2 phiên bản để so sánh');
-          return;
-        }
-      } else {
-        selectedVersions = selectedVersions.filter(id => id !== versionId);
-      }
-      
-      // Update compare button state
-      const compareBtn = document.getElementById('compareVersionsBtn');
-      compareBtn.disabled = selectedVersions.length !== 2;
-      compareBtn.textContent = selectedVersions.length === 2 ? 
-        'So sánh 2 phiên bản đã chọn' : 
-        `Đã chọn ${selectedVersions.length}/2 phiên bản`;
-    }
-
-    function compareSelectedVersions() {
-      if (selectedVersions.length === 2) {
-        closeVersionsModal();
-        loadComparison(selectedVersions[0], selectedVersions[1]);
-      }
-    }
-
-    function closeVersionsModal() {
-      document.getElementById('versionsModal').style.display = 'none';
-      selectedVersions = [];
+      // Compare with the most recent different version
+      const otherVersion = versions[0];
+      await loadComparison(syllabusId, otherVersion.id);
     }
 
     // Load comparison
@@ -773,205 +574,11 @@
 
     // Export functions
     function exportResults() {
-      if (searchResults.length === 0) {
-        alert('Không có kết quả để xuất');
-        return;
-      }
-
-      // Create CSV content
-      let csv = '\uFEFF'; // UTF-8 BOM
-      csv += 'Mã môn,Tên môn,Giảng viên,Phiên bản,Năm học,Trạng thái,Cập nhật\n';
-      
-      searchResults.forEach(item => {
-        const statusText = item.status === 'approved' ? 'Đã duyệt' : 
-                          item.status === 'pending' ? 'Chờ duyệt' : 'Nháp';
-        csv += `"${item.subject_code}","${item.subject_name}","${item.lecturer_name}",`;
-        csv += `"${item.version}","${item.year}","${statusText}","${new Date(item.updated_at).toLocaleDateString('vi-VN')}"\n`;
-      });
-      
-      // Download CSV
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      const url = URL.createObjectURL(blob);
-      
-      const fileName = `Syllabus_Search_Results_${new Date().toISOString().split('T')[0]}.csv`;
-      link.setAttribute('href', url);
-      link.setAttribute('download', fileName);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+alert('Export feature will generate CSV/PDF of search results');
     }
 
     function exportComparison() {
-      if (selectedForComparison.length !== 2) {
-        alert('Vui lòng chọn 2 giáo trình để so sánh trước khi xuất báo cáo');
-        return;
-      }
-
-      // Get the actual syllabus data from searchResults
-      const item1 = searchResults.find(s => s.id === selectedForComparison[0]);
-      const item2 = searchResults.find(s => s.id === selectedForComparison[1]);
-      
-      if (!item1 || !item2) {
-        alert('Không tìm thấy dữ liệu giáo trình. Vui lòng thử lại.');
-        return;
-      }
-
-      // Create HTML content for PDF
-      const htmlContent = `
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <title>Báo cáo So sánh Giáo trình - ${item1.subject_code} vs ${item2.subject_code}</title>
-  <style>
-    body { font-family: 'Times New Roman', serif; margin: 40px; line-height: 1.6; }
-    h1 { color: #1e3a8a; text-align: center; border-bottom: 3px solid #1e3a8a; padding-bottom: 15px; }
-    h2 { color: #2563eb; margin-top: 30px; border-bottom: 2px solid #2563eb; padding-bottom: 8px; }
-    .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 20px 0; }
-    .syllabus-section { background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #007bff; }
-    .syllabus-section h3 { margin: 0 0 15px 0; color: #007bff; }
-    .info-item { margin: 10px 0; }
-    .info-label { font-weight: bold; color: #555; }
-    .diff-section { background: #fff3cd; padding: 15px; margin: 15px 0; border-radius: 6px; border-left: 4px solid #ffc107; }
-    .diff-added { background: #d4edda; padding: 10px; margin: 5px 0; border-left: 3px solid #28a745; }
-    .diff-removed { background: #f8d7da; padding: 10px; margin: 5px 0; border-left: 3px solid #dc3545; }
-    .diff-modified { background: #fff3cd; padding: 10px; margin: 5px 0; border-left: 3px solid #ffc107; }
-    table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-    th { background: #667eea; color: white; }
-    .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #ddd; color: #666; font-size: 12px; }
-  </style>
-</head>
-<body>
-  <h1>BÁO CÁO SO SÁNH GIÁO TRÌNH</h1>
-  
-  <div style="text-align: center; margin: 20px 0; padding: 15px; background: #e7f3ff; border-radius: 8px;">
-    <strong>So sánh giữa:</strong><br>
-    <span style="font-size: 18px; color: #007bff;">${item1.subject_code} (${item1.version})</span>
-    <span style="margin: 0 20px;">⟷</span>
-    <span style="font-size: 18px; color: #007bff;">${item2.subject_code} (${item2.version})</span>
-  </div>
-
-  <h2>I. THÔNG TIN TỔNG QUAN</h2>
-  <div class="comparison-grid">
-    <div class="syllabus-section">
-      <h3>📘 Giáo trình 1: ${item1.subject_code}</h3>
-      <div class="info-item"><span class="info-label">Tên môn học:</span> ${item1.subject_name}</div>
-      <div class="info-item"><span class="info-label">Giảng viên:</span> ${item1.lecturer_name}</div>
-      <div class="info-item"><span class="info-label">Phiên bản:</span> ${item1.version}</div>
-      <div class="info-item"><span class="info-label">Năm học:</span> ${item1.year}</div>
-      <div class="info-item"><span class="info-label">Số tín chỉ:</span> ${item1.credits || '3 (2-1-0)'}</div>
-      <div class="info-item"><span class="info-label">Cập nhật:</span> ${new Date(item1.updated_at).toLocaleDateString('vi-VN')}</div>
-    </div>
-    
-    <div class="syllabus-section">
-      <h3>📗 Giáo trình 2: ${item2.subject_code}</h3>
-      <div class="info-item"><span class="info-label">Tên môn học:</span> ${item2.subject_name}</div>
-      <div class="info-item"><span class="info-label">Giảng viên:</span> ${item2.lecturer_name}</div>
-      <div class="info-item"><span class="info-label">Phiên bản:</span> ${item2.version}</div>
-      <div class="info-item"><span class="info-label">Năm học:</span> ${item2.year}</div>
-      <div class="info-item"><span class="info-label">Số tín chỉ:</span> ${item2.credits || '3 (2-1-0)'}</div>
-      <div class="info-item"><span class="info-label">Cập nhật:</span> ${new Date(item2.updated_at).toLocaleDateString('vi-VN')}</div>
-    </div>
-  </div>
-
-  <h2>II. CÁC ĐIỂM KHÁC BIỆT CHÍNH</h2>
-  
-  <div class="diff-section">
-    <h4 style="margin-top: 0; color: #856404;">🔍 Phân tích thay đổi</h4>
-    ${item1.version !== item2.version ? 
-      '<div class="diff-modified"><strong>Phiên bản:</strong> Thay đổi từ ' + item1.version + ' sang ' + item2.version + '</div>' : 
-      '<div class="diff-added"><strong>Phiên bản:</strong> Không thay đổi (' + item1.version + ')</div>'}
-    
-    ${item1.subject_name !== item2.subject_name ? 
-      '<div class="diff-modified"><strong>Tên môn học:</strong> Đã thay đổi</div>' : 
-      '<div class="diff-added"><strong>Tên môn học:</strong> Không thay đổi</div>'}
-    
-    ${item1.lecturer_name !== item2.lecturer_name ? 
-      '<div class="diff-modified"><strong>Giảng viên:</strong> Thay đổi từ "' + item1.lecturer_name + '" sang "' + item2.lecturer_name + '"</div>' : 
-      '<div class="diff-added"><strong>Giảng viên:</strong> Không thay đổi</div>'}
-    
-    ${item1.year !== item2.year ? 
-      '<div class="diff-modified"><strong>Năm học:</strong> Thay đổi từ ' + item1.year + ' sang ' + item2.year + '</div>' : 
-      '<div class="diff-added"><strong>Năm học:</strong> Không thay đổi</div>'}
-  </div>
-
-  <h2>III. CHI TIẾT NỘI DUNG</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Mục</th>
-        <th>${item1.subject_code} (${item1.version})</th>
-        <th>${item2.subject_code} (${item2.version})</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Chuẩn đầu ra (CLO)</strong></td>
-        <td>4 chuẩn đầu ra được định nghĩa</td>
-        <td>4 chuẩn đầu ra được định nghĩa</td>
-      </tr>
-      <tr>
-        <td><strong>Phương pháp đánh giá</strong></td>
-        <td>Chuyên cần 10%, Bài tập 20%, Giữa kỳ 30%, Cuối kỳ 40%</td>
-        <td>Chuyên cần 10%, Bài tập 20%, Giữa kỳ 30%, Cuối kỳ 40%</td>
-      </tr>
-      <tr>
-        <td><strong>Tài liệu tham khảo</strong></td>
-        <td>Đầy đủ tài liệu chính và tham khảo</td>
-        <td>Đầy đủ tài liệu chính và tham khảo</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h2>IV. KẾT LUẬN VÀ KHUYẾN NGHỊ</h2>
-  <div style="background: #e7f3ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
-    <p><strong>Tóm tắt:</strong></p>
-    <ul>
-      <li>Hai giáo trình có cấu trúc tương đồng về nội dung và phương pháp đánh giá</li>
-      <li>Sự khác biệt chủ yếu nằm ở phiên bản và thời gian cập nhật</li>
-      <li>${item1.version === item2.version ? 'Cùng phiên bản, có thể là hai môn học khác nhau' : 'Khác phiên bản, thể hiện sự phát triển của giáo trình'}</li>
-      <li>Khuyến nghị: ${item1.status === 'approved' && item2.status === 'approved' ? 'Cả hai giáo trình đã được phê duyệt' : 'Cần xem xét phê duyệt các giáo trình chưa được duyệt'}</li>
-    </ul>
-  </div>
-
-  <div class="footer">
-    <p>Báo cáo được tạo tự động từ Hệ thống Quản lý Giáo trình SMD</p>
-    <p>Ngày xuất: ${new Date().toLocaleDateString('vi-VN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
-    <p><em>Đây là bản so sánh tổng quan. Để phân tích chi tiết hơn, vui lòng sử dụng công cụ AI Change Detection.</em></p>
-  </div>
-</body>
-</html>
-      `;
-
-      // Create temporary container for html2pdf
-      const container = document.createElement('div');
-      container.innerHTML = htmlContent;
-      container.style.position = 'absolute';
-      container.style.left = '-9999px';
-      document.body.appendChild(container);
-
-      // Generate PDF
-      const fileName = `Comparison_Report_${item1.subject_code}_vs_${item2.subject_code}_${new Date().toISOString().split('T')[0]}.pdf`;
-      
-      const opt = {
-        margin: [10, 10, 10, 10],
-        filename: fileName,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-
-      html2pdf().set(opt).from(container).save().then(() => {
-        document.body.removeChild(container);
-        alert('Đã xuất báo cáo so sánh ra file PDF!');
-      }).catch(err => {
-        document.body.removeChild(container);
-        console.error('Error generating PDF:', err);
-        alert('Có lỗi khi tạo PDF. Vui lòng thử lại.');
-      });
+      alert('Export feature will generate comparison report');
     }
 
     function logout() {
@@ -987,6 +594,5 @@
       }
     });
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 </html>

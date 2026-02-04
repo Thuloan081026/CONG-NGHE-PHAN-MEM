@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Cổng Giáo trình Đại học SMD{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/public.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="public-header">
+        <div class="container header-content">
+            <a href="/public/" class="brand-logo">
+                <i class="fas fa-university"></i> SMD Portal
+            </a>
+            <nav class="nav-links">
+                <a href="/public/">Trang chủ</a>
+                <a href="#">Chương trình đào tạo</a>
+                <a href="#">Liên hệ</a>
+                <a href="/login" class="btn-login-nav">Đăng nhập (Giảng viên/SV)</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="public-footer">
+        <div class="container">
+            <p>&copy; 2025 Đại học SMD. Hệ thống quản lý giáo trình số hóa.</p>
+            <p class="sub-footer">Designed for Education Purpose Only.</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/public.js"></script>
+</body>
+</html>

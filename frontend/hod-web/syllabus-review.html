@@ -247,168 +247,41 @@
       window.location.href = 'dashboard.html';
     }
 
-    // Get mock syllabus data by ID - DEFINED FIRST!
-    function getMockSyllabusById(id) {
-      const mockSyllabuses = {
-        1: {
-          id: 1,
-          subject_code: 'CS101',
-          subject_name: 'Introduction to Computer Science',
-          credits: 3,
-          status: 'pending_hod_review',
-          department: 'Computer Science',
-          semester: 1,
-          version: 'v1.0',
-          lecturer_name: 'Dr. John Smith',
-          created_at: '2026-01-17T12:38:42',
-          description: 'Giới thiệu khoa học máy tính, bao gồm lập trình cơ bản, thuật toán, và cấu trúc dữ liệu.',
-          learning_objectives: '- Hiểu các khái niệm cơ bản về lập trình\n- Áp dụng thuật toán cơ bản\n- Sử dụng cấu trúc dữ liệu\n- Phát triển kỹ năng giải quyết vấn đề',
-          content: 'Tuần 1-2: Giới thiệu lập trình\nTuần 3-4: Biến và kiểu dữ liệu\nTuần 5-7: Cấu trúc điều khiển\nTuần 8-10: Hàm và mô-đun\nTuần 11-12: Mảng và danh sách\nTuần 13-14: Dự án cuối kỳ\nTuần 15: Ôn tập',
-          teaching_methods: 'Giảng lý thuyết, thực hành lab, bài tập về nhà',
-          assessment_methods: 'Chuyên cần: 10%\nBài tập: 30%\nGiữa kỳ: 25%\nCuối kỳ: 35%',
-          references: '1. Guttag, J. (2016). Introduction to Computation and Programming Using Python.\n2. Downey, A. (2015). Think Python: How to Think Like a Computer Scientist.',
-          clo_plo_mapping: [
-            { clo: 'CLO1', description: 'Hiểu nguyên lý lập trình', plo: ['PLO1', 'PLO2'] },
-            { clo: 'CLO2', description: 'Áp dụng thuật toán', plo: ['PLO3'] },
-            { clo: 'CLO3', description: 'Sử dụng cấu trúc dữ liệu', plo: ['PLO4'] },
-            { clo: 'CLO4', description: 'Giải quyết vấn đề lập trình', plo: ['PLO5'] }
-          ]
-        },
-        6: {
-          id: 6,
-          subject_code: 'CSC401',
-          subject_name: 'Trí tuệ Nhân tạo',
-          credits: 3,
-          status: 'approved',
-          department: 'Computer Science',
-          semester: 1,
-          version: 'v1.0',
-          lecturer_name: 'TS. Nguyễn Văn A',
-          created_at: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
-          description: 'Môn học cung cấp kiến thức cơ bản về trí tuệ nhân tạo, bao gồm các thuật toán tìm kiếm, học máy, và xử lý ngôn ngữ tự nhiên.',
-          learning_objectives: '- Hiểu các khái niệm cơ bản về AI\n- Áp dụng các thuật toán tìm kiếm\n- Xây dựng mô hình học máy đơn giản\n- Phát triển ứng dụng AI thực tế',
-          content: 'Tuần 1-2: Giới thiệu về AI\nTuần 3-4: Thuật toán tìm kiếm\nTuần 5-7: Học máy cơ bản\nTuần 8-10: Mạng Neural\nTuần 11-12: NLP cơ bản\nTuần 13-14: Dự án thực hành\nTuần 15: Ôn tập và thi',
-          teaching_methods: 'Giảng lý thuyết, thực hành lab, dự án nhóm',
-          assessment_methods: 'Chuyên cần: 10%\nBài tập: 20%\nThí nghiệm: 20%\nGiữa kỳ: 20%\nCuối kỳ: 30%',
-          references: '1. Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach.\n2. Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep Learning.\n3. Murphy, K. P. (2012). Machine Learning: A Probabilistic Perspective.',
-          clo_plo_mapping: [
-            { clo: 'CLO1', description: 'Hiểu các khái niệm cơ bản về AI', plo: ['PLO1', 'PLO2'] },
-            { clo: 'CLO2', description: 'Áp dụng thuật toán tìm kiếm', plo: ['PLO3'] },
-            { clo: 'CLO3', description: 'Xây dựng mô hình học máy', plo: ['PLO4', 'PLO5'] },
-            { clo: 'CLO4', description: 'Phát triển ứng dụng AI', plo: ['PLO6'] }
-          ]
-        },
-        7: {
-          id: 7,
-          subject_code: 'CSC303',
-          subject_name: 'Mạng máy tính',
-          credits: 3,
-          status: 'approved',
-          department: 'Computer Science',
-          semester: 1,
-          version: 'v2.5',
-          lecturer_name: 'TS. Trần Thị B',
-          created_at: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
-          description: 'Môn học cung cấp kiến thức về kiến trúc mạng, giao thức TCP/IP, và các ứng dụng mạng.',
-          learning_objectives: '- Hiểu kiến trúc mạng máy tính\n- Nắm vững các giao thức mạng\n- Cấu hình và quản trị mạng cơ bản\n- Phân tích và giải quyết vấn đề mạng',
-          content: 'Tuần 1-3: Tổng quan về mạng máy tính\nTuần 4-6: Tầng ứng dụng\nTuần 7-9: Tầng giao vận\nTuần 10-12: Tầng mạng\nTuần 13-14: Tầng liên kết dữ liệu\nTuần 15: Ôn tập',
-          teaching_methods: 'Giảng lý thuyết, thực hành Cisco Packet Tracer',
-          assessment_methods: 'Chuyên cần: 10%\nBài tập: 20%\nThực hành: 30%\nCuối kỳ: 40%',
-          references: '1. Kurose, J. F., & Ross, K. W. (2021). Computer Networking: A Top-Down Approach.\n2. Tanenbaum, A. S. (2011). Computer Networks.',
-          clo_plo_mapping: [
-            { clo: 'CLO1', description: 'Hiểu kiến trúc mạng', plo: ['PLO1'] },
-            { clo: 'CLO2', description: 'Nắm vững giao thức', plo: ['PLO2', 'PLO3'] },
-            { clo: 'CLO3', description: 'Cấu hình mạng', plo: ['PLO4'] },
-            { clo: 'CLO4', description: 'Phân tích vấn đề mạng', plo: ['PLO5', 'PLO6'] }
-          ]
-        }
-      };
-
-      return mockSyllabuses[id] || mockSyllabuses[1]; // Default to CS101 if not found
-    }
-
-    // Load syllabus data
+// Load syllabus data
     async function loadSyllabus() {
-      console.log('=== Starting loadSyllabus with ID:', syllabusId);
-      
-      // Always use mock data for demo
-      const syllabusData = getMockSyllabusById(syllabusId);
-      
-      if (!syllabusData) {
-        console.error('No mock data found for ID:', syllabusId);
-        alert('Không tìm thấy giáo trình với ID: ' + syllabusId);
-        window.history.back();
-        return;
-      }
+      try {
+        const response = await fetch(`${API_BASE_URL}/syllabuses/${syllabusId}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
 
-      console.log('Mock data loaded:', syllabusData);
-      currentSyllabus = syllabusData;
-      
-      // Display all sections
-      try {
+        if (!response.ok) throw new Error('Failed to load syllabus');
+
+        currentSyllabus = await response.json();
         displaySyllabusInfo();
-        console.log('✓ Displayed syllabus info');
-      } catch (e) {
-        console.error('✗ Error in displaySyllabusInfo:', e);
-      }
-      
-      try {
         displaySyllabusContent();
-        console.log('✓ Displayed syllabus content');
-      } catch (e) {
-        console.error('✗ Error in displaySyllabusContent:', e);
-      }
-      
-      try {
         displayCLOPLO();
-        console.log('✓ Displayed CLO-PLO');
-      } catch (e) {
-        console.error('✗ Error in displayCLOPLO:', e);
+        
+        // Load AI features
+        runChangeDetection();
+        runValidation();
+        generateSummary();
+        loadPreviousReviews();
+
+      } catch (error) {
+        console.error('Error loading syllabus:', error);
+        alert('Error loading syllabus data');
       }
-      
-      // Load AI features (these can fail silently)
-      setTimeout(() => {
-        try { runChangeDetection(); } catch (e) { console.log('Change detection skipped'); }
-        try { runValidation(); } catch (e) { console.log('Validation skipped'); }
-        try { generateSummary(); } catch (e) { console.log('Summary skipped'); }
-        try { loadPreviousReviews(); } catch (e) { console.log('Previous reviews skipped'); }
-      }, 500);
-      
-      console.log('=== loadSyllabus completed');
     }
 
     // Display syllabus info
     function displaySyllabusInfo() {
-      console.log('displaySyllabusInfo called with:', currentSyllabus);
-      
-      const titleEl = document.getElementById('syllabus-title');
-      const subtitleEl = document.getElementById('syllabus-subtitle');
-      const statusBadgeEl = document.getElementById('status-badge');
-      const infoEl = document.getElementById('syllabus-info');
-      
-      if (!titleEl || !subtitleEl || !statusBadgeEl || !infoEl) {
-        console.error('Required elements not found');
-        return;
-      }
-      
-      titleEl.textContent = currentSyllabus.subject_name || 'Untitled Syllabus';
-      subtitleEl.textContent = 
+document.getElementById('syllabus-title').textContent = currentSyllabus.subject_name || 'Untitled Syllabus';
+      document.getElementById('syllabus-subtitle').textContent = 
         `${currentSyllabus.subject_code || 'N/A'} • ${currentSyllabus.lecturer_name || 'Unknown'} • ${new Date(currentSyllabus.created_at).toLocaleDateString('vi-VN')}`;
       
-      // Display status with proper formatting
-      const statusText = currentSyllabus.status || 'pending_hod_review';
-      const statusDisplay = statusText.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-      statusBadgeEl.textContent = statusDisplay;
-      
-      // Set badge class based on status
-      if (statusText.includes('approved')) {
-        statusBadgeEl.className = 'badge badge-approved';
-      } else if (statusText.includes('rejected')) {
-        statusBadgeEl.className = 'badge badge-rejected';
-      } else {
-        statusBadgeEl.className = 'badge badge-pending';
-      }
-
+      const statusBadge = document.getElementById('status-badge');
+      statusBadge.textContent = currentSyllabus.status || 'Pending';
+      statusBadge.className = `badge badge-${currentSyllabus.status === 'approved' ? 'approved' : currentSyllabus.status === 'rejected' ? 'rejected' : 'pending'}`;
       const info = `
         <div class="info-row"><div class="info-label">Subject Code:</div><div class="info-value">${currentSyllabus.subject_code || 'N/A'}</div></div>
         <div class="info-row"><div class="info-label">Subject Name:</div><div class="info-value">${currentSyllabus.subject_name || 'N/A'}</div></div>
@@ -416,22 +289,15 @@
         <div class="info-row"><div class="info-label">Lecturer:</div><div class="info-value">${currentSyllabus.lecturer_name || 'Unknown'}</div></div>
         <div class="info-row"><div class="info-label">Department:</div><div class="info-value">${currentSyllabus.department || 'N/A'}</div></div>
         <div class="info-row"><div class="info-label">Version:</div><div class="info-value">${currentSyllabus.version || 'v1.0'}</div></div>
-        <div class="info-row"><div class="info-label">Submitted Date:</div><div class="info-value">${new Date(currentSyllabus.created_at).toLocaleString('vi-VN', {hour: '2-digit', minute: '2-digit', second: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric'})}</div></div>
-        <div class="info-row"><div class="info-label">Status:</div><div class="info-value"><strong>${currentSyllabus.status ? currentSyllabus.status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Pending'}</strong></div></div>
+<div class="info-row"><div class="info-label">Submitted Date:</div><div class="info-value">${new Date(currentSyllabus.created_at).toLocaleString('vi-VN')}</div></div>
+        <div class="info-row"><div class="info-label">Status:</div><div class="info-value"><strong>${currentSyllabus.status || 'Pending'}</strong></div></div>
       `;
-      infoEl.innerHTML = info;
-      infoEl.classList.remove('loading'); // Remove loading class
-      console.log('Syllabus info displayed successfully');
+      document.getElementById('syllabus-info').innerHTML = info;
     }
 
     // Display syllabus content
     function displaySyllabusContent() {
-      const contentEl = document.getElementById('syllabus-content');
-      if (!contentEl) {
-        console.error('Content element not found');
-        return;
-      }
-
+const content = currentSyllabus.content || currentSyllabus.description || 'No content available';
       const sections = [
         { title: 'Course Description', field: 'description' },
         { title: 'Learning Objectives', field: 'learning_objectives' },
@@ -445,53 +311,40 @@
       sections.forEach(section => {
         const value = currentSyllabus[section.field] || 'Not provided';
         html += `
-          <div class="content-section" style="margin-bottom: 20px;">
-            <h4 style="color: #333; margin-bottom: 10px;">${section.title}</h4>
-            <div style="white-space: pre-wrap; line-height: 1.6; color: #555;">${value}</div>
+<div class="content-section">
+            <h4>${section.title}</h4>
+            <div style="white-space: pre-wrap;">${value}</div>
           </div>
         `;
       });
 
-      contentEl.innerHTML = html || '<p style="color: #999;">No content available</p>';
-      contentEl.classList.remove('loading'); // Remove loading class
-      console.log('Syllabus content displayed successfully');
+document.getElementById('syllabus-content').innerHTML = html || '<p style="color: #999;">No content available</p>';
     }
 
     // Display CLO-PLO mapping
     function displayCLOPLO() {
-      const cloEl = document.getElementById('clo-plo-section');
-      if (!cloEl) {
-        console.error('CLO-PLO element not found');
-        return;
-      }
-
-      const cloData = currentSyllabus.clo_plo_mapping || [];
+const cloData = currentSyllabus.clo_plo_mapping || [];
       
       if (cloData.length === 0) {
-        cloEl.innerHTML = '<p style="color: #999; padding: 20px; text-align: center;">No CLO-PLO mapping available</p>';
-        cloEl.classList.remove('loading');
+        document.getElementById('clo-plo-section').innerHTML = '<p style="color: #999;">No CLO-PLO mapping defined</p>';
         return;
       }
 
-      let html = '<table class="clo-plo-table">';
-      html += '<thead><tr>';
-      html += '<th>CLO</th>';
-      html += '<th>Description</th>';
-      html += '<th>Mapped PLO</th>';
-      html += '</tr></thead><tbody>';
-
+      let html = '<table class="clo-plo-table"><thead><tr><th>CLO</th><th>Description</th><th>Mapped PLO</th><th>Level</th></tr></thead><tbody>';
+      
       cloData.forEach(item => {
-        html += '<tr>';
-        html += `<td><strong>${item.clo || 'N/A'}</strong></td>`;
-        html += `<td>${item.description || 'N/A'}</td>`;
-        html += `<td>${Array.isArray(item.plo) ? item.plo.join(', ') : item.plo || 'N/A'}</td>`;
-        html += '</tr>';
+        html += `
+          <tr>
+            <td><strong>${item.clo_code || 'N/A'}</strong></td>
+            <td>${item.clo_description || 'N/A'}</td>
+            <td>${item.plo_code || 'N/A'}</td>
+            <td>${item.level || 'N/A'}</td>
+          </tr>
+        `;
       });
 
       html += '</tbody></table>';
-      cloEl.innerHTML = html;
-      cloEl.classList.remove('loading');
-      console.log('CLO-PLO mapping displayed successfully');
+      document.getElementById('clo-plo-section').innerHTML = html;
     }
 
     // AI Change Detection
@@ -671,22 +524,9 @@
       window.location.href = '/index.html';
     }
 
-    // Initialize when DOM is ready
-    document.addEventListener('DOMContentLoaded', function() {
-      console.log('DOM loaded, initializing with syllabusId:', syllabusId);
-      loadSyllabus();
-      loadDraft();
-    });
-    
-    // Also try immediate load in case DOM is already loaded
-    if (document.readyState === 'loading') {
-      // Still loading, wait for DOMContentLoaded
-    } else {
-      // DOM already loaded, execute immediately
-      console.log('DOM already loaded, initializing immediately with syllabusId:', syllabusId);
-      loadSyllabus();
-      loadDraft();
-    }
+// Initialize
+    loadSyllabus();
+    loadDraft();
   </script>
 </body>
 </html>

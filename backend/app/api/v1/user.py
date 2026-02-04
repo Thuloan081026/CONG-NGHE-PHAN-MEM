@@ -31,7 +31,29 @@ def list_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), _
 @router.get("/me", response_model=UserOut)
 def get_me(current_user=Depends(get_current_user)):
     """Get current authenticated user info"""
-    return current_user
+    # Convert SQLAlchemy model to dict for Pydantic validation
+    return {
+        "id": current_user.id,
+        "email": current_user.email,
+        "full_name": current_user.full_name,
+        "role": current_user.role,
+        "is_active": current_user.is_active,
+        "created_at": current_user.created_at,
+        "updated_at": current_user.updated_at,
+        "employee_id": current_user.employee_id,
+        "degree": current_user.degree,
+        "title": current_user.title,
+        "department": current_user.department,
+        "specialization": current_user.specialization,
+        "phone": current_user.phone,
+        "office_location": current_user.office_location,
+        "research_interests": current_user.research_interests,
+        "teaching_subjects": current_user.teaching_subjects,
+        "years_experience": current_user.years_experience,
+        "qualifications": current_user.qualifications,
+        "publications": current_user.publications,
+        "syllabus_count": 0,
+    }
 
 
 @router.get("/{user_id}", response_model=UserOut)

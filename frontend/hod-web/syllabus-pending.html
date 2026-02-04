@@ -228,6 +228,12 @@
 
       document.getElementById('pending-count').textContent = allSyllabuses.length;
       displaySyllabuses(allSyllabuses);
+
+      } catch (error) {
+        console.error('Error loading syllabuses:', error);
+        document.getElementById('syllabus-grid').innerHTML = 
+          '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #dc3545;">Error loading syllabuses</div>';
+      }
     }
 
     function displaySyllabuses(syllabuses) {

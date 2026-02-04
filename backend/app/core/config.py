@@ -1,4 +1,7 @@
-from pydantic_settings import BaseSettings
+try:
+    from pydantic_settings import BaseSettings
+except ImportError:
+    from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
@@ -7,7 +10,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
     # MySQL Database with XAMPP
-    DATABASE_URL: str = "mysql+pymysql://root:@localhost:3306/syllabus_db"
+    DATABASE_URL: str = "mysql+pymysql://root:@localhost:3306/smd_db"
     
     # Google Gemini AI Configuration
     GEMINI_API_KEY: str = "YOUR_GEMINI_API_KEY_HERE"  # Get from https://makersuite.google.com/app/apikey

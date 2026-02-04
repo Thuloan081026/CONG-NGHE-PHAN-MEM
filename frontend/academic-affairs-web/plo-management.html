@@ -575,7 +575,10 @@
             </div>
           </div>
         </div>
-
+      <!-- PLO Cards Container -->
+      <div class="row" id="ploCardsContainer">
+        <p class="text-muted text-center w-100">Loading PLOs...</p>
+      </div>
       </div>
 
       <!-- Footer -->
@@ -699,8 +702,9 @@
   
   <script>
     const API_BASE_URL = 'http://localhost:8000';
+let currentUser = null;
+    let ploList = [];
 
-    // Check authentication on page load
     window.addEventListener('DOMContentLoaded', async () => {
       const token = localStorage.getItem('access_token');
       if (!token) {
@@ -710,28 +714,22 @@
 
       try {
         const response = await fetch(`${API_BASE_URL}/users/me`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
+headers: { 'Authorization': `Bearer ${token}` }
         });
 
         if (!response.ok) {
           throw new Error('Unauthorized');
         }
 
-        const user = await response.json();
+currentUser = await response.json();
         
-        // Check if user is academic_affairs
-        if (user.role !== 'academic_affairs') {
+        if (currentUser.role !== 'academic_affairs') {
           alert('Access denied. Academic Affairs role required.');
           window.location.replace('/index.html');
           return;
         }
 
-        // Update user name in navbar
-        document.getElementById('userName').textContent = user.full_name || 'Academic Affairs';
-        
-        // Load PLO data (mock for now)
+document.getElementById('userName').textContent = currentUser.full_name || 'Academic Affairs';
         loadPLOData();
         
       } catch (error) {
@@ -742,16 +740,101 @@
       }
     });
 
-    function loadPLOData() {
-      // Mock data - will be replaced with actual API call
-      console.log('PLO data loaded');
+async function loadPLOData() {
+      try {
+        const token = localStorage.getItem('access_token');
+        const response = await fetch(`${API_BASE_URL}/clo-plo/plo`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+          ploList = await response.json();
+          displayPLOs(ploList);
+        }
+      } catch (error) {
+        console.error('Error loading PLOs:', error);
+      }
     }
 
-    function handleAddPLO() {
-      // TODO: Implement add PLO functionality
-      alert('Add PLO functionality will be implemented with backend API');
-      const modal = bootstrap.Modal.getInstance(document.getElementById('addPLOModal'));
-      modal.hide();
+    function displayPLOs(plos) {
+      const container = document.getElementById('ploCardsContainer');
+      if (!container) return;
+      
+      if (plos.length === 0) {
+        container.innerHTML = '<p class="text-muted">No PLOs found. Click "ADD NEW PLO" to create one.</p>';
+        return;
+      }
+
+      container.innerHTML = plos.map((plo, index) => `
+        <div class="col-md-6 mb-4">
+          <div class="card plo-card">
+            <div class="card-body p-4">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                  <span class="plo-code">${plo.code || 'PLO' + (index + 1)}</span>
+                  <span class="plo-category-badge bg-gradient-primary text-white ms-2">${plo.category || 'General'}</span>
+                </div>
+              </div>
+              
+              <p class="text-sm mb-3">
+                <strong>Description:</strong> ${plo.description || 'No description'}
+              </p>
+              
+              <div class="d-flex justify-content-between align-items-center mt-4">
+                <button class="btn btn-sm btn-outline-primary mb-0" onclick="viewMappings('${plo.id || index}')">
+                  View Mappings
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function handleAddPLO() {
+      const form = document.getElementById('addPLOForm');
+      const ploCode = form.querySelector('input[placeholder*="PLO"]').value.trim();
+      const category = form.querySelector('select').value;
+      const description = form.querySelectorAll('textarea')[0].value.trim();
+      
+      if (!ploCode || !category || !description) {
+        alert('Please fill in all required fields');
+        return;
+      }
+
+      try {
+        const token = localStorage.getItem('access_token');
+        const response = await fetch(`${API_BASE_URL}/clo-plo/plo`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            code: ploCode,
+            category: category,
+            description: description
+          })
+        });
+
+        if (response.ok) {
+          alert('PLO added successfully!');
+          form.reset();
+          const modal = bootstrap.Modal.getInstance(document.getElementById('addPLOModal'));
+          modal.hide();
+          loadPLOData();
+        } else {
+          const error = await response.json();
+          alert('Error: ' + (error.detail || 'Failed to add PLO'));
+        }
+      } catch (error) {
+        console.error('Error adding PLO:', error);
+        alert('Error: ' + error.message);
+      }
+    }
+
+    function viewMappings(ploId) {
+      window.location.href = `./plo-mappings.html?plo_id=${ploId}`;
     }
 
     function handleLogout() {
@@ -762,12 +845,9 @@
       }
     }
 
-    // Initialize tooltips and popovers
-    var win = navigator.platform.indexOf('Win') > -1;
+var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
-      var options = {
-        damping: '0.5'
-      }
+      var options = { damping: '0.5' }
       Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
   </script>

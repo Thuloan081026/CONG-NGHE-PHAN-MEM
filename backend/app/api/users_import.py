@@ -1,12 +1,18 @@
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, status
-from sqlalchemy.orm import Session
 from typing import List
-import pandas as pd
+
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from sqlalchemy.orm import Session
+
+try:
+    import pandas as pd
+except ImportError:
+    pd = None
 import io
+
 from ..core.database import get_db
-from ..models.user import User
 from ..core.deps import get_current_user
 from ..core.security import get_password_hash
+from ..models.user import User
 
 router = APIRouter()
 
@@ -23,6 +29,11 @@ async def import_users(
                      office_location, research_interests, teaching_subjects, years_experience,
                      qualifications, publications, is_active
     """
+    if pd is None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="pandas is not installed. Please install pandas to use this feature."
+        )
     # Check if user is admin
     if current_user.role != "admin":
         raise HTTPException(

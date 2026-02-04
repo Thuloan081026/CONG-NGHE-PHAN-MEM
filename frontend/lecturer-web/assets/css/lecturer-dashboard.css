@@ -9,7 +9,7 @@
     padding: 15px 20px 10px 20px;
     color: #9ba2ab;
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-top: 15px;
@@ -36,6 +36,7 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border-left: 3px solid transparent;
     position: relative;
+    font-weight: 600;
 }
 
 .sidebar-menu > li > a i {
@@ -281,12 +282,13 @@ body.sidebar-collapsed .pcoded-main-container {
    Statistics Cards
    =========================== */
 .stat-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
     border-radius: 15px;
     color: white;
     padding: 30px 25px;
     margin-bottom: 20px;
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.35), 
+                0 0 20px rgba(37, 99, 235, 0.15);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -305,7 +307,8 @@ body.sidebar-collapsed .pcoded-main-container {
 
 .stat-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 12px 35px rgba(37, 99, 235, 0.45),
+                0 0 30px rgba(37, 99, 235, 0.25);
 }
 
 .stat-card:hover::before {
@@ -313,30 +316,36 @@ body.sidebar-collapsed .pcoded-main-container {
 }
 
 .stat-card.success {
-    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-    box-shadow: 0 8px 25px rgba(56, 239, 125, 0.3);
+background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.35),
+                0 0 20px rgba(16, 185, 129, 0.15);
 }
 
 .stat-card.success:hover {
-    box-shadow: 0 12px 35px rgba(56, 239, 125, 0.4);
+    box-shadow: 0 12px 35px rgba(16, 185, 129, 0.45),
+                0 0 30px rgba(16, 185, 129, 0.25);
 }
 
 .stat-card.warning {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    box-shadow: 0 8px 25px rgba(245, 87, 108, 0.3);
+    background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.35),
+                0 0 20px rgba(239, 68, 68, 0.15);
 }
 
 .stat-card.warning:hover {
-    box-shadow: 0 12px 35px rgba(245, 87, 108, 0.4);
+    box-shadow: 0 12px 35px rgba(239, 68, 68, 0.45),
+                0 0 30px rgba(239, 68, 68, 0.25);
 }
 
 .stat-card.info {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);
+    background: linear-gradient(135deg, #0891b2 0%, #06b6d4 50%, #22d3ee 100%);
+    box-shadow: 0 8px 25px rgba(6, 182, 212, 0.35),
+                0 0 20px rgba(6, 182, 212, 0.15);
 }
 
 .stat-card.info:hover {
-    box-shadow: 0 12px 35px rgba(79, 172, 254, 0.4);
+    box-shadow: 0 12px 35px rgba(6, 182, 212, 0.45),
+                0 0 30px rgba(6, 182, 212, 0.25);
 }
 
 .stat-number {
@@ -380,13 +389,13 @@ body.sidebar-collapsed .pcoded-main-container {
 .card {
     border-radius: 12px;
     border: none;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
     transition: all 0.3s ease;
     margin-bottom: 20px;
 }
 
 .card:hover {
-    box-shadow: 0 5px 25px rgba(0,0,0,0.12);
+    box-shadow: 0 8px 30px rgba(37, 99, 235, 0.25);
 }
 
 .card-header {
@@ -516,12 +525,13 @@ body.sidebar-collapsed .pcoded-main-container {
    Welcome Message
    =========================== */
 .welcome-box {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
     color: white;
     padding: 25px;
     border-radius: 12px;
     margin-bottom: 25px;
-    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.35),
+                0 0 20px rgba(37, 99, 235, 0.15);
 }
 
 .welcome-box h4 {
