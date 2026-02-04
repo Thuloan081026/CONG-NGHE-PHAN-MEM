@@ -11,7 +11,7 @@ from ...models.user import User
 from ...schemas.syllabus_schema import (
     SyllabusCreate, SyllabusUpdate, SyllabusOut, SyllabusListOut,
     SyllabusDetailOut, SyllabusVersionOut, SyllabusVersionListOut,
-    SyllabusStatusUpdate, CLOPLOMappingUpdate
+    SyllabusStatusUpdate, CLOPLOMappingUpdate, SyllabusListItem
 )
 from ...services.syllabus_service import SyllabusService, SyllabusVersionService
 from ...services.notification_service import NotificationService

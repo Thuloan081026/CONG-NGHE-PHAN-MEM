@@ -147,6 +147,7 @@ class SyllabusListItem(BaseModel):
     published_at: Optional[datetime] = None
     
     class Config:
+        orm_mode = True
         from_attributes = True
 
 
@@ -159,6 +160,7 @@ class SyllabusListOut(BaseModel):
     items: List[SyllabusListItem]  # Changed from SyllabusOut
     
     class Config:
+        orm_mode = True
         from_attributes = True
 
 
