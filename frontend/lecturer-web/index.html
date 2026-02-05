@@ -204,6 +204,12 @@
             } else if (userData.role === 'academic_affairs') {
                 console.log('Redirecting to Academic Affairs dashboard...');
                 window.location.href = 'http://localhost:3001/html/dashboard.html';
+            } else if (userData.role === 'principal') {
+                console.log('Redirecting to Principal dashboard...');
+                window.location.href = 'http://localhost:3003/public/dashboard.html';
+            } else if (userData.role === 'student') {
+                console.log('Redirecting to Student portal...');
+                window.location.href = 'http://localhost:3004/dashboard.html';
             } else {
                 showAlert('⚠️ Role không được hỗ trợ: ' + userData.role, 'warning');
             }

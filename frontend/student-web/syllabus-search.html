@@ -179,7 +179,7 @@
                           <a href="syllabus-detail.html?id=CS101" class="btn btn-sm btn-primary">
                             <i class="fas fa-eye"></i> Xem
                           </a>
-                          <button class="btn btn-sm btn-outline-warning" onclick="toggleSubscribe('CS101')">
+                          <button class="btn btn-sm btn-outline-warning" onclick="toggleSubscribe('CS101', event)">
                             <i class="far fa-star"></i>
                           </button>
                         </td>
@@ -195,7 +195,7 @@
                           <a href="syllabus-detail.html?id=CS102" class="btn btn-sm btn-primary">
                             <i class="fas fa-eye"></i> Xem
                           </a>
-                          <button class="btn btn-sm btn-outline-warning" onclick="toggleSubscribe('CS102')">
+                          <button class="btn btn-sm btn-outline-warning" onclick="toggleSubscribe('CS102', event)">
                             <i class="far fa-star"></i>
                           </button>
                         </td>
@@ -211,7 +211,7 @@
                           <a href="syllabus-detail.html?id=CS201" class="btn btn-sm btn-primary">
                             <i class="fas fa-eye"></i> Xem
                           </a>
-                          <button class="btn btn-sm btn-warning" onclick="toggleSubscribe('CS201')">
+                          <button class="btn btn-sm btn-warning" onclick="toggleSubscribe('CS201', event)">
                             <i class="fas fa-star"></i>
                           </button>
                         </td>
@@ -227,7 +227,7 @@
                           <a href="syllabus-detail.html?id=CS301" class="btn btn-sm btn-primary">
                             <i class="fas fa-eye"></i> Xem
                           </a>
-                          <button class="btn btn-sm btn-warning" onclick="toggleSubscribe('CS301')">
+                          <button class="btn btn-sm btn-warning" onclick="toggleSubscribe('CS301', event)">
                             <i class="fas fa-star"></i>
                           </button>
                         </td>
@@ -243,7 +243,7 @@
                           <a href="syllabus-detail.html?id=CS302" class="btn btn-sm btn-primary">
                             <i class="fas fa-eye"></i> Xem
                           </a>
-                          <button class="btn btn-sm btn-outline-warning" onclick="toggleSubscribe('CS302')">
+                          <button class="btn btn-sm btn-outline-warning" onclick="toggleSubscribe('CS302', event)">
                             <i class="far fa-star"></i>
                           </button>
                         </td>
@@ -259,7 +259,7 @@
                           <a href="syllabus-detail.html?id=CS303" class="btn btn-sm btn-primary">
                             <i class="fas fa-eye"></i> Xem
                           </a>
-                          <button class="btn btn-sm btn-warning" onclick="toggleSubscribe('CS303')">
+                          <button class="btn btn-sm btn-warning" onclick="toggleSubscribe('CS303', event)">
                             <i class="fas fa-star"></i>
                           </button>
                         </td>
@@ -275,7 +275,7 @@
                           <a href="syllabus-detail.html?id=CS401" class="btn btn-sm btn-primary">
                             <i class="fas fa-eye"></i> Xem
                           </a>
-                          <button class="btn btn-sm btn-outline-warning" onclick="toggleSubscribe('CS401')">
+                          <button class="btn btn-sm btn-outline-warning" onclick="toggleSubscribe('CS401', event)">
                             <i class="far fa-star"></i>
                           </button>
                         </td>
@@ -291,7 +291,7 @@
                           <a href="syllabus-detail.html?id=CS402" class="btn btn-sm btn-primary">
                             <i class="fas fa-eye"></i> Xem
                           </a>
-                          <button class="btn btn-sm btn-outline-warning" onclick="toggleSubscribe('CS402')">
+                          <button class="btn btn-sm btn-outline-warning" onclick="toggleSubscribe('CS402', event)">
                             <i class="far fa-star"></i>
                           </button>
                         </td>
@@ -348,6 +348,18 @@
 
   <script>
     const API_BASE_URL = 'http://localhost:8000';
+    let subscriptions = new Set();
+    let allSyllabuses = [
+      { id: 'CS101', name: 'Nhập môn lập trình', credits: 3, lecturer: 'TS. Nguyễn Văn A', major: 'CNTT', semester: 1 },
+      { id: 'CS102', name: 'Lập trình hướng đối tượng', credits: 3, lecturer: 'ThS. Phạm Văn D', major: 'CNTT', semester: 2 },
+      { id: 'CS201', name: 'Cấu trúc dữ liệu và giải thuật', credits: 4, lecturer: 'TS. Lê Văn C', major: 'CNTT', semester: 3 },
+      { id: 'CS301', name: 'Cơ sở dữ liệu', credits: 3, lecturer: 'TS. Nguyễn Văn A', major: 'CNTT', semester: 4 },
+      { id: 'CS302', name: 'Hệ điều hành', credits: 3, lecturer: 'TS. Trần Thị B', major: 'CNTT', semester: 4 },
+      { id: 'CS303', name: 'Mạng máy tính', credits: 3, lecturer: 'TS. Hoàng Thị E', major: 'CNTT', semester: 5 },
+      { id: 'CS401', name: 'Trí tuệ nhân tạo', credits: 4, lecturer: 'TS. Trần Thị B', major: 'AI', semester: 6 },
+      { id: 'CS402', name: 'Học máy', credits: 4, lecturer: 'TS. Lê Văn C', major: 'AI', semester: 7 }
+    ];
+    let dataTable;
 
     async function checkAuth() {
       const token = localStorage.getItem('access_token');
@@ -387,21 +399,22 @@
       window.location.href = '/index.html';
     }
 
-    function toggleSubscribe(subjectCode) {
-if (subscriptions.has(subjectCode)) {
+    function toggleSubscribe(subjectCode, event) {
+      if (!event) event = window.event;
+      const btn = event.target.closest('button');
+      
+      if (subscriptions.has(subjectCode)) {
         subscriptions.delete(subjectCode);
-        const btn = event.target.closest('button');
         btn.classList.remove('btn-warning');
         btn.classList.add('btn-outline-warning');
         btn.innerHTML = '<i class="far fa-star"></i>';
-        alert(`Đã bỏ chọn theo dõi môn ${subjectCode}`);
+        alert(`Đã bỏ theo dõi môn ${subjectCode}`);
       } else {
         subscriptions.add(subjectCode);
-        const btn = event.target.closest('button');
         btn.classList.remove('btn-outline-warning');
         btn.classList.add('btn-warning');
         btn.innerHTML = '<i class="fas fa-star"></i>';
-        alert(`Đang theo dõi môn ${subjectCode}`);
+        alert(`Đã theo dõi môn ${subjectCode}`);
       }
       saveSubscriptions();
     }
@@ -449,7 +462,7 @@ if (subscriptions.has(subjectCode)) {
               <a href="syllabus-detail.html?id=${syllabus.id}" class="btn btn-sm btn-primary">
                 <i class="fas fa-eye"></i> Xem
               </a>
-              <button class="btn btn-sm ${btnClass}" onclick="toggleSubscribe('${syllabus.id}')">
+              <button class="btn btn-sm ${btnClass}" onclick="toggleSubscribe('${syllabus.id}', event)">
                 <i class="${starIcon}"></i>
               </button>
             </td>

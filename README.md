@@ -79,39 +79,28 @@ pip install -r requirements.txt
 - Mở XAMPP Control Panel
 - Start **Apache** và **MySQL**
 
-#### 4.2. Tạo database
-- Truy cập: http://localhost/phpmyadmin
-- Tạo database mới: `syllabus_db`
-- Collation: `utf8mb4_general_ci`
+#### 4.2. ✨ Tự động khởi tạo (Khuyến nghị)
 
-#### 4.3. Khởi tạo tables và users
+**Backend sẽ TỰ ĐỘNG:**
+- ✅ Tạo database `smd_db` nếu chưa có
+- ✅ Tạo tất cả tables cần thiết
+- ✅ Khởi tạo 6 tài khoản test
+
+Chỉ cần chạy backend, mọi thứ sẽ được setup tự động!
+
+#### 4.3. Hoặc khởi tạo thủ công (Tùy chọn)
 
 ```powershell
-# Đảm bảo virtual environment đã được kích hoạt
+# Nếu muốn khởi tạo trước khi chạy backend
 cd D:\CONG-NGHE-PHAN-MEM\backend
-
-# Khởi tạo test users
 python init_users.py
-```
-
-**Output mong đợi:**
-```
-✅ Successfully initialized all test users!
-
-Test accounts:
-- Admin: admin@ut.edu.vn / admin123
-- Lecturer: lecturer@ut.edu.vn / lecturer123
-- HOD: hod@ut.edu.vn / hod123
-- Academic Affairs: aa@ut.edu.vn / aa123
-- Student: student@ut.edu.vn / student123
-- Principal: principal@ut.edu.vn / principal123
 ```
 
 ---
 
 ## 🚀 Khởi chạy dự án
 
-### Cần mở 4 Terminal/PowerShell riêng biệt
+### Cần mở 5 Terminal/PowerShell riêng biệt
 
 #### Terminal 1: Backend API (Port 8000)
 ```powershell
@@ -119,9 +108,9 @@ cd D:\CONG-NGHE-PHAN-MEM\backend
 D:\CONG-NGHE-PHAN-MEM\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-#### Terminal 2: Frontend Login Page (Port 3000)
+#### Terminal 2: Login Page (Port 3000)
 ```powershell
-cd D:\CONG-NGHE-PHAN-MEM\frontend
+cd D:\CONG-NGHE-PHAN-MEM\frontend\lecturer-web
 python -m http.server 3000
 ```
 
@@ -131,10 +120,16 @@ cd D:\CONG-NGHE-PHAN-MEM\frontend\admin-web\html
 python -m http.server 3001
 ```
 
-#### Terminal 4: Lecturer Dashboard (Port 3002)
+#### Terminal 4: Principal Dashboard (Port 3003)
 ```powershell
-cd D:\CONG-NGHE-PHAN-MEM\frontend\lecturer-web
-python -m http.server 3002
+cd D:\CONG-NGHE-PHAN-MEM\frontend\principal-web
+python -m http.server 3003
+```
+
+#### Terminal 5: Student Portal (Port 3004) - Tùy chọn
+```powershell
+cd D:\CONG-NGHE-PHAN-MEM\frontend\student-web
+python -m http.server 3004
 ```
 
 ### ✅ Kiểm tra hệ thống
@@ -143,7 +138,8 @@ Mở trình duyệt và truy cập:
 - **Login Page:** http://localhost:3000
 - **Backend API Docs:** http://localhost:8000/docs
 - **Admin Dashboard:** http://localhost:3001
-- **Lecturer Dashboard:** http://localhost:3002
+- **Principal Dashboard:** http://localhost:3003
+- **Lecturer Dashboard:** http://localhost:3000/dashboard.html
 
 ---
 

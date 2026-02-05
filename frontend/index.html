@@ -39,6 +39,10 @@
                 window.location.replace('/lecturer-web/dashboard.html');
                 return;
               }
+              if (user.role === 'principal') {
+                window.location.replace('/principal-web/public/dashboard.html');
+                return;
+              }
               if (user.role === 'student') {
                 window.location.replace('/student-web/dashboard.html');
                 return;
@@ -213,6 +217,7 @@
         'lecturer': '/lecturer-web/dashboard.html',
         'hod': '/hod-web/dashboard.html',
         'academic_affairs': '/academic-affairs-web/dashboard.html',
+        'principal': '/principal-web/public/dashboard.html',
         'student': '/student-web/dashboard.html'
       };
 
