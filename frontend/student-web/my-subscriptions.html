@@ -102,7 +102,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Tổng số theo dõi</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalCount">0</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">8</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-star fa-2x text-warning"></i>
@@ -117,7 +117,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Có cập nhật mới</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800" id="updatedCount">0</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">3</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-bell fa-2x text-success"></i>
@@ -132,7 +132,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Chưa cập nhật</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800" id="notUpdatedCount">0</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">5</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-clock fa-2x text-info"></i>
@@ -144,6 +144,239 @@
           </div>
 
           <!-- Subscribed Syllabuses -->
+          <div class="row">
+            <!-- Syllabus Card 1 -->
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="card shadow h-100">
+                <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center">
+                  <h6 class="m-0 font-weight-bold">CS301</h6>
+                  <span class="badge badge-light">
+                    <i class="fas fa-bell"></i> Có cập nhật
+                  </span>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Cơ sở dữ liệu</h5>
+                  <p class="card-text text-muted">
+                    <i class="fas fa-user"></i> TS. Nguyễn Văn A<br>
+                    <i class="fas fa-book"></i> 3 tín chỉ | Học kỳ 4<br>
+                    <i class="fas fa-calendar"></i> Cập nhật: 28/12/2025
+                  </p>
+                  <div class="alert alert-success py-2">
+                    <small><i class="fas fa-check-circle"></i> Đã cập nhật nội dung mới</small>
+                  </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                  <a href="syllabus-detail.html?id=CS301" class="btn btn-sm btn-primary">
+                    <i class="fas fa-eye"></i> Xem chi tiết
+                  </a>
+                  <button class="btn btn-sm btn-danger" onclick="unsubscribe('CS301')">
+                    <i class="fas fa-star"></i> Bỏ theo dõi
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Syllabus Card 2 -->
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="card shadow h-100">
+                <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center">
+                  <h6 class="m-0 font-weight-bold">CS201</h6>
+                  <span class="badge badge-light">
+                    <i class="fas fa-bell"></i> Có cập nhật
+                  </span>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Cấu trúc dữ liệu và giải thuật</h5>
+                  <p class="card-text text-muted">
+                    <i class="fas fa-user"></i> TS. Lê Văn C<br>
+                    <i class="fas fa-book"></i> 4 tín chỉ | Học kỳ 3<br>
+                    <i class="fas fa-calendar"></i> Cập nhật: 26/12/2025
+                  </p>
+                  <div class="alert alert-success py-2">
+                    <small><i class="fas fa-check-circle"></i> Đã cập nhật đánh giá CLO</small>
+                  </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                  <a href="syllabus-detail.html?id=CS201" class="btn btn-sm btn-primary">
+                    <i class="fas fa-eye"></i> Xem chi tiết
+                  </a>
+                  <button class="btn btn-sm btn-danger" onclick="unsubscribe('CS201')">
+                    <i class="fas fa-star"></i> Bỏ theo dõi
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Syllabus Card 3 -->
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="card shadow h-100">
+                <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center">
+                  <h6 class="m-0 font-weight-bold">CS303</h6>
+                  <span class="badge badge-light">
+                    <i class="fas fa-bell"></i> Có cập nhật
+                  </span>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Mạng máy tính</h5>
+                  <p class="card-text text-muted">
+                    <i class="fas fa-user"></i> TS. Hoàng Thị E<br>
+                    <i class="fas fa-book"></i> 3 tín chỉ | Học kỳ 5<br>
+                    <i class="fas fa-calendar"></i> Cập nhật: 24/12/2025
+                  </p>
+                  <div class="alert alert-success py-2">
+                    <small><i class="fas fa-check-circle"></i> Thêm tài liệu tham khảo</small>
+                  </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                  <a href="syllabus-detail.html?id=CS303" class="btn btn-sm btn-primary">
+                    <i class="fas fa-eye"></i> Xem chi tiết
+                  </a>
+                  <button class="btn btn-sm btn-danger" onclick="unsubscribe('CS303')">
+                    <i class="fas fa-star"></i> Bỏ theo dõi
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Syllabus Card 4 -->
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="card shadow h-100">
+                <div class="card-header bg-secondary text-white">
+                  <h6 class="m-0 font-weight-bold">CS101</h6>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Nhập môn lập trình</h5>
+                  <p class="card-text text-muted">
+                    <i class="fas fa-user"></i> TS. Nguyễn Văn A<br>
+                    <i class="fas fa-book"></i> 3 tín chỉ | Học kỳ 1<br>
+                    <i class="fas fa-calendar"></i> Cập nhật: 15/11/2025
+                  </p>
+                  <div class="alert alert-secondary py-2">
+                    <small><i class="fas fa-clock"></i> Chưa có cập nhật mới</small>
+                  </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                  <a href="syllabus-detail.html?id=CS101" class="btn btn-sm btn-primary">
+                    <i class="fas fa-eye"></i> Xem chi tiết
+                  </a>
+                  <button class="btn btn-sm btn-danger" onclick="unsubscribe('CS101')">
+                    <i class="fas fa-star"></i> Bỏ theo dõi
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Syllabus Card 5 -->
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="card shadow h-100">
+                <div class="card-header bg-secondary text-white">
+                  <h6 class="m-0 font-weight-bold">CS102</h6>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Lập trình hướng đối tượng</h5>
+                  <p class="card-text text-muted">
+                    <i class="fas fa-user"></i> ThS. Phạm Văn D<br>
+                    <i class="fas fa-book"></i> 3 tín chỉ | Học kỳ 2<br>
+                    <i class="fas fa-calendar"></i> Cập nhật: 10/11/2025
+                  </p>
+                  <div class="alert alert-secondary py-2">
+                    <small><i class="fas fa-clock"></i> Chưa có cập nhật mới</small>
+                  </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                  <a href="syllabus-detail.html?id=CS102" class="btn btn-sm btn-primary">
+                    <i class="fas fa-eye"></i> Xem chi tiết
+                  </a>
+                  <button class="btn btn-sm btn-danger" onclick="unsubscribe('CS102')">
+                    <i class="fas fa-star"></i> Bỏ theo dõi
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Syllabus Card 6 -->
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="card shadow h-100">
+                <div class="card-header bg-secondary text-white">
+                  <h6 class="m-0 font-weight-bold">CS302</h6>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Hệ điều hành</h5>
+                  <p class="card-text text-muted">
+                    <i class="fas fa-user"></i> TS. Trần Thị B<br>
+                    <i class="fas fa-book"></i> 3 tín chỉ | Học kỳ 4<br>
+                    <i class="fas fa-calendar"></i> Cập nhật: 05/11/2025
+                  </p>
+                  <div class="alert alert-secondary py-2">
+                    <small><i class="fas fa-clock"></i> Chưa có cập nhật mới</small>
+                  </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                  <a href="syllabus-detail.html?id=CS302" class="btn btn-sm btn-primary">
+                    <i class="fas fa-eye"></i> Xem chi tiết
+                  </a>
+                  <button class="btn btn-sm btn-danger" onclick="unsubscribe('CS302')">
+                    <i class="fas fa-star"></i> Bỏ theo dõi
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Syllabus Card 7 -->
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="card shadow h-100">
+                <div class="card-header bg-secondary text-white">
+                  <h6 class="m-0 font-weight-bold">CS401</h6>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Trí tuệ nhân tạo</h5>
+                  <p class="card-text text-muted">
+                    <i class="fas fa-user"></i> TS. Trần Thị B<br>
+                    <i class="fas fa-book"></i> 4 tín chỉ | Học kỳ 6<br>
+                    <i class="fas fa-calendar"></i> Cập nhật: 01/11/2025
+                  </p>
+                  <div class="alert alert-secondary py-2">
+                    <small><i class="fas fa-clock"></i> Chưa có cập nhật mới</small>
+                  </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                  <a href="syllabus-detail.html?id=CS401" class="btn btn-sm btn-primary">
+                    <i class="fas fa-eye"></i> Xem chi tiết
+                  </a>
+                  <button class="btn btn-sm btn-danger" onclick="unsubscribe('CS401')">
+                    <i class="fas fa-star"></i> Bỏ theo dõi
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Syllabus Card 8 -->
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="card shadow h-100">
+                <div class="card-header bg-secondary text-white">
+                  <h6 class="m-0 font-weight-bold">CS402</h6>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Học máy</h5>
+                  <p class="card-text text-muted">
+                    <i class="fas fa-user"></i> TS. Lê Văn C<br>
+                    <i class="fas fa-book"></i> 4 tín chỉ | Học kỳ 7<br>
+                    <i class="fas fa-calendar"></i> Cập nhật: 28/10/2025
+                  </p>
+                  <div class="alert alert-secondary py-2">
+                    <small><i class="fas fa-clock"></i> Chưa có cập nhật mới</small>
+                  </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                  <a href="syllabus-detail.html?id=CS402" class="btn btn-sm btn-primary">
+                    <i class="fas fa-eye"></i> Xem chi tiết
+                  </a>
+                  <button class="btn btn-sm btn-danger" onclick="unsubscribe('CS402')">
+                    <i class="fas fa-star"></i> Bỏ theo dõi
+                  </button>
+                </div>
+              </div>
+            </div>
           <div class="row" id="syllabusContainer">
           </div>
 
@@ -172,7 +405,7 @@
   <script>
     const API_BASE_URL = 'http://localhost:8000';
 
-    // Store all syllabus data
+// Store all syllabus data
     const allSyllabuses = [
       { id: 'CS101', name: 'Nhập môn lập trình', credits: 3, lecturer: 'TS. Nguyễn Văn A', semester: 1, updated: false },
       { id: 'CS102', name: 'Lập trình hướng đối tượng', credits: 3, lecturer: 'ThS. Phạm Văn D', semester: 2, updated: false },
@@ -297,7 +530,7 @@
 
     function unsubscribe(subjectCode) {
       if (confirm(`Bỏ theo dõi môn ${subjectCode}?`)) {
-        subscriptions.delete(subjectCode);
+subscriptions.delete(subjectCode);
         localStorage.setItem('subscriptions', JSON.stringify(Array.from(subscriptions)));
         renderSubscribedSyllabuses();
         alert('Đã bỏ theo dõi thành công!');
@@ -306,7 +539,7 @@
 
     $(document).ready(function() {
       checkAuth();
-      loadSubscriptions();
+loadSubscriptions();
     });
   </script>
 </body>

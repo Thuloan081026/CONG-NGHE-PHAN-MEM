@@ -547,57 +547,6 @@
       } else {
         document.getElementById('mySubscriptions').textContent = 0;
       }
-    // Mock data for student dashboard
-    const mockStudentData = {
-      enrolledCourses: [
-        { code: 'CS301', name: 'Cơ sở dữ liệu', lecturer: 'TS. Nguyễn Văn A', status: 'approved', updateDate: '28/12/2025' },
-        { code: 'CS401', name: 'Trí tuệ nhân tạo', lecturer: 'TS. Trần Thị B', status: 'approved', updateDate: '27/12/2025' },
-        { code: 'CS201', name: 'Cấu trúc dữ liệu', lecturer: 'TS. Lê Văn C', status: 'approved', updateDate: '26/12/2025' },
-        { code: 'CS102', name: 'Lập trình hướng đối tượng', lecturer: 'ThS. Phạm Văn D', status: 'approved', updateDate: '25/12/2025' },
-        { code: 'CS303', name: 'Mạng máy tính', lecturer: 'TS. Hoàng Thị E', status: 'approved', updateDate: '24/12/2025' }
-      ]
-    };
-
-    // Load student user data
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      fetch('http://localhost:8000/users/me', {
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      .then(r => r.json())
-      .then(user => {
-        if (user.role !== 'student') {
-          window.location.href = '../index.html';
-        }
-        document.getElementById('userName').textContent = user.full_name || 'Student';
-        document.getElementById('userEmail').textContent = user.email;
-      })
-      .catch(err => console.error('Auth error:', err));
-    }
-
-    function loadDashboardData() {
-      // Load syllabus data
-      const tbody = document.getElementById('syllabusesTableBody');
-      if (tbody) {
-        tbody.innerHTML = mockStudentData.enrolledCourses.map(course => `
-          <tr>
-            <td>${course.code}</td>
-            <td>${course.name}</td>
-            <td>${course.lecturer}</td>
-            <td>${course.updateDate}</td>
-            <td><span class="badge badge-success">Đã duyệt</span></td>
-            <td>
-              <a href="syllabus-detail.html?id=${course.code}" class="btn btn-sm btn-primary">
-                <i class="fas fa-eye"></i> Xem
-              </a>
-              <button class="btn btn-sm btn-warning" onclick="toggleSubscribe('${course.code}')">
-                <i class="fas fa-star"></i>
-              </button>
-            </td>
-          </tr>
-        `).join('');
-      }
     }
 
     function listenToStorageChanges() {

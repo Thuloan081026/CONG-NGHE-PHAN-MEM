@@ -152,7 +152,7 @@
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary">Kết quả tìm kiếm</h6>
-                  <span class="text-muted" id="resultCount">Tìm thấy 13 giáo trình</span>
+                  <span class="text-muted" id="resultCount">Tìm thấy 156 giáo trình</span>
                 </div>
                 <div class="table-responsive p-3">
                   <table class="table align-items-center table-flush table-hover" id="syllabusTable">
@@ -348,25 +348,6 @@
 
   <script>
     const API_BASE_URL = 'http://localhost:8000';
-    
-    // Store all syllabus data
-    const allSyllabuses = [
-      { id: 'CS101', name: 'Nhập môn lập trình', credits: 3, lecturer: 'TS. Nguyễn Văn A', major: 'CNTT', semester: 1 },
-      { id: 'CS102', name: 'Lập trình hướng đối tượng', credits: 3, lecturer: 'ThS. Phạm Văn D', major: 'CNTT', semester: 2 },
-      { id: 'CS201', name: 'Cấu trúc dữ liệu và giải thuật', credits: 4, lecturer: 'TS. Lê Văn C', major: 'CNTT', semester: 3 },
-      { id: 'CS301', name: 'Cơ sở dữ liệu', credits: 3, lecturer: 'TS. Nguyễn Văn A', major: 'CNTT', semester: 4 },
-      { id: 'CS302', name: 'Hệ điều hành', credits: 3, lecturer: 'TS. Trần Thị B', major: 'CNTT', semester: 4 },
-      { id: 'CS303', name: 'Mạng máy tính', credits: 3, lecturer: 'TS. Hoàng Thị E', major: 'CNTT', semester: 5 },
-      { id: 'CS401', name: 'Trí tuệ nhân tạo', credits: 4, lecturer: 'TS. Trần Thị B', major: 'AI', semester: 6 },
-      { id: 'CS402', name: 'Học máy', credits: 4, lecturer: 'TS. Lê Văn C', major: 'AI', semester: 7 },
-      { id: 'SE101', name: 'Kiến trúc phần mềm', credits: 3, lecturer: 'TS. Hoàng Văn F', major: 'SE', semester: 1 },
-      { id: 'SE201', name: 'Testing và QA', credits: 3, lecturer: 'ThS. Tạ Văn G', major: 'SE', semester: 3 },
-      { id: 'IT101', name: 'Hệ thống thông tin', credits: 3, lecturer: 'TS. Vũ Thị H', major: 'IT', semester: 1 },
-      { id: 'IT201', name: 'Quản lý hệ thống', credits: 3, lecturer: 'TS. Phạm Thị I', major: 'IT', semester: 3 },
-    ];
-
-    let dataTable = null;
-    let subscriptions = new Set(); // Store subscribed syllabuses
 
     async function checkAuth() {
       const token = localStorage.getItem('access_token');
@@ -407,7 +388,7 @@
     }
 
     function toggleSubscribe(subjectCode) {
-      if (subscriptions.has(subjectCode)) {
+if (subscriptions.has(subjectCode)) {
         subscriptions.delete(subjectCode);
         const btn = event.target.closest('button');
         btn.classList.remove('btn-warning');
@@ -510,7 +491,7 @@
 
     // Initialize DataTable
     $(document).ready(function() {
-      loadSubscriptions();
+loadSubscriptions();
       
       dataTable = $('#syllabusTable').DataTable({
         "pageLength": 12,
@@ -530,12 +511,11 @@
       });
 
       checkAuth();
-      filterSyllabuses();
-
+filterSyllabuses();
       // Search form handler
       $('#searchForm').submit(function(e) {
         e.preventDefault();
-        filterSyllabuses();
+filterSyllabuses();
       });
 
       // Real-time filtering on input change

@@ -267,13 +267,13 @@
       const token = localStorage.getItem('access_token');
       
       try {
-        const response = await fetch(`${API_BASE_URL}/syllabuses?status=pending_review`, {
+const response = await fetch(`${API_BASE_URL}/syllabuses?status=pending_review`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
 
         if (response.ok) {
           const data = await response.json();
-          allSyllabuses = Array.isArray(data) ? data : data.items || [];
+allSyllabuses = Array.isArray(data) ? data : data.items || [];
           if (allSyllabuses.length === 0) {
             allSyllabuses = getMockSyllabuses();
           }
@@ -281,7 +281,7 @@
           allSyllabuses = getMockSyllabuses();
         }
       } catch (error) {
-        console.log('Using mock data:', error);
+console.log('Using mock data:', error);
         allSyllabuses = getMockSyllabuses();
       }
 
@@ -428,9 +428,8 @@
     }
 
     function viewDetail(id) {
-  window.location.href = `/academic-affairs-web/syllabus-detail.html?id=${id}`;
+window.location.href = `/academic-affairs-web/syllabus-detail.html?id=${id}`;
 }
-
 
     function approveSyllabus(id) {
       currentSyllabusId = id;
@@ -446,7 +445,7 @@
 
     async function confirmApproval() {
       const comment = document.getElementById('approval-comment').value;
-      const token = localStorage.getItem('access_token');
+const token = localStorage.getItem('access_token');
       
       try {
         const response = await fetch(`${API_BASE_URL}/syllabus/${currentSyllabusId}/status`, {
@@ -477,14 +476,14 @@
 
     async function confirmRejection() {
       const reason = document.getElementById('rejection-reason').value;
-      const token = localStorage.getItem('access_token');
+const token = localStorage.getItem('access_token');
       
       if (!reason.trim()) {
         alert('Please provide a reason for rejection');
         return;
       }
       
-      try {
+try {
         const response = await fetch(`${API_BASE_URL}/syllabus/${currentSyllabusId}/status`, {
           method: 'PATCH',
           headers: {

@@ -308,36 +308,73 @@
       }
     }
 
-    // 📊 MOCK DATA FOR HOD DASHBOARD
-    const mockHODData = {
-      pending: [
-        { id: 1, subject_code: 'CS301', subject_name: 'Cơ sở dữ liệu nâng cao', lecturer_name: 'TS. Nguyễn Văn A', version: 'v2.0', status: 'Pending Review', created_at: '2026-01-20', priority: 'high' },
-        { id: 2, subject_code: 'CS401', subject_name: 'Trí tuệ nhân tạo', lecturer_name: 'TS. Trần Thị B', version: 'v1.5', status: 'Pending Review', created_at: '2026-01-18', priority: 'high' },
-        { id: 3, subject_code: 'CS201', subject_name: 'Cấu trúc dữ liệu', lecturer_name: 'TS. Lê Văn C', version: 'v3.0', status: 'Pending Review', created_at: '2026-01-15', priority: 'medium' }
-      ],
-      collaborative: [
-        { id: 4, subject_code: 'CS102', subject_name: 'Lập trình hướng đối tượng', lecturer_name: 'ThS. Phạm Văn D', version: 'v1.0', status: 'Collaborative Review', created_at: '2026-01-19', priority: 'medium' },
-        { id: 5, subject_code: 'CS303', subject_name: 'Mạng máy tính', lecturer_name: 'TS. Hoàng Thị E', version: 'v2.5', status: 'Collaborative Review', created_at: '2026-01-17', priority: 'low' }
-      ],
-      approved: [
-        { id: 6, subject_code: 'CS505', subject_name: 'Lập trình Web', lecturer_name: 'ThS. Võ Văn F', status: 'Approved', created_at: '2026-01-25', updated_at: '2026-01-25' },
-        { id: 7, subject_code: 'CS606', subject_name: 'Mobile Development', lecturer_name: 'TS. Dương Thị G', status: 'Approved', created_at: '2026-01-24', updated_at: '2026-01-24' }
-      ]
-    };
-
     // Load dashboard statistics
-    function loadStatistics() {
+    async function loadStatistics() {
       try {
-        // Use mock data instead of API
-        const pending = mockHODData.pending;
-        const collab = mockHODData.collaborative;
-        const approved = mockHODData.approved;
+        // Load syllabuses with different statuses
+        const headers = { 'Authorization': `Bearer ${token}` };
         
-        document.getElementById('pending-count').textContent = pending.length;
-        document.getElementById('collab-count').textContent = collab.length;
-        document.getElementById('collaborative-count').textContent = collab.length;
-        document.getElementById('approved-count').textContent = approved.length;
-        document.getElementById('total-count').textContent = pending.length + collab.length + approved.length;
+        let pending = [];
+        let collab = [];
+        let approved = [];
+        let all = [];
+        let useMockData = false;
+
+        try {
+          // Get pending syllabuses (status: pending_hod_review)
+          const pendingRes = await fetch(`${API_BASE_URL}/syllabuses/?status=pending_hod_review`, { headers });
+          if (pendingRes.ok) {
+            pending = await pendingRes.json();
+          }
+
+          // Get collaborative review syllabuses
+          const collabRes = await fetch(`${API_BASE_URL}/syllabuses/?status=collaborative_review`, { headers });
+          if (collabRes.ok) {
+            collab = await collabRes.json();
+          }
+
+          // Get approved this month
+          const approvedRes = await fetch(`${API_BASE_URL}/syllabuses/?status=approved`, { headers });
+          if (approvedRes.ok) {
+            approved = await approvedRes.json();
+          }
+
+          // Get total syllabuses in department
+          const allRes = await fetch(`${API_BASE_URL}/syllabuses/`, { headers });
+          if (allRes.ok) {
+            all = await allRes.json();
+          }
+
+          // If all arrays are empty, use mock data
+          if (pending.length === 0 && collab.length === 0 && approved.length === 0 && all.length === 0) {
+            useMockData = true;
+          }
+        } catch (apiError) {
+          console.log('API not available, loading mock data...', apiError);
+          useMockData = true;
+        }
+
+        // Load mock data if needed
+        if (useMockData) {
+          const mockData = generateMockData();
+          pending = mockData.pending;
+          collab = mockData.collab;
+          approved = mockData.approved;
+          all = mockData.all;
+          console.log('Using mock data for dashboard');
+        }
+
+        document.getElementById('pending-count').textContent = pending.length || 0;
+        document.getElementById('collab-count').textContent = collab.length || 0;
+        document.getElementById('collaborative-count').textContent = collab.length || 0;
+
+        const thisMonth = approved.filter(s => {
+          const date = new Date(s.updated_at);
+          const now = new Date();
+          return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+        });
+        document.getElementById('approved-count').textContent = thisMonth.length;
+        document.getElementById('total-count').textContent = all.length;
 
         // Load priority and recent tables
         loadPriorityTable(pending);
@@ -345,7 +382,113 @@
         
       } catch (error) {
         console.error('Error loading statistics:', error);
+        // Fallback to mock data on any error
+        const mockData = generateMockData();
+        document.getElementById('pending-count').textContent = mockData.pending.length;
+        document.getElementById('collab-count').textContent = mockData.collab.length;
+        document.getElementById('collaborative-count').textContent = mockData.collab.length;
+        document.getElementById('approved-count').textContent = mockData.approved.length;
+        document.getElementById('total-count').textContent = mockData.all.length;
+        loadPriorityTable(mockData.pending);
+        loadRecentTable([...mockData.pending, ...mockData.collab].slice(0, 10));
       }
+    }
+
+    // Generate mock data for demo
+    function generateMockData() {
+      const now = new Date();
+      const pending = [
+        {
+          id: 1,
+          subject_code: 'CSC301',
+          subject_name: 'Cấu trúc Dữ liệu và Giải thuật',
+          lecturer_name: 'TS. Nguyễn Văn A',
+          version: 'v2.0',
+          status: 'pending_hod_review',
+          created_at: new Date(now - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date(now - 10 * 24 * 60 * 60 * 1000).toISOString()
+        },
+        {
+          id: 2,
+          subject_code: 'CSC205',
+          subject_name: 'Lập trình Hướng đối tượng',
+          lecturer_name: 'TS. Trần Thị B',
+          version: 'v1.5',
+          status: 'pending_hod_review',
+          created_at: new Date(now - 5 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date(now - 5 * 24 * 60 * 60 * 1000).toISOString()
+        },
+        {
+          id: 3,
+          subject_code: 'CSC102',
+          subject_name: 'Cơ sở Dữ liệu',
+          lecturer_name: 'TS. Phạm Thị D',
+          version: 'v2.1',
+          status: 'pending_hod_review',
+          created_at: new Date(now - 2 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date(now - 2 * 24 * 60 * 60 * 1000).toISOString()
+        }
+      ];
+
+      const collab = [
+        {
+          id: 4,
+          subject_code: 'SWE401',
+          subject_name: 'Công nghệ Phần mềm',
+          lecturer_name: 'PGS. Lê Văn C',
+          version: 'v3.0',
+          status: 'collaborative_review',
+          created_at: new Date(now - 7 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date(now - 3 * 24 * 60 * 60 * 1000).toISOString()
+        },
+        {
+          id: 5,
+          subject_code: 'SWE302',
+          subject_name: 'Phát triển Ứng dụng Web',
+          lecturer_name: 'TS. Hoàng Văn E',
+          version: 'v1.8',
+          status: 'collaborative_review',
+          created_at: new Date(now - 4 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date(now - 1 * 24 * 60 * 60 * 1000).toISOString()
+        }
+      ];
+
+      const approved = [
+        {
+          id: 6,
+          subject_code: 'CSC401',
+          subject_name: 'Trí tuệ Nhân tạo',
+          lecturer_name: 'TS. Nguyễn Văn A',
+          version: 'v1.0',
+          status: 'approved',
+          created_at: new Date(now - 15 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date(now - 8 * 24 * 60 * 60 * 1000).toISOString()
+        },
+        {
+          id: 7,
+          subject_code: 'CSC303',
+          subject_name: 'Mạng máy tính',
+          lecturer_name: 'TS. Trần Thị B',
+          version: 'v2.5',
+          status: 'approved',
+          created_at: new Date(now - 20 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date(now - 5 * 24 * 60 * 60 * 1000).toISOString()
+        },
+        {
+          id: 8,
+          subject_code: 'MAT201',
+          subject_name: 'Toán rời rạc',
+          lecturer_name: 'PGS. Lê Văn C',
+          version: 'v1.2',
+          status: 'approved',
+          created_at: new Date(now - 25 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date(now - 12 * 24 * 60 * 60 * 1000).toISOString()
+        }
+      ];
+
+      const all = [...pending, ...collab, ...approved];
+
+      return { pending, collab, approved, all };
     }
 
     // Load priority table
@@ -415,34 +558,53 @@
     }
 
     // Load notifications
-    async function loadNotifications() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/notifications?limit=5`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        
-        if (response.ok) {
-          const notifications = await response.json();
-          const container = document.getElementById('notifications-list');
-          
-          if (notifications.length === 0) {
-            container.innerHTML = '<p style="text-align: center; padding: 20px; color: #999;">No new notifications</p>';
-            return;
-          }
-
-          container.innerHTML = notifications.map(n => `
-            <div style="padding: 12px; border-bottom: 1px solid #eee;">
-              <div style="font-weight: bold; font-size: 13px;">${n.title}</div>
-              <div style="font-size: 12px; color: #666; margin-top: 4px;">${n.message}</div>
-              <div style="font-size: 11px; color: #999; margin-top: 4px;">${new Date(n.created_at).toLocaleString('vi-VN')}</div>
-            </div>
-          `).join('');
-          
-          document.getElementById('notification-count').textContent = notifications.filter(n => !n.is_read).length;
-        }
-      } catch (error) {
-        console.error('Error loading notifications:', error);
+    function loadNotifications() {
+      const container = document.getElementById('notifications-list');
+      
+      if (!container) {
+        console.error('Notifications container not found');
+        return;
       }
+
+      // Use mock data directly for demo
+      const notifications = [
+        {
+          id: 1,
+          title: '🎉 Giáo trình mới được phê duyệt',
+          message: 'Giáo trình "Cấu trúc Dữ liệu và Giải thuật v2.0" đã được phê duyệt bởi Admin',
+          created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+          is_read: false
+        },
+        {
+          id: 2,
+          title: '📝 Yêu cầu review mới',
+          message: 'TS. Nguyễn Văn A đã gửi giáo trình "Lập trình Web nâng cao" để bạn review',
+          created_at: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
+          is_read: false
+        },
+        {
+          id: 3,
+          title: '💬 Bình luận mới trong Collaborative Review',
+          message: 'PGS. Lê Văn C đã thêm nhận xét vào giáo trình "Công nghệ Phần mềm"',
+          created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+          is_read: true
+        }
+      ];
+
+      container.innerHTML = notifications.map(n => `
+        <div style="padding: 12px; border-bottom: 1px solid #eee; ${!n.is_read ? 'background: #f0f8ff;' : ''}">
+          <div style="font-weight: bold; font-size: 13px;">${n.title}</div>
+          <div style="font-size: 12px; color: #666; margin-top: 4px;">${n.message}</div>
+          <div style="font-size: 11px; color: #999; margin-top: 4px;">${new Date(n.created_at).toLocaleString('vi-VN')}</div>
+        </div>
+      `).join('');
+      
+      const unreadCount = notifications.filter(n => !n.is_read).length;
+      const notifCountEl = document.getElementById('notification-count');
+      if (notifCountEl) {
+        notifCountEl.textContent = unreadCount;
+      }
+      console.log(`Loaded ${notifications.length} notifications (${unreadCount} unread)`);
     }
 
     // Actions

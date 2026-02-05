@@ -1,29 +1,31 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from .core.database import engine, Base
-import traceback
 import os
+import traceback
 from pathlib import Path
+
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
+
+from .api import departments as departments_router
+from .api import users_import as users_import_router
+from .api.v1 import admin as admin_router
+from .api.v1 import ai as ai_router
+from .api.v1 import audit_logs as audit_logs_router
 
 # Import all routers
 from .api.v1 import auth as auth_router
-from .api.v1 import user as user_router
-from .api.v1 import syllabus as syllabus_router
-from .api.v1 import workflow as workflow_router
-from .api.v1 import review as review_router
 from .api.v1 import clo_plo as clo_plo_router
-from .api.v1 import search as search_router
-from .api.v1 import ai as ai_router
 from .api.v1 import notification as notification_router
-from .api.v1 import settings as settings_router
-from .api.v1 import audit_logs as audit_logs_router
-from .api.v1 import admin as admin_router
-from .api.v1 import student as student_router
 from .api.v1 import principal as principal_router
-from .api import departments as departments_router
-from .api import users_import as users_import_router
+from .api.v1 import review as review_router
+from .api.v1 import search as search_router
+from .api.v1 import settings as settings_router
+from .api.v1 import student as student_router
+from .api.v1 import syllabus as syllabus_router
+from .api.v1 import user as user_router
+from .api.v1 import workflow as workflow_router
+from .core.database import Base, engine
 
 # Create all database tables
 Base.metadata.create_all(bind=engine)

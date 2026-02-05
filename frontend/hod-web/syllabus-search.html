@@ -213,7 +213,22 @@
               </tbody>
             </table>
           </div>
-
+          <!-- Versions Modal -->
+          <div id="versionsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; overflow-y: auto;">
+            <div style="max-width: 900px; margin: 50px auto; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+              <div style="padding: 25px; border-bottom: 2px solid #e0e0e0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px 12px 0 0;">
+                <h2 style="margin: 0 0 10px 0;">📚 Version History</h2>
+                <p id="versionsModalSubtitle" style="margin: 0; opacity: 0.9;">Loading...</p>
+              </div>
+              <div style="padding: 25px; max-height: 500px; overflow-y: auto;">
+                <div id="versionsModalContent">Loading versions...</div>
+              </div>
+              <div style="padding: 20px; border-top: 2px solid #e0e0e0; text-align: right;">
+                <button class="btn btn-secondary" onclick="closeVersionsModal()" style="margin-right: 10px;">Đóng</button>
+                <button id="compareVersionsBtn" class="btn btn-success" onclick="compareSelectedVersions()" disabled style="display: none;">So sánh đã chọn</button>
+              </div>
+            </div>
+          </div>
           <!-- Comparison Panel -->
           <div class="compare-panel" id="comparison-panel" style="display: none;">
             <div style="margin-bottom: 20px;">
@@ -286,7 +301,7 @@
           headers: { 'Authorization': `Bearer ${token}` }
         });
 
-        if (!response.ok) throw new Error('Search failed');
+if (!response.ok) throw new Error('Search failed');
 
         searchResults = await response.json();
         
@@ -416,7 +431,7 @@
       const syllabus = searchResults.find(s => s.id === syllabusId);
       if (!syllabus) return;
 
-      // Find other versions of the same subject
+// Find other versions of the same subject
       const versions = searchResults.filter(s => 
         s.subject_code === syllabus.subject_code && s.id !== syllabusId
       );
@@ -559,7 +574,7 @@
 
     // Export functions
     function exportResults() {
-      alert('Export feature will generate CSV/PDF of search results');
+alert('Export feature will generate CSV/PDF of search results');
     }
 
     function exportComparison() {

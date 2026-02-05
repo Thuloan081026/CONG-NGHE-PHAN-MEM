@@ -246,7 +246,7 @@
           allSyllabuses = (data.items || []).filter(s => 
             s.status === 'approved' || s.status === 'rejected' || s.status === 'completed'
           );
-        } else {
+} else {
           allSyllabuses = getMockReviewedSyllabuses();
         }
       } catch (error) {
@@ -257,7 +257,7 @@
       filteredSyllabuses = [...allSyllabuses];
       updateStatistics();
       renderSyllabuses();
-    }
+}
 
     function getMockReviewedSyllabuses() {
       return [
@@ -270,7 +270,7 @@
           department: 'Computer Science',
           semester: 1,
           created_by: 4,
-          created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10).toISOString(),
+created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10).toISOString(),
           reviewed_date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(),
           reviewer_name: 'Dr. Nguyen Van A',
           review_comment: 'Excellent syllabus. Well structured and comprehensive.'

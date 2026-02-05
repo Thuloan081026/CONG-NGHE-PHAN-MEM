@@ -143,21 +143,91 @@
           headers: { 'Authorization': `Bearer ${token}` }
         });
 
-        if (!response.ok) throw new Error('Failed to load syllabuses');
+        if (response.ok) {
+          allSyllabuses = await response.json();
+          
+          // Calculate priority based on days pending
+          allSyllabuses = allSyllabuses.map(s => {
+            const daysPending = Math.floor((new Date() - new Date(s.created_at)) / (1000 * 60 * 60 * 24));
+            let priority = 'low';
+            if (daysPending > 7) priority = 'high';
+            else if (daysPending > 3) priority = 'medium';
+            return { ...s, daysPending, priority };
+          });
 
-        allSyllabuses = await response.json();
-        
-        // Calculate priority based on days pending
-        allSyllabuses = allSyllabuses.map(s => {
-          const daysPending = Math.floor((new Date() - new Date(s.created_at)) / (1000 * 60 * 60 * 24));
-          let priority = 'low';
-          if (daysPending > 7) priority = 'high';
-          else if (daysPending > 3) priority = 'medium';
-          return { ...s, daysPending, priority };
-        });
+          document.getElementById('pending-count').textContent = allSyllabuses.length;
+          displaySyllabuses(allSyllabuses);
+          return;
+        }
+      } catch (error) {
+        console.log('Backend API not available, using mock data');
+      }
 
-        document.getElementById('pending-count').textContent = allSyllabuses.length;
-        displaySyllabuses(allSyllabuses);
+      // Load mock data for demonstration
+      loadMockData();
+    }
+
+    function loadMockData() {
+      // Mock data for demonstration
+      const mockData = [
+        {
+          id: 1,
+          subject_code: 'CSC301',
+          subject_name: 'Cấu trúc Dữ liệu và Giải thuật',
+          lecturer_name: 'TS. Nguyễn Văn A',
+          created_at: '2026-01-05',
+          version: 'v2.0',
+          credits: '3 (2-1-0)'
+        },
+        {
+          id: 2,
+          subject_code: 'CSC205',
+          subject_name: 'Lập trình Hướng đối tượng',
+          lecturer_name: 'TS. Trần Thị B',
+          created_at: '2026-01-10',
+          version: 'v1.5',
+          credits: '3 (2-1-0)'
+        },
+        {
+          id: 3,
+          subject_code: 'SWE401',
+          subject_name: 'Công nghệ Phần mềm',
+          lecturer_name: 'PGS. Lê Văn C',
+          created_at: '2025-12-28',
+          version: 'v3.0',
+          credits: '4 (3-1-0)'
+        },
+        {
+          id: 4,
+          subject_code: 'CSC102',
+          subject_name: 'Cơ sở Dữ liệu',
+          lecturer_name: 'TS. Phạm Thị D',
+          created_at: '2026-01-12',
+          version: 'v2.1',
+          credits: '3 (2-1-0)'
+        },
+        {
+          id: 5,
+          subject_code: 'SWE302',
+          subject_name: 'Phát triển Ứng dụng Web',
+          lecturer_name: 'TS. Hoàng Văn E',
+          created_at: '2026-01-08',
+          version: 'v1.8',
+          credits: '3 (2-1-0)'
+        }
+      ];
+
+      // Calculate priority based on days pending
+      allSyllabuses = mockData.map(s => {
+        const daysPending = Math.floor((new Date() - new Date(s.created_at)) / (1000 * 60 * 60 * 24));
+        let priority = 'low';
+        if (daysPending > 7) priority = 'high';
+        else if (daysPending > 3) priority = 'medium';
+        return { ...s, daysPending, priority };
+      });
+
+      document.getElementById('pending-count').textContent = allSyllabuses.length;
+      displaySyllabuses(allSyllabuses);
 
       } catch (error) {
         console.error('Error loading syllabuses:', error);

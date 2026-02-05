@@ -247,7 +247,7 @@
       window.location.href = 'dashboard.html';
     }
 
-    // Load syllabus data
+// Load syllabus data
     async function loadSyllabus() {
       try {
         const response = await fetch(`${API_BASE_URL}/syllabuses/${syllabusId}`, {
@@ -275,14 +275,13 @@
 
     // Display syllabus info
     function displaySyllabusInfo() {
-      document.getElementById('syllabus-title').textContent = currentSyllabus.subject_name || 'Untitled Syllabus';
+document.getElementById('syllabus-title').textContent = currentSyllabus.subject_name || 'Untitled Syllabus';
       document.getElementById('syllabus-subtitle').textContent = 
         `${currentSyllabus.subject_code || 'N/A'} • ${currentSyllabus.lecturer_name || 'Unknown'} • ${new Date(currentSyllabus.created_at).toLocaleDateString('vi-VN')}`;
       
       const statusBadge = document.getElementById('status-badge');
       statusBadge.textContent = currentSyllabus.status || 'Pending';
       statusBadge.className = `badge badge-${currentSyllabus.status === 'approved' ? 'approved' : currentSyllabus.status === 'rejected' ? 'rejected' : 'pending'}`;
-
       const info = `
         <div class="info-row"><div class="info-label">Subject Code:</div><div class="info-value">${currentSyllabus.subject_code || 'N/A'}</div></div>
         <div class="info-row"><div class="info-label">Subject Name:</div><div class="info-value">${currentSyllabus.subject_name || 'N/A'}</div></div>
@@ -290,7 +289,7 @@
         <div class="info-row"><div class="info-label">Lecturer:</div><div class="info-value">${currentSyllabus.lecturer_name || 'Unknown'}</div></div>
         <div class="info-row"><div class="info-label">Department:</div><div class="info-value">${currentSyllabus.department || 'N/A'}</div></div>
         <div class="info-row"><div class="info-label">Version:</div><div class="info-value">${currentSyllabus.version || 'v1.0'}</div></div>
-        <div class="info-row"><div class="info-label">Submitted Date:</div><div class="info-value">${new Date(currentSyllabus.created_at).toLocaleString('vi-VN')}</div></div>
+<div class="info-row"><div class="info-label">Submitted Date:</div><div class="info-value">${new Date(currentSyllabus.created_at).toLocaleString('vi-VN')}</div></div>
         <div class="info-row"><div class="info-label">Status:</div><div class="info-value"><strong>${currentSyllabus.status || 'Pending'}</strong></div></div>
       `;
       document.getElementById('syllabus-info').innerHTML = info;
@@ -298,7 +297,7 @@
 
     // Display syllabus content
     function displaySyllabusContent() {
-      const content = currentSyllabus.content || currentSyllabus.description || 'No content available';
+const content = currentSyllabus.content || currentSyllabus.description || 'No content available';
       const sections = [
         { title: 'Course Description', field: 'description' },
         { title: 'Learning Objectives', field: 'learning_objectives' },
@@ -312,19 +311,19 @@
       sections.forEach(section => {
         const value = currentSyllabus[section.field] || 'Not provided';
         html += `
-          <div class="content-section">
+<div class="content-section">
             <h4>${section.title}</h4>
             <div style="white-space: pre-wrap;">${value}</div>
           </div>
         `;
       });
 
-      document.getElementById('syllabus-content').innerHTML = html || '<p style="color: #999;">No content available</p>';
+document.getElementById('syllabus-content').innerHTML = html || '<p style="color: #999;">No content available</p>';
     }
 
     // Display CLO-PLO mapping
     function displayCLOPLO() {
-      const cloData = currentSyllabus.clo_plo_mapping || [];
+const cloData = currentSyllabus.clo_plo_mapping || [];
       
       if (cloData.length === 0) {
         document.getElementById('clo-plo-section').innerHTML = '<p style="color: #999;">No CLO-PLO mapping defined</p>';
@@ -525,7 +524,7 @@
       window.location.href = '/index.html';
     }
 
-    // Initialize
+// Initialize
     loadSyllabus();
     loadDraft();
   </script>
