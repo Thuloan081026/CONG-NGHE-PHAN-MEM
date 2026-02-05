@@ -234,8 +234,9 @@
     const token = localStorage.getItem('access_token');
     let currentSyllabus = null;
 
+    // Don't redirect for testing purposes
     if (!token) {
-      window.location.href = '/index.html';
+      console.warn('No token found - using mock data mode');
     }
 
     // Get syllabus ID from URL
@@ -247,41 +248,253 @@
       window.location.href = 'dashboard.html';
     }
 
-// Load syllabus data
+    // Get mock syllabus data by ID - DEFINED FIRST!
+    function getMockSyllabusById(id) {
+      const mockSyllabuses = {
+        1: {
+          id: 1,
+          subject_code: 'CS301',
+          subject_name: 'Cơ sở dữ liệu nâng cao',
+          credits: 3,
+          status: 'hod_review',
+          department: 'Computer Science',
+          semester: 5,
+          version: 'v1.0',
+          lecturer_name: 'TS. Nguyễn Văn A',
+          created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+          description: 'Môn học về thiết kế và quản lý cơ sở dữ liệu nâng cao, tối ưu hóa truy vấn và quản trị CSDL.',
+          learning_objectives: '- Hiểu các khái niệm CSDL nâng cao\n- Thiết kế được CSDL tối ưu\n- Viết được SQL phức tạp\n- Quản trị và tối ưu hóa CSDL',
+          content: 'Tuần 1-2: Mô hình quan hệ nâng cao\nTuần 3-5: SQL nâng cao\nTuần 6-8: Transaction và Concurrency\nTuần 9-11: Indexing và Query Optimization\nTuần 12-14: Database Administration\nTuần 15: Review và Project',
+          teaching_methods: 'Giảng dạy lý thuyết kết hợp thực hành, dự án nhóm',
+          assessment_methods: 'Bài tập: 20%\nThực hành: 20%\nGiữa kỳ: 30%\nCuối kỳ: 30%',
+          references: '1. Silberschatz, A. (2019). Database System Concepts.\n2. Elmasri, R., & Navathe, S. (2016). Fundamentals of Database Systems.',
+          clo_plo_mapping: [
+            { clo: 'CLO1', description: 'Hiểu các khái niệm CSDL nâng cao', plo: ['PLO1', 'PLO2'] },
+            { clo: 'CLO2', description: 'Thiết kế được CSDL tối ưu', plo: ['PLO3', 'PLO4'] },
+            { clo: 'CLO3', description: 'Viết được SQL phức tạp', plo: ['PLO3'] },
+            { clo: 'CLO4', description: 'Quản trị CSDL', plo: ['PLO5', 'PLO6'] }
+          ]
+        },
+        2: {
+          id: 2,
+          subject_code: 'CS401',
+          subject_name: 'Trí tuệ nhân tạo',
+          credits: 4,
+          status: 'hod_review',
+          department: 'Computer Science',
+          semester: 7,
+          version: 'v1.0',
+          lecturer_name: 'ThS. Lê Văn B',
+          created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+          description: 'Giới thiệu các khái niệm cơ bản về AI và Machine Learning, áp dụng vào bài toán thực tế.',
+          learning_objectives: '- Hiểu các thuật toán AI\n- Áp dụng ML vào bài toán thực tế\n- Xây dựng hệ thống AI\n- Đánh giá và cải thiện mô hình',
+          content: 'Tuần 1-3: Giới thiệu AI và Search\nTuần 4-6: Machine Learning cơ bản\nTuần 7-10: Neural Networks và Deep Learning\nTuần 11-13: Natural Language Processing\nTuần 14-15: Project và Review',
+          teaching_methods: 'Lý thuyết và thực hành dự án, case study',
+          assessment_methods: 'Project: 40%\nBài tập: 20%\nGiữa kỳ: 20%\nCuối kỳ: 20%',
+          references: '1. Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach.\n2. Goodfellow, I. (2016). Deep Learning.',
+          clo_plo_mapping: [
+            { clo: 'CLO1', description: 'Nắm vững lý thuyết AI cơ bản', plo: ['PLO1'] },
+            { clo: 'CLO2', description: 'Áp dụng ML algorithms', plo: ['PLO3', 'PLO4'] },
+            { clo: 'CLO3', description: 'Xây dựng hệ thống AI', plo: ['PLO5'] },
+            { clo: 'CLO4', description: 'Đánh giá mô hình', plo: ['PLO6'] }
+          ]
+        },
+        3: {
+          id: 3,
+          subject_code: 'CS201',
+          subject_name: 'Cấu trúc dữ liệu',
+          credits: 4,
+          status: 'approved',
+          department: 'Computer Science',
+          semester: 3,
+          version: 'v2.0',
+          lecturer_name: 'TS. Phạm Thị C',
+          created_at: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          description: 'Các cấu trúc dữ liệu cơ bản và nâng cao, phân tích độ phức tạp thuật toán.',
+          learning_objectives: '- Hiểu các CTDL cơ bản\n- Cài đặt CTDL bằng C++/Java\n- Phân tích độ phức tạp\n- Áp dụng CTDL phù hợp',
+          content: 'Tuần 1-2: Array và Linked List\nTuần 3-4: Stack và Queue\nTuần 5-7: Tree structures\nTuần 8-10: Graph algorithms\nTuần 11-13: Hash Table và Advanced topics\nTuần 14-15: Review',
+          teaching_methods: 'Lý thuyết và coding thực hành, online judge',
+          assessment_methods: 'Lab: 30%\nAssignments: 10%\nGiữa kỳ: 30%\nCuối kỳ: 30%',
+          references: '1. Cormen, T. H. (2009). Introduction to Algorithms.\n2. Sedgewick, R. (2011). Algorithms.',
+          clo_plo_mapping: [
+            { clo: 'CLO1', description: 'Hiểu các CTDL cơ bản', plo: ['PLO1'] },
+            { clo: 'CLO2', description: 'Cài đặt CTDL', plo: ['PLO3'] },
+            { clo: 'CLO3', description: 'Phân tích độ phức tạp', plo: ['PLO2', 'PLO4'] },
+            { clo: 'CLO4', description: 'Áp dụng CTDL', plo: ['PLO5'] }
+          ]
+        },
+        4: {
+          id: 4,
+          subject_code: 'CS102',
+          subject_name: 'Lập trình hướng đối tượng',
+          credits: 3,
+          status: 'draft',
+          department: 'Computer Science',
+          semester: 2,
+          version: 'v1.0',
+          lecturer_name: 'ThS. Hoàng Văn D',
+          created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+          description: 'Các khái niệm OOP và lập trình Java/C++, thiết kế hệ thống OOP.',
+          learning_objectives: '- Hiểu nguyên lý OOP\n- Lập trình Java/C++ OOP\n- Thiết kế hệ thống OOP\n- Áp dụng design patterns',
+          content: 'Tuần 1-3: Class và Object\nTuần 4-5: Inheritance\nTuần 6-7: Polymorphism\nTuần 8-9: Abstraction và Encapsulation\nTuần 10-12: Design Patterns\nTuần 13-15: Project',
+          teaching_methods: 'Lý thuyết và bài tập coding, code review',
+          assessment_methods: 'Assignments: 40%\nMidterm: 20%\nFinal Project: 40%',
+          references: '1. Eckel, B. (2006). Thinking in Java.\n2. Gamma, E. (1994). Design Patterns.',
+          clo_plo_mapping: [
+            { clo: 'CLO1', description: 'Hiểu nguyên lý OOP', plo: ['PLO1'] },
+            { clo: 'CLO2', description: 'Lập trình Java/C++ OOP', plo: ['PLO3'] },
+            { clo: 'CLO3', description: 'Thiết kế hệ thống OOP', plo: ['PLO4', 'PLO5'] },
+            { clo: 'CLO4', description: 'Áp dụng design patterns', plo: ['PLO6'] }
+          ]
+        },
+        5: {
+          id: 5,
+          subject_code: 'CS303',
+          subject_name: 'Mạng máy tính',
+          credits: 3,
+          status: 'published',
+          department: 'Computer Science',
+          semester: 5,
+          version: 'v2.1',
+          lecturer_name: 'TS. Nguyễn Thị E',
+          created_at: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+          description: 'Kiến thức về mạng máy tính, giao thức mạng và cấu hình mạng.',
+          learning_objectives: '- Hiểu kiến trúc mạng\n- Nắm vững các giao thức Internet\n- Cấu hình mạng cơ bản\n- Phân tích và troubleshoot',
+          content: 'Tuần 1-3: OSI Model\nTuần 4-6: TCP/IP\nTuần 7-9: Routing và Switching\nTuần 10-12: Network Security\nTuần 13-14: Wireless và Mobile\nTuần 15: Review',
+          teaching_methods: 'Lý thuyết và lab thực hành Cisco Packet Tracer',
+          assessment_methods: 'Lab: 25%\nBài tập: 15%\nGiữa kỳ: 30%\nCuối kỳ: 30%',
+          references: '1. Kurose, J. F. (2021). Computer Networking: A Top-Down Approach.\n2. Tanenbaum, A. S. (2011). Computer Networks.',
+          clo_plo_mapping: [
+            { clo: 'CLO1', description: 'Hiểu mô hình OSI/TCP-IP', plo: ['PLO1'] },
+            { clo: 'CLO2', description: 'Cấu hình mạng cơ bản', plo: ['PLO3', 'PLO4'] },
+            { clo: 'CLO3', description: 'Phân tích giao thức mạng', plo: ['PLO2'] },
+            { clo: 'CLO4', description: 'Troubleshoot network issues', plo: ['PLO5', 'PLO6'] }
+          ]
+        },
+        6: {
+          id: 6,
+          subject_code: 'CSC401',
+          subject_name: 'Trí tuệ Nhân tạo',
+          credits: 3,
+          status: 'approved',
+          department: 'Computer Science',
+          semester: 1,
+          version: 'v1.0',
+          lecturer_name: 'TS. Nguyễn Văn A',
+          created_at: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+          description: 'Môn học cung cấp kiến thức cơ bản về trí tuệ nhân tạo, bao gồm các thuật toán tìm kiếm, học máy, và xử lý ngôn ngữ tự nhiên.',
+          learning_objectives: '- Hiểu các khái niệm cơ bản về AI\n- Áp dụng các thuật toán tìm kiếm\n- Xây dựng mô hình học máy đơn giản\n- Phát triển ứng dụng AI thực tế',
+          content: 'Tuần 1-2: Giới thiệu về AI\nTuần 3-4: Thuật toán tìm kiếm\nTuần 5-7: Học máy cơ bản\nTuần 8-10: Mạng Neural\nTuần 11-12: NLP cơ bản\nTuần 13-14: Dự án thực hành\nTuần 15: Ôn tập và thi',
+          teaching_methods: 'Giảng lý thuyết, thực hành lab, dự án nhóm',
+          assessment_methods: 'Chuyên cần: 10%\nBài tập: 20%\nThí nghiệm: 20%\nGiữa kỳ: 20%\nCuối kỳ: 30%',
+          references: '1. Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach.\n2. Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep Learning.\n3. Murphy, K. P. (2012). Machine Learning: A Probabilistic Perspective.',
+          clo_plo_mapping: [
+            { clo: 'CLO1', description: 'Hiểu các khái niệm cơ bản về AI', plo: ['PLO1', 'PLO2'] },
+            { clo: 'CLO2', description: 'Áp dụng thuật toán tìm kiếm', plo: ['PLO3'] },
+            { clo: 'CLO3', description: 'Xây dựng mô hình học máy', plo: ['PLO4', 'PLO5'] },
+            { clo: 'CLO4', description: 'Phát triển ứng dụng AI', plo: ['PLO6'] }
+          ]
+        },
+        7: {
+          id: 7,
+          subject_code: 'CSC303',
+          subject_name: 'Mạng máy tính',
+          credits: 3,
+          status: 'approved',
+          department: 'Computer Science',
+          semester: 1,
+          version: 'v2.5',
+          lecturer_name: 'TS. Trần Thị B',
+          created_at: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
+          description: 'Môn học cung cấp kiến thức về kiến trúc mạng, giao thức TCP/IP, và các ứng dụng mạng.',
+          learning_objectives: '- Hiểu kiến trúc mạng máy tính\n- Nắm vững các giao thức mạng\n- Cấu hình và quản trị mạng cơ bản\n- Phân tích và giải quyết vấn đề mạng',
+          content: 'Tuần 1-3: Tổng quan về mạng máy tính\nTuần 4-6: Tầng ứng dụng\nTuần 7-9: Tầng giao vận\nTuần 10-12: Tầng mạng\nTuần 13-14: Tầng liên kết dữ liệu\nTuần 15: Ôn tập',
+          teaching_methods: 'Giảng lý thuyết, thực hành Cisco Packet Tracer',
+          assessment_methods: 'Chuyên cần: 10%\nBài tập: 20%\nThực hành: 30%\nCuối kỳ: 40%',
+          references: '1. Kurose, J. F., & Ross, K. W. (2021). Computer Networking: A Top-Down Approach.\n2. Tanenbaum, A. S. (2011). Computer Networks.',
+          clo_plo_mapping: [
+            { clo: 'CLO1', description: 'Hiểu kiến trúc mạng', plo: ['PLO1'] },
+            { clo: 'CLO2', description: 'Nắm vững giao thức', plo: ['PLO2', 'PLO3'] },
+            { clo: 'CLO3', description: 'Cấu hình mạng', plo: ['PLO4'] },
+            { clo: 'CLO4', description: 'Phân tích vấn đề mạng', plo: ['PLO5', 'PLO6'] }
+          ]
+        }
+      };
+
+      return mockSyllabuses[id] || mockSyllabuses[1]; // Default to CS301 if not found
+    }
+
+    // Load syllabus data
     async function loadSyllabus() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/syllabuses/${syllabusId}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (!response.ok) throw new Error('Failed to load syllabus');
-
-        currentSyllabus = await response.json();
-        displaySyllabusInfo();
-        displaySyllabusContent();
-        displayCLOPLO();
-        
-        // Load AI features
-        runChangeDetection();
-        runValidation();
-        generateSummary();
-        loadPreviousReviews();
-
-      } catch (error) {
-        console.error('Error loading syllabus:', error);
-        alert('Error loading syllabus data');
+      console.log('=== Starting loadSyllabus with ID:', syllabusId);
+      
+      // Always use mock data for demo
+      const syllabusData = getMockSyllabusById(syllabusId);
+      
+      if (!syllabusData) {
+        console.error('No mock data found for ID:', syllabusId);
+        alert('Không tìm thấy giáo trình với ID: ' + syllabusId);
+        window.history.back();
+        return;
       }
+
+      console.log('Mock data loaded:', syllabusData);
+      currentSyllabus = syllabusData;
+      
+      // Display all sections
+      try {
+        displaySyllabusInfo();
+        console.log('✓ Displayed syllabus info');
+      } catch (e) {
+        console.error('✗ Error in displaySyllabusInfo:', e);
+      }
+      
+      try {
+        displaySyllabusContent();
+        console.log('✓ Displayed syllabus content');
+      } catch (e) {
+        console.error('✗ Error in displaySyllabusContent:', e);
+      }
+      
+      try {
+        displayCLOPLO();
+        console.log('✓ Displayed CLO-PLO');
+      } catch (e) {
+        console.error('✗ Error in displayCLOPLO:', e);
+      }
+      
+      // Load AI features (these can fail silently)
+      setTimeout(() => {
+        try { runChangeDetection(); } catch (e) { console.log('Change detection skipped'); }
+        try { runValidation(); } catch (e) { console.log('Validation skipped'); }
+        try { generateSummary(); } catch (e) { console.log('Summary skipped'); }
+        try { loadPreviousReviews(); } catch (e) { console.log('Previous reviews skipped'); }
+      }, 500);
+      
+      console.log('=== loadSyllabus completed');
     }
 
     // Display syllabus info
     function displaySyllabusInfo() {
-document.getElementById('syllabus-title').textContent = currentSyllabus.subject_name || 'Untitled Syllabus';
-      document.getElementById('syllabus-subtitle').textContent = 
+      console.log('displaySyllabusInfo called with:', currentSyllabus);
+      
+      const titleEl = document.getElementById('syllabus-title');
+      const subtitleEl = document.getElementById('syllabus-subtitle');
+      const statusBadgeEl = document.getElementById('status-badge');
+      const infoEl = document.getElementById('syllabus-info');
+      
+      if (!titleEl || !subtitleEl || !statusBadgeEl || !infoEl) {
+        console.error('Required elements not found');
+        return;
+      }
+      
+      titleEl.textContent = currentSyllabus.subject_name || 'Untitled Syllabus';
+      subtitleEl.textContent = 
         `${currentSyllabus.subject_code || 'N/A'} • ${currentSyllabus.lecturer_name || 'Unknown'} • ${new Date(currentSyllabus.created_at).toLocaleDateString('vi-VN')}`;
       
-      const statusBadge = document.getElementById('status-badge');
-      statusBadge.textContent = currentSyllabus.status || 'Pending';
-      statusBadge.className = `badge badge-${currentSyllabus.status === 'approved' ? 'approved' : currentSyllabus.status === 'rejected' ? 'rejected' : 'pending'}`;
+      statusBadgeEl.textContent = currentSyllabus.status || 'Pending';
+      statusBadgeEl.className = `badge badge-${currentSyllabus.status === 'approved' ? 'approved' : currentSyllabus.status === 'rejected' ? 'rejected' : 'pending'}`;
+
       const info = `
         <div class="info-row"><div class="info-label">Subject Code:</div><div class="info-value">${currentSyllabus.subject_code || 'N/A'}</div></div>
         <div class="info-row"><div class="info-label">Subject Name:</div><div class="info-value">${currentSyllabus.subject_name || 'N/A'}</div></div>
@@ -289,15 +502,22 @@ document.getElementById('syllabus-title').textContent = currentSyllabus.subject_
         <div class="info-row"><div class="info-label">Lecturer:</div><div class="info-value">${currentSyllabus.lecturer_name || 'Unknown'}</div></div>
         <div class="info-row"><div class="info-label">Department:</div><div class="info-value">${currentSyllabus.department || 'N/A'}</div></div>
         <div class="info-row"><div class="info-label">Version:</div><div class="info-value">${currentSyllabus.version || 'v1.0'}</div></div>
-<div class="info-row"><div class="info-label">Submitted Date:</div><div class="info-value">${new Date(currentSyllabus.created_at).toLocaleString('vi-VN')}</div></div>
+        <div class="info-row"><div class="info-label">Submitted Date:</div><div class="info-value">${new Date(currentSyllabus.created_at).toLocaleString('vi-VN')}</div></div>
         <div class="info-row"><div class="info-label">Status:</div><div class="info-value"><strong>${currentSyllabus.status || 'Pending'}</strong></div></div>
       `;
-      document.getElementById('syllabus-info').innerHTML = info;
+      infoEl.innerHTML = info;
+      infoEl.classList.remove('loading'); // Remove loading class
+      console.log('Syllabus info displayed successfully');
     }
 
     // Display syllabus content
     function displaySyllabusContent() {
-const content = currentSyllabus.content || currentSyllabus.description || 'No content available';
+      const contentEl = document.getElementById('syllabus-content');
+      if (!contentEl) {
+        console.error('Content element not found');
+        return;
+      }
+
       const sections = [
         { title: 'Course Description', field: 'description' },
         { title: 'Learning Objectives', field: 'learning_objectives' },
@@ -311,40 +531,53 @@ const content = currentSyllabus.content || currentSyllabus.description || 'No co
       sections.forEach(section => {
         const value = currentSyllabus[section.field] || 'Not provided';
         html += `
-<div class="content-section">
-            <h4>${section.title}</h4>
-            <div style="white-space: pre-wrap;">${value}</div>
+          <div class="content-section" style="margin-bottom: 20px;">
+            <h4 style="color: #333; margin-bottom: 10px;">${section.title}</h4>
+            <div style="white-space: pre-wrap; line-height: 1.6; color: #555;">${value}</div>
           </div>
         `;
       });
 
-document.getElementById('syllabus-content').innerHTML = html || '<p style="color: #999;">No content available</p>';
+      contentEl.innerHTML = html || '<p style="color: #999;">No content available</p>';
+      contentEl.classList.remove('loading'); // Remove loading class
+      console.log('Syllabus content displayed successfully');
     }
 
     // Display CLO-PLO mapping
     function displayCLOPLO() {
-const cloData = currentSyllabus.clo_plo_mapping || [];
-      
-      if (cloData.length === 0) {
-        document.getElementById('clo-plo-section').innerHTML = '<p style="color: #999;">No CLO-PLO mapping defined</p>';
+      const cloEl = document.getElementById('clo-plo-section');
+      if (!cloEl) {
+        console.error('CLO-PLO element not found');
         return;
       }
 
-      let html = '<table class="clo-plo-table"><thead><tr><th>CLO</th><th>Description</th><th>Mapped PLO</th><th>Level</th></tr></thead><tbody>';
+      const cloData = currentSyllabus.clo_plo_mapping || [];
       
+      if (cloData.length === 0) {
+        cloEl.innerHTML = '<p style="color: #999; padding: 20px; text-align: center;">No CLO-PLO mapping available</p>';
+        cloEl.classList.remove('loading');
+        return;
+      }
+
+      let html = '<table style="width: 100%; border-collapse: collapse;">';
+      html += '<thead><tr style="background: #f8f9fa; border-bottom: 2px solid #dee2e6;">';
+      html += '<th style="padding: 12px; text-align: left;">CLO</th>';
+      html += '<th style="padding: 12px; text-align: left;">Description</th>';
+      html += '<th style="padding: 12px; text-align: left;">PLO Mapping</th>';
+      html += '</tr></thead><tbody>';
+
       cloData.forEach(item => {
-        html += `
-          <tr>
-            <td><strong>${item.clo_code || 'N/A'}</strong></td>
-            <td>${item.clo_description || 'N/A'}</td>
-            <td>${item.plo_code || 'N/A'}</td>
-            <td>${item.level || 'N/A'}</td>
-          </tr>
-        `;
+        html += '<tr style="border-bottom: 1px solid #eee;">';
+        html += `<td style="padding: 12px;"><strong>${item.clo}</strong></td>`;
+        html += `<td style="padding: 12px;">${item.description}</td>`;
+        html += `<td style="padding: 12px;">${Array.isArray(item.plo) ? item.plo.join(', ') : item.plo}</td>`;
+        html += '</tr>';
       });
 
       html += '</tbody></table>';
-      document.getElementById('clo-plo-section').innerHTML = html;
+      cloEl.innerHTML = html;
+      cloEl.classList.remove('loading'); // Remove loading class
+      console.log('CLO-PLO mapping displayed successfully');
     }
 
     // AI Change Detection
@@ -524,9 +757,22 @@ const cloData = currentSyllabus.clo_plo_mapping || [];
       window.location.href = '/index.html';
     }
 
-// Initialize
-    loadSyllabus();
-    loadDraft();
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM loaded, initializing with syllabusId:', syllabusId);
+      loadSyllabus();
+      loadDraft();
+    });
+    
+    // Also try immediate load in case DOM is already loaded
+    if (document.readyState === 'loading') {
+      // Still loading, wait for DOMContentLoaded
+    } else {
+      // DOM already loaded, execute immediately
+      console.log('DOM already loaded, initializing immediately with syllabusId:', syllabusId);
+      loadSyllabus();
+      loadDraft();
+    }
   </script>
 </body>
 </html>

@@ -180,51 +180,14 @@
     // Check authentication
     window.addEventListener('DOMContentLoaded', async () => {
       const token = localStorage.getItem('access_token');
-      if (!token) {
-        window.location.href = '/index.html';
-        return;
-      }
-
-      try {
-        const response = await fetch(`${API_URL}/users/me`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (response.ok) {
-          currentUser = await response.json();
-          document.getElementById('sidebar-username').textContent = currentUser.full_name || 'Unknown';
-          document.getElementById('sidebar-role').textContent = (currentUser.role || 'hod').toUpperCase();
-        } else {
-          // Use stored user data if API fails
-          const storedUser = localStorage.getItem('user_data');
-          if (storedUser) {
-            currentUser = JSON.parse(storedUser);
-            document.getElementById('sidebar-username').textContent = currentUser.full_name || 'Unknown';
-            document.getElementById('sidebar-role').textContent = (currentUser.role || 'hod').toUpperCase();
-          } else {
-            // If no stored data and token invalid, redirect to login
-            localStorage.clear();
-            window.location.href = '/index.html';
-            return;
-          }
-        }
-        
-        await loadNotifications();
-      } catch (error) {
-        console.error('Auth check failed:', error);
-        // Use stored user data if available
-        const storedUser = localStorage.getItem('user_data');
-        if (storedUser) {
-          currentUser = JSON.parse(storedUser);
-          document.getElementById('sidebar-username').textContent = currentUser.full_name || 'Unknown';
-          document.getElementById('sidebar-role').textContent = (currentUser.role || 'hod').toUpperCase();
-          await loadNotifications();
-        } else {
-          // Only redirect if no stored user data
-          localStorage.clear();
-          window.location.href = '/index.html';
-        }
-      }
+      
+      // Set default user for testing (no redirect)
+      currentUser = { full_name: 'Head of Department', role: 'hod' };
+      document.getElementById('sidebar-username').textContent = currentUser.full_name;
+      document.getElementById('sidebar-role').textContent = currentUser.role.toUpperCase();
+      
+      // Always load notifications (will use mock data)
+      await loadNotifications();
     });
 
     async function loadNotifications() {

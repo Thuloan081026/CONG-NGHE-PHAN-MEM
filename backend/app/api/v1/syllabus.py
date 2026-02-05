@@ -66,11 +66,12 @@ def list_my_syllabuses(
     semester: Optional[int] = None,
     department: Optional[str] = None,
     status: Optional[str] = None,
-    current_user: User = Depends(require_roles("lecturer", "hod", "admin")),
+    current_user: User = Depends(require_roles("lecturer", "hod", "admin", "principal")),
     db: Session = Depends(get_db)
 ):
     """
     List syllabuses created by current user.
+    For admin and principal: return all syllabuses in the system.
     
     Query parameters:
     - skip: Số bản ghi bỏ qua (default: 0)
@@ -79,6 +80,32 @@ def list_my_syllabuses(
     - department: Lọc theo bộ môn (tùy chọn)
     - status: Lọc theo trạng thái (draft, submitted, under_review, approved, published)
     """
+    from ...models.syllabus import Syllabus
+    
+    # If user is admin or principal, return all syllabuses
+    if current_user.role in ["admin", "principal"]:
+        query = db.query(Syllabus)
+        
+        # Apply filters
+        if semester:
+            query = query.filter(Syllabus.semester == semester)
+        if department:
+            query = query.filter(Syllabus.department == department)
+        if status:
+            query = query.filter(Syllabus.status == status)
+            
+        total = query.count()
+        items = query.offset(skip).limit(limit).all()
+        
+        return SyllabusListOut(
+            total=total,
+            count=len(items),
+            page=skip // limit + 1,
+            page_size=limit,
+            items=items
+        )
+    
+    # For other users, return only their syllabuses
     items, total = syllabus_service.list_my_syllabuses(
         db, current_user.id, skip, limit, semester, department, status
     )

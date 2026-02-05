@@ -61,8 +61,8 @@ def initialize_demo_users():
             {"email": "lecturer@ut.edu.vn", "full_name": "Giảng viên Demo", "password": "lecturer123", "role": "lecturer"},
             {"email": "hod@ut.edu.vn", "full_name": "Trưởng khoa CNTT", "password": "hod123", "role": "hod"},
             {"email": "principal@ut.edu.vn", "full_name": "Hiệu trưởng", "password": "principal123", "role": "principal"},
-            {"email": "aa@edu.vn", "full_name": "Phòng Đào tạo", "password": "aa123", "role": "academic_affairs"},
-            {"email": "student@edu.vn", "full_name": "Sinh viên Demo", "password": "student123", "role": "student"},
+            {"email": "aa@ut.edu.vn", "full_name": "Phòng Đào tạo", "password": "aa123", "role": "academic_affairs"},
+            {"email": "student@ut.edu.vn", "full_name": "Sinh viên Demo", "password": "student123", "role": "student"},
         ]
         
         print("\n👥 Đang tạo tài khoản demo...")

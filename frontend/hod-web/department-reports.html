@@ -252,62 +252,19 @@
     let allSyllabuses = [];
 
     window.addEventListener('DOMContentLoaded', async () => {
-      const token = localStorage.getItem('access_token');
-      if (!token) {
-        window.location.href = '/index.html';
-        return;
-      }
-
-      try {
-        const response = await fetch(`${API_BASE_URL}/users/me`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (response.ok) {
-          const user = await response.json();
-          document.getElementById('sidebar-username').textContent = user.full_name || 'Unknown';
-          document.getElementById('sidebar-role').textContent = (user.role || 'hod').toUpperCase();
-          
-          await loadReportData();
-        } else {
-          const storedUser = localStorage.getItem('user_data');
-          if (storedUser) {
-            const user = JSON.parse(storedUser);
-            document.getElementById('sidebar-username').textContent = user.full_name || 'Unknown';
-            document.getElementById('sidebar-role').textContent = (user.role || 'hod').toUpperCase();
-            await loadReportData();
-          }
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        const storedUser = localStorage.getItem('user_data');
-        if (storedUser) {
-          const user = JSON.parse(storedUser);
-          document.getElementById('sidebar-username').textContent = user.full_name || 'Unknown';
-          await loadReportData();
-        }
-      }
+      // Set default user
+      document.getElementById('sidebar-username').textContent = 'Head of Department';
+      document.getElementById('sidebar-role').textContent = 'HOD';
+      
+      // Load report data immediately
+      await loadReportData();
     });
 
     async function loadReportData() {
-      const token = localStorage.getItem('access_token');
+      // Use mock data directly
+      console.log('Loading department reports with mock data');
+      allSyllabuses = getMockData();
       
-      try {
-        const response = await fetch(`${API_BASE_URL}/syllabus/pending`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          allSyllabuses = data.items || [];
-        } else {
-          allSyllabuses = getMockData();
-        }
-      } catch (error) {
-        console.log('Using mock data');
-        allSyllabuses = getMockData();
-      }
-
       updateStatistics();
       updateCharts();
       updateSummaryTable();
@@ -315,12 +272,20 @@
 
     function getMockData() {
       return [
-        { id: 1, subject_code: 'CS101', subject_name: 'Intro to CS', status: 'pending_hod_review', department: 'Computer Science', credits: 3 },
-        { id: 2, subject_code: 'CS201', subject_name: 'Data Structures', status: 'approved', department: 'Computer Science', credits: 4 },
-        { id: 3, subject_code: 'CS301', subject_name: 'Database Systems', status: 'pending_hod_review', department: 'Computer Science', credits: 3 },
-        { id: 4, subject_code: 'MATH101', subject_name: 'Calculus I', status: 'approved', department: 'Mathematics', credits: 4 },
-        { id: 5, subject_code: 'MATH201', subject_name: 'Linear Algebra', status: 'rejected', department: 'Mathematics', credits: 3 },
-        { id: 6, subject_code: 'PHY101', subject_name: 'Physics I', status: 'approved', department: 'Physics', credits: 4 }
+        { id: 1, subject_code: 'CS101', subject_name: 'Introduction to Computer Science', status: 'pending_hod_review', department: 'Computer Science', credits: 3, lecturer: 'Dr. Nguyen Van A', semester: 'Fall 2025' },
+        { id: 2, subject_code: 'CS201', subject_name: 'Data Structures and Algorithms', status: 'approved', department: 'Computer Science', credits: 4, lecturer: 'Dr. Tran Thi B', semester: 'Fall 2025' },
+        { id: 3, subject_code: 'CS301', subject_name: 'Database Systems', status: 'pending_hod_review', department: 'Computer Science', credits: 3, lecturer: 'Dr. Le Van C', semester: 'Spring 2026' },
+        { id: 4, subject_code: 'CS302', subject_name: 'Operating Systems', status: 'approved', department: 'Computer Science', credits: 4, lecturer: 'Dr. Pham Thi D', semester: 'Spring 2026' },
+        { id: 5, subject_code: 'CS401', subject_name: 'Software Engineering', status: 'pending_hod_review', department: 'Computer Science', credits: 3, lecturer: 'Dr. Hoang Van E', semester: 'Fall 2025' },
+        { id: 6, subject_code: 'CS402', subject_name: 'Computer Networks', status: 'approved', department: 'Computer Science', credits: 4, lecturer: 'Dr. Vo Thi F', semester: 'Spring 2026' },
+        { id: 7, subject_code: 'MATH101', subject_name: 'Calculus I', status: 'approved', department: 'Mathematics', credits: 4, lecturer: 'Dr. Nguyen Van G', semester: 'Fall 2025' },
+        { id: 8, subject_code: 'MATH201', subject_name: 'Linear Algebra', status: 'rejected', department: 'Mathematics', credits: 3, lecturer: 'Dr. Tran Van H', semester: 'Fall 2025' },
+        { id: 9, subject_code: 'MATH301', subject_name: 'Differential Equations', status: 'pending_hod_review', department: 'Mathematics', credits: 3, lecturer: 'Dr. Le Thi I', semester: 'Spring 2026' },
+        { id: 10, subject_code: 'PHY101', subject_name: 'General Physics I', status: 'approved', department: 'Physics', credits: 4, lecturer: 'Dr. Pham Van J', semester: 'Fall 2025' },
+        { id: 11, subject_code: 'PHY201', subject_name: 'Modern Physics', status: 'approved', department: 'Physics', credits: 3, lecturer: 'Dr. Hoang Thi K', semester: 'Spring 2026' },
+        { id: 12, subject_code: 'ENG101', subject_name: 'Academic English', status: 'pending_hod_review', department: 'English', credits: 3, lecturer: 'Dr. Vo Van L', semester: 'Fall 2025' },
+        { id: 13, subject_code: 'ENG201', subject_name: 'Technical Writing', status: 'approved', department: 'English', credits: 3, lecturer: 'Dr. Nguyen Thi M', semester: 'Spring 2026' },
+        { id: 14, subject_code: 'BUS101', subject_name: 'Business Administration', status: 'rejected', department: 'Business', credits: 3, lecturer: 'Dr. Tran Van N', semester: 'Fall 2025' }
       ];
     }
 

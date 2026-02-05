@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syllabuses - Principal Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #5e72e4;
+            --secondary-color: #8965e0;
+        }
+        body { background: #f8f9fe; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .navbar { background: linear-gradient(87deg, var(--primary-color) 0, var(--secondary-color) 100%); box-shadow: 0 0 2rem 0 rgba(136,152,170,.15); }
+        .sidebar { position: fixed; top: 0; left: 0; width: 250px; height: 100vh; background: white; box-shadow: 0 0 2rem 0 rgba(136,152,170,.15); padding-top: 70px; z-index: 1000; overflow-y: auto; }
+        .sidebar .nav-link { color: #67748e; padding: 12px 20px; transition: all 0.3s; }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active { background: #f6f9fc; color: var(--primary-color); border-left: 3px solid var(--primary-color); }
+        .main-content { margin-left: 250px; padding: 90px 30px 30px; }
+        .card { border: none; border-radius: 15px; box-shadow: 0 0 2rem 0 rgba(136,152,170,.15); }
+        .filter-card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 20px; }
+        .badge-draft { background: #adb5bd; }
+        .badge-submitted { background: #17a2b8; }
+        .badge-pending { background: #ffc107; color: #000; }
+        .badge-approved { background: #28a745; }
+        .badge-published { background: #007bff; }
+        .badge-rejected { background: #dc3545; }
+        .btn-action { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand fw-bold" href="dashboard.html"><i class="bi bi-mortarboard-fill"></i> SMD System</a>
+            <div class="d-flex align-items-center">
+                <span class="text-white me-3"><i class="bi bi-person-circle"></i> <span id="userName">Principal</span></span>
+                <button class="btn btn-outline-light btn-sm" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="sidebar">
+        <nav class="nav flex-column">
+            <a class="nav-link" href="dashboard.html"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+            <a class="nav-link active" href="syllabuses.html"><i class="bi bi-file-earmark-text me-2"></i> Syllabuses</a>
+            <a class="nav-link" href="approvals.html"><i class="bi bi-check-circle me-2"></i> Approvals</a>
+            <a class="nav-link" href="reports.html"><i class="bi bi-bar-chart me-2"></i> Reports</a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="mb-4">
+                <h2 class="fw-bold">Quản Lý Đề Cương</h2>
+                <p class="text-muted">Xem tất cả đề cương trong hệ thống</p>
+            </div>
+
+            <!-- Filter Card -->
+            <div class="filter-card">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label small">Trạng thái:</label>
+                        <select class="form-select form-select-sm" id="filterStatus" onchange="loadSyllabuses()">
+                            <option value="">Tất cả</option>
+                            <option value="draft">Draft</option>
+                            <option value="submitted">Submitted</option>
+                            <option value="pending_hod_approval">Chờ HOD</option>
+                            <option value="pending_aa_approval">Chờ AA</option>
+                            <option value="pending_principal_approval">Chờ Principal</option>
+                            <option value="approved">Approved</option>
+                            <option value="published">Published</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small">Tìm kiếm:</label>
+                        <input type="text" class="form-control form-control-sm" id="searchInput" placeholder="Mã MH hoặc Tên môn học..." onkeyup="filterTable()">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small">Sắp xếp:</label>
+                        <select class="form-select form-select-sm" id="sortBy" onchange="loadSyllabuses()">
+                            <option value="date_desc">Mới nhất</option>
+                            <option value="date_asc">Cũ nhất</option>
+                            <option value="code_asc">Mã MH (A-Z)</option>
+                            <option value="code_desc">Mã MH (Z-A)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button class="btn btn-primary btn-sm w-100" onclick="loadSyllabuses()">
+                            <i class="bi bi-arrow-clockwise"></i> Tải lại
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Table -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold mb-0">Danh Sách Đề Cương</h5>
+                        <span class="badge bg-primary" id="totalCount">0 đề cương</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="syllabusTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Mã MH</th>
+                                    <th>Tên Môn Học</th>
+                                    <th>Người Tạo</th>
+                                    <th>Trạng Thái</th>
+                                    <th>Ngày Tạo</th>
+                                    <th>Hành Động</th>
+                                </tr>
+                            </thead>
+                            <tbody id="syllabusTableBody">
+                                <tr>
+                                    <td colspan="7" class="text-center py-4">
+                                        <div class="spinner-border text-primary"></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Detail -->
+    <div class="modal fade" id="detailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-info-circle"></i> Chi Tiết Đề Cương</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="detailContent">
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-primary"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Workflow -->
+    <div class="modal fade" id="workflowModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-clock-history"></i> Lịch Sử Workflow</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="workflowContent">
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-primary"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_URL = 'http://localhost:8000';
+        let allSyllabuses = [];
+        let detailModalInstance, workflowModalInstance;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            detailModalInstance = new bootstrap.Modal(document.getElementById('detailModal'));
+            workflowModalInstance = new bootstrap.Modal(document.getElementById('workflowModal'));
+        });
+
+        function checkAuth() {
+            const token = localStorage.getItem('access_token');
+            const userData = JSON.parse(localStorage.getItem('user_data') || '{}');
+            if (!token) { window.location.href = 'http://localhost:3000'; return null; }
+            if (userData.full_name) document.getElementById('userName').textContent = userData.full_name;
+            return token;
+        }
+
+        function logout() { 
+            localStorage.clear(); 
+            window.location.href = 'http://localhost:3000'; 
+        }
+
+        async function loadSyllabuses() {
+            const token = checkAuth();
+            if (!token) return;
+            
+            const tbody = document.getElementById('syllabusTableBody');
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4"><div class="spinner-border text-primary"></div></td></tr>';
+            
+            console.log('Loading syllabuses...');
+            try {
+                // Try to get all syllabuses - we'll use a generic endpoint
+                const res = await fetch(`${API_URL}/syllabus?limit=1000`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                console.log('Syllabuses response:', res.status);
+                if (res.ok) {
+                    const data = await res.json();
+                    console.log('Response data:', data);
+                    
+                    // API returns {total, count, page, page_size, items}
+                    allSyllabuses = data.items || [];
+                    console.log('All syllabuses:', allSyllabuses);
+                    
+                    // Apply filters
+                    const filterStatus = document.getElementById('filterStatus').value;
+                    let filtered = allSyllabuses;
+                    
+                    if (filterStatus) {
+                        filtered = filtered.filter(s => s.workflow_status === filterStatus || s.status === filterStatus);
+                    }
+                    
+                    // Apply sorting
+                    const sortBy = document.getElementById('sortBy').value;
+                    filtered = sortSyllabuses(filtered, sortBy);
+                    
+                    displaySyllabuses(filtered);
+                } else {
+                    console.error('API Error:', res.status);
+                    const errorText = await res.text().catch(() => 'Unknown');
+                    console.error('Error details:', errorText);
+                    tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Không thể tải dữ liệu (${res.status})</td></tr>`;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Lỗi: ${error.message}</td></tr>`;
+            }
+        }
+
+        function sortSyllabuses(syllabuses, sortBy) {
+            const sorted = [...syllabuses];
+            switch(sortBy) {
+                case 'date_desc':
+                    return sorted.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                case 'date_asc':
+                    return sorted.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+                case 'code_asc':
+                    return sorted.sort((a, b) => (a.code || a.subject_code || '').localeCompare(b.code || b.subject_code || ''));
+                case 'code_desc':
+                    return sorted.sort((a, b) => (b.code || b.subject_code || '').localeCompare(a.code || a.subject_code || ''));
+                default:
+                    return sorted;
+            }
+        }
+
+        function displaySyllabuses(syllabuses) {
+            const tbody = document.getElementById('syllabusTableBody');
+            document.getElementById('totalCount').textContent = `${syllabuses.length} đề cương`;
+            
+            if (!syllabuses || syllabuses.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4">Không có đề cương</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = syllabuses.map(s => {
+                const code = s.code || s.subject_code || 'N/A';
+                const title = s.title || s.subject_name || 'N/A';
+                const creator = s.creator_name || s.lecturer_name || 'N/A';
+                const status = s.workflow_status || s.status || 'unknown';
+                const statusBadge = getStatusBadge(status);
+                
+                return `
+                    <tr>
+                        <td>${s.id}</td>
+                        <td><strong>${code}</strong></td>
+                        <td>${title}</td>
+                        <td>${creator}</td>
+                        <td>${statusBadge}</td>
+                        <td>${new Date(s.created_at).toLocaleDateString('vi-VN')}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info btn-action me-1" onclick="viewDetail(${s.id})" title="Chi tiết">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-secondary btn-action" onclick="viewWorkflow(${s.id})" title="Lịch sử">
+                                <i class="bi bi-clock-history"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function filterTable() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filterStatus = document.getElementById('filterStatus').value;
+            
+            let filtered = allSyllabuses;
+            
+            if (filterStatus) {
+                filtered = filtered.filter(s => s.workflow_status === filterStatus || s.status === filterStatus);
+            }
+            
+            if (searchTerm) {
+                filtered = filtered.filter(s => {
+                    const code = (s.code || s.subject_code || '').toLowerCase();
+                    const title = (s.title || s.subject_name || '').toLowerCase();
+                    return code.includes(searchTerm) || title.includes(searchTerm);
+                });
+            }
+            
+            const sortBy = document.getElementById('sortBy').value;
+            filtered = sortSyllabuses(filtered, sortBy);
+            
+            displaySyllabuses(filtered);
+        }
+
+        function getStatusBadge(status) {
+            const statusMap = {
+                'draft': { text: 'Draft', class: 'badge-draft' },
+                'submitted': { text: 'Submitted', class: 'badge-submitted' },
+                'pending_hod_approval': { text: 'Chờ HOD', class: 'badge-pending' },
+                'pending_aa_approval': { text: 'Chờ AA', class: 'badge-pending' },
+                'pending_principal_approval': { text: 'Chờ Principal', class: 'badge-pending' },
+                'approved': { text: 'Approved', class: 'badge-approved' },
+                'published': { text: 'Published', class: 'badge-published' },
+                'rejected': { text: 'Rejected', class: 'badge-rejected' }
+            };
+            const info = statusMap[status] || { text: status, class: 'bg-secondary' };
+            return `<span class="badge ${info.class}">${info.text}</span>`;
+        }
+
+        async function viewDetail(syllabusId) {
+            const token = checkAuth();
+            if (!token) return;
+            
+            detailModalInstance.show();
+            const content = document.getElementById('detailContent');
+            content.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary"></div></div>';
+            
+            try {
+                const res = await fetch(`${API_URL}/syllabus/${syllabusId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (res.ok) {
+                    const syllabus = await res.json();
+                    content.innerHTML = `
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <strong>Mã môn học:</strong><br>${syllabus.code || syllabus.subject_code || 'N/A'}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <strong>Tên môn học:</strong><br>${syllabus.title || syllabus.subject_name || 'N/A'}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <strong>Trạng thái:</strong><br>${getStatusBadge(syllabus.workflow_status || syllabus.status)}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <strong>Người tạo:</strong><br>${syllabus.creator_name || 'N/A'}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <strong>Ngày tạo:</strong><br>${new Date(syllabus.created_at).toLocaleString('vi-VN')}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <strong>Ngày cập nhật:</strong><br>${new Date(syllabus.updated_at).toLocaleString('vi-VN')}
+                            </div>
+                            <div class="col-12 mb-3">
+                                <strong>Mô tả:</strong><br>${syllabus.description || 'Không có mô tả'}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    content.innerHTML = '<p class="text-center text-danger">Không thể tải chi tiết</p>';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                content.innerHTML = '<p class="text-center text-danger">Lỗi khi tải dữ liệu</p>';
+            }
+        }
+
+        async function viewWorkflow(syllabusId) {
+            const token = checkAuth();
+            if (!token) return;
+            
+            workflowModalInstance.show();
+            const content = document.getElementById('workflowContent');
+            content.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary"></div></div>';
+            
+            try {
+                const res = await fetch(`${API_URL}/workflow/${syllabusId}/events`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.items && data.items.length > 0) {
+                        content.innerHTML = `
+                            <div class="timeline">
+                                ${data.items.map((event, idx) => `
+                                    <div class="mb-3 pb-3 ${idx < data.items.length - 1 ? 'border-bottom' : ''}">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <strong class="text-primary">${event.action}</strong>
+                                                <div class="small text-muted mt-1">
+                                                    <i class="bi bi-arrow-right"></i> ${event.from_status} → ${event.to_status}
+                                                </div>
+                                                ${event.comment ? `<div class="mt-2 p-2 bg-light rounded"><em>"${event.comment}"</em></div>` : ''}
+                                            </div>
+                                            <small class="text-muted text-nowrap">${new Date(event.created_at).toLocaleString('vi-VN')}</small>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                    } else {
+                        content.innerHTML = '<p class="text-center text-muted">Chưa có lịch sử workflow</p>';
+                    }
+                } else {
+                    content.innerHTML = '<p class="text-center text-danger">Không thể tải lịch sử</p>';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                content.innerHTML = '<p class="text-center text-danger">Lỗi khi tải dữ liệu</p>';
+            }
+        }
+
+        checkAuth();
+        loadSyllabuses();
+    </script>
+</body>
+</html>

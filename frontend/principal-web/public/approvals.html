@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approvals - Principal Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #5e72e4;
+            --secondary-color: #8965e0;
+        }
+        body { background: #f8f9fe; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .navbar { background: linear-gradient(87deg, var(--primary-color) 0, var(--secondary-color) 100%); box-shadow: 0 0 2rem 0 rgba(136,152,170,.15); }
+        .sidebar { position: fixed; top: 0; left: 0; width: 250px; height: 100vh; background: white; box-shadow: 0 0 2rem 0 rgba(136,152,170,.15); padding-top: 70px; z-index: 1000; }
+        .sidebar .nav-link { color: #67748e; padding: 12px 20px; transition: all 0.3s; }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active { background: #f6f9fc; color: var(--primary-color); border-left: 3px solid var(--primary-color); }
+        .main-content { margin-left: 250px; padding: 90px 30px 30px; }
+        .card { border: none; border-radius: 15px; box-shadow: 0 0 2rem 0 rgba(136,152,170,.15); }
+        .badge-pending { background: #fb6340; }
+        .badge-approved { background: #2dce89; }
+        .badge-rejected { background: #f5365c; }
+        .btn-action { padding: 0.25rem 0.75rem; font-size: 0.875rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand fw-bold" href="dashboard.html"><i class="bi bi-mortarboard-fill"></i> SMD System</a>
+            <div class="d-flex align-items-center">
+                <span class="text-white me-3"><i class="bi bi-person-circle"></i> <span id="userName">Principal</span></span>
+                <button class="btn btn-outline-light btn-sm" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="sidebar">
+        <nav class="nav flex-column">
+            <a class="nav-link" href="dashboard.html"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+            <a class="nav-link" href="syllabuses.html"><i class="bi bi-file-earmark-text me-2"></i> Syllabuses</a>
+            <a class="nav-link active" href="approvals.html"><i class="bi bi-check-circle me-2"></i> Approvals</a>
+            <a class="nav-link" href="reports.html"><i class="bi bi-bar-chart me-2"></i> Reports</a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="mb-4">
+                <h2 class="fw-bold">Phê Duyệt Cuối Cùng</h2>
+                <p class="text-muted">Duyệt đề cương chiến lược quan trọng</p>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold mb-0">Đề Cương Chờ Phê Duyệt</h5>
+                        <div>
+                            <select class="form-select form-select-sm" id="filterStatus" onchange="loadSyllabuses()">
+                                <option value="all">Tất cả trạng thái</option>
+                                <option value="pending_principal_approval">Chờ Principal duyệt</option>
+                                <option value="pending_aa_approval">Chờ AA duyệt</option>
+                                <option value="pending_hod_approval">Chờ HOD duyệt</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Mã MH</th>
+                                    <th>Tên Môn Học</th>
+                                    <th>Người Tạo</th>
+                                    <th>Trạng Thái</th>
+                                    <th>Ngày Tạo</th>
+                                    <th>Hành Động</th>
+                                </tr>
+                            </thead>
+                            <tbody id="syllabusTableBody">
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">
+                                        <div class="spinner-border text-primary"></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Approve -->
+    <div class="modal fade" id="approveModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title"><i class="bi bi-check-circle"></i> Phê Duyệt Đề Cương</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <strong>Mã MH:</strong> <span id="approveCode"></span><br>
+                        <strong>Tên:</strong> <span id="approveTitle"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nhận xét (tùy chọn):</label>
+                        <textarea class="form-control" id="approveComment" rows="3" placeholder="Nhập nhận xét của bạn..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-success" onclick="submitApproval()">
+                        <i class="bi bi-check-circle"></i> Phê Duyệt
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Reject -->
+    <div class="modal fade" id="rejectModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title"><i class="bi bi-x-circle"></i> Từ Chối Đề Cương</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <strong>Mã MH:</strong> <span id="rejectCode"></span><br>
+                        <strong>Tên:</strong> <span id="rejectTitle"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Lý do từ chối <span class="text-danger">*</span>:</label>
+                        <textarea class="form-control" id="rejectComment" rows="3" placeholder="Vui lòng nhập lý do từ chối..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-danger" onclick="submitRejection()">
+                        <i class="bi bi-x-circle"></i> Từ Chối
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal View Workflow -->
+    <div class="modal fade" id="workflowModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-clock-history"></i> Lịch Sử Workflow</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="workflowContent">
+                        <div class="text-center py-4">
+                            <div class="spinner-border text-primary"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_URL = 'http://localhost:8000';
+        let currentSyllabusId = null;
+        let approveModalInstance, rejectModalInstance, workflowModalInstance;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            approveModalInstance = new bootstrap.Modal(document.getElementById('approveModal'));
+            rejectModalInstance = new bootstrap.Modal(document.getElementById('rejectModal'));
+            workflowModalInstance = new bootstrap.Modal(document.getElementById('workflowModal'));
+        });
+
+        function checkAuth() {
+            const token = localStorage.getItem('access_token');
+            const userData = JSON.parse(localStorage.getItem('user_data') || '{}');
+            if (!token) { window.location.href = 'http://localhost:3000'; return null; }
+            if (userData.full_name) document.getElementById('userName').textContent = userData.full_name;
+            return token;
+        }
+
+        function logout() { 
+            localStorage.clear(); 
+            window.location.href = 'http://localhost:3000'; 
+        }
+
+        async function loadSyllabuses() {
+            const token = checkAuth();
+            if (!token) return;
+            
+            const filterStatus = document.getElementById('filterStatus').value;
+            let url = `${API_URL}/api/principal/dashboard/pending-syllabuses?limit=100`;
+            
+            console.log('Fetching from:', url);
+            try {
+                const res = await fetch(url, { 
+                    headers: { 'Authorization': `Bearer ${token}` } 
+                });
+                
+                console.log('Response status:', res.status);
+                if (res.ok) {
+                    let syllabuses = await res.json();
+                    
+                    // Filter by status if not "all"
+                    if (filterStatus !== 'all') {
+                        syllabuses = syllabuses.filter(s => s.workflow_status === filterStatus);
+                    }
+                    
+                    const tbody = document.getElementById('syllabusTableBody');
+                    if (!syllabuses || syllabuses.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">Không có đề cương chờ phê duyệt</td></tr>';
+                    } else {
+                        tbody.innerHTML = syllabuses.map(s => {
+                            const statusBadge = getStatusBadge(s.workflow_status);
+                            return `
+                                <tr>
+                                    <td><strong>${s.code || 'N/A'}</strong></td>
+                                    <td>${s.title || 'N/A'}</td>
+                                    <td>
+                                        ${s.creator_name || 'N/A'}<br>
+                                        <small class="text-muted">${s.creator_email || ''}</small>
+                                    </td>
+                                    <td>${statusBadge}</td>
+                                    <td>${new Date(s.created_at).toLocaleDateString('vi-VN')}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-success btn-action me-1" onclick="openApproveModal(${s.id}, '${s.code}', '${s.title}')" title="Phê duyệt">
+                                            <i class="bi bi-check-circle"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger btn-action me-1" onclick="openRejectModal(${s.id}, '${s.code}', '${s.title}')" title="Từ chối">
+                                            <i class="bi bi-x-circle"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-info btn-action" onclick="viewWorkflow(${s.id})" title="Xem lịch sử">
+                                            <i class="bi bi-clock-history"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('');
+                    }
+                } else {
+                    const errorText = await res.text().catch(() => 'Unknown');
+                    console.error('API Error:', res.status, errorText);
+                    showError('Không thể tải dữ liệu: ' + res.status + ' - ' + res.statusText);
+                    const tbody = document.getElementById('syllabusTableBody');
+                    tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Lỗi API: ${res.status}</td></tr>`;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Lỗi kết nối: ' + error.message);
+                const tbody = document.getElementById('syllabusTableBody');
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Lỗi: ${error.message}</td></tr>`;
+            }
+        }
+
+        function getStatusBadge(status) {
+            const statusMap = {
+                'pending_principal_approval': { text: 'Chờ Principal', class: 'badge-pending' },
+                'pending_aa_approval': { text: 'Chờ AA', class: 'badge-pending' },
+                'pending_hod_approval': { text: 'Chờ HOD', class: 'badge-pending' },
+                'approved': { text: 'Đã duyệt', class: 'badge-approved' },
+                'rejected': { text: 'Từ chối', class: 'badge-rejected' }
+            };
+            const info = statusMap[status] || { text: status, class: 'bg-secondary' };
+            return `<span class="badge ${info.class}">${info.text}</span>`;
+        }
+
+        function openApproveModal(id, code, title) {
+            currentSyllabusId = id;
+            document.getElementById('approveCode').textContent = code;
+            document.getElementById('approveTitle').textContent = title;
+            document.getElementById('approveComment').value = '';
+            approveModalInstance.show();
+        }
+
+        function openRejectModal(id, code, title) {
+            currentSyllabusId = id;
+            document.getElementById('rejectCode').textContent = code;
+            document.getElementById('rejectTitle').textContent = title;
+            document.getElementById('rejectComment').value = '';
+            rejectModalInstance.show();
+        }
+
+        async function submitApproval() {
+            const token = checkAuth();
+            if (!token || !currentSyllabusId) return;
+            
+            const comment = document.getElementById('approveComment').value;
+            
+            try {
+                const res = await fetch(`${API_URL}/workflow/final-approve`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        syllabus_id: currentSyllabusId,
+                        comment: comment || 'Approved by Principal'
+                    })
+                });
+                
+                if (res.ok) {
+                    approveModalInstance.hide();
+                    showSuccess('Phê duyệt thành công!');
+                    loadSyllabuses();
+                } else {
+                    const error = await res.json();
+                    showError('Lỗi: ' + (error.detail || 'Không thể phê duyệt'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Lỗi khi phê duyệt');
+            }
+        }
+
+        async function submitRejection() {
+            const token = checkAuth();
+            if (!token || !currentSyllabusId) return;
+            
+            const comment = document.getElementById('rejectComment').value.trim();
+            if (!comment) {
+                alert('Vui lòng nhập lý do từ chối');
+                return;
+            }
+            
+            try {
+                const res = await fetch(`${API_URL}/workflow/reject`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        syllabus_id: currentSyllabusId,
+                        comment: comment
+                    })
+                });
+                
+                if (res.ok) {
+                    rejectModalInstance.hide();
+                    showSuccess('Đã từ chối đề cương');
+                    loadSyllabuses();
+                } else {
+                    const error = await res.json();
+                    showError('Lỗi: ' + (error.detail || 'Không thể từ chối'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Lỗi khi từ chối');
+            }
+        }
+
+        async function viewWorkflow(syllabusId) {
+            const token = checkAuth();
+            if (!token) return;
+            
+            workflowModalInstance.show();
+            const content = document.getElementById('workflowContent');
+            content.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary"></div></div>';
+            
+            try {
+                const res = await fetch(`${API_URL}/workflow/${syllabusId}/events`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.items && data.items.length > 0) {
+                        content.innerHTML = `
+                            <div class="timeline">
+                                ${data.items.map(event => `
+                                    <div class="mb-3 pb-3 border-bottom">
+                                        <div class="d-flex justify-content-between">
+                                            <strong>${event.action}</strong>
+                                            <small class="text-muted">${new Date(event.created_at).toLocaleString('vi-VN')}</small>
+                                        </div>
+                                        <div><small class="text-muted">${event.from_status} → ${event.to_status}</small></div>
+                                        ${event.comment ? `<div class="mt-1"><em>"${event.comment}"</em></div>` : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                    } else {
+                        content.innerHTML = '<p class="text-center text-muted">Chưa có lịch sử workflow</p>';
+                    }
+                } else {
+                    content.innerHTML = '<p class="text-center text-danger">Không thể tải lịch sử</p>';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                content.innerHTML = '<p class="text-center text-danger">Lỗi khi tải dữ liệu</p>';
+            }
+        }
+
+        function showSuccess(message) {
+            alert('✓ ' + message);
+        }
+
+        function showError(message) {
+            alert('✗ ' + message);
+        }
+
+        checkAuth();
+        loadSyllabuses();
+    </script>
+</body>
+</html>

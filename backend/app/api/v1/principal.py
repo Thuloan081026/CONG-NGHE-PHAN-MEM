@@ -38,18 +38,18 @@ def get_dashboard_stats(
     
     # Count syllabuses by workflow status
     published = db.execute(text(
-        "SELECT COUNT(*) FROM syllabuses WHERE workflow_status IN ('approved', 'published')"
+        "SELECT COUNT(*) FROM syllabuses WHERE status IN ('approved', 'published')"
     )).scalar()
     
-    draft = db.execute(text("SELECT COUNT(*) FROM syllabuses WHERE workflow_status = 'draft'")).scalar()
+    draft = db.execute(text("SELECT COUNT(*) FROM syllabuses WHERE status = 'draft'")).scalar()
     
     # Count pending approvals (all pending states)
     pending_approval = db.execute(text(
-        "SELECT COUNT(*) FROM syllabuses WHERE workflow_status IN ('pending_hod_approval', 'pending_principal_approval', 'pending_aa_approval')"
+        "SELECT COUNT(*) FROM syllabuses WHERE status IN ('submitted', 'hod_approved')"
     )).scalar()
     
     # Count rejected
-    rejected = db.execute(text("SELECT COUNT(*) FROM syllabuses WHERE workflow_status = 'rejected'")).scalar()
+    rejected = db.execute(text("SELECT COUNT(*) FROM syllabuses WHERE status = 'rejected'")).scalar()
     
     return {
         "total_users": total_users or 0,
@@ -75,11 +75,11 @@ def get_pending_syllabuses(
     """Get syllabuses pending approval"""
     result = db.execute(text(
         """
-        SELECT s.id, s.subject_code, s.subject_name, s.workflow_status, s.created_at,
+        SELECT s.id, s.subject_code, s.subject_name, s.status, s.created_at,
                u.full_name as creator_name, u.email as creator_email
         FROM syllabuses s
         LEFT JOIN users u ON s.created_by = u.id
-        WHERE s.workflow_status IN ('pending_hod_approval', 'pending_principal_approval', 'pending_aa_approval')
+        WHERE s.status IN ('submitted', 'hod_approved', 'draft')
         ORDER BY s.created_at DESC
         LIMIT :limit
         """
@@ -91,7 +91,7 @@ def get_pending_syllabuses(
             "id": row[0],
             "code": row[1],
             "title": row[2],
-            "workflow_status": row[3],
+            "workflow_status": row[3],  # This is actually status column
             "created_at": row[4].isoformat() if row[4] else None,
             "creator_name": row[5],
             "creator_email": row[6]

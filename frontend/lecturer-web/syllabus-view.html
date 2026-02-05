@@ -283,6 +283,125 @@
         let syllabusId = null;
         let syllabusData = null;
 
+        // Mock data for testing
+        const mockSyllabusData = {
+            1: {
+                id: 1,
+                subject_code: 'CS301',
+                subject_name: 'Cơ sở dữ liệu nâng cao',
+                credits: 3,
+                semester: 5,
+                academic_year: '2025-2026',
+                department: 'CNTT',
+                faculty: 'CNTT',
+                workflow_status: 'published',
+                description: 'Môn học về thiết kế và quản lý cơ sở dữ liệu nâng cao',
+                objectives: 'Sinh viên nắm vững các kỹ thuật thiết kế CSDL, tối ưu hóa truy vấn và quản trị CSDL',
+                content: 'Mô hình quan hệ, SQL nâng cao, Transaction, Indexing, Query Optimization',
+                teaching_methods: 'Gi강ng dạy lý thuyết kết hợp thực hành',
+                assessment_methods: 'Bài tập: 20%, Giữa kỳ: 30%, Cuối kỳ: 50%',
+                prerequisites: 'CS201',
+                clos: [
+                    { code: 'CLO1', description: 'Hiểu các khái niệm CSDL nâng cao' },
+                    { code: 'CLO2', description: 'Thiết kế được CSDL tối ưu' },
+                    { code: 'CLO3', description: 'Viết được SQL phức tạp' }
+                ],
+                references: 'Database System Concepts - Silberschatz'
+            },
+            2: {
+                id: 2,
+                subject_code: 'CS401',
+                subject_name: 'Trí tuệ nhân tạo',
+                credits: 4,
+                semester: 7,
+                academic_year: '2025-2026',
+                department: 'CNTT',
+                faculty: 'CNTT',
+                workflow_status: 'in_review',
+                description: 'Giới thiệu các khái niệm cơ bản về AI và Machine Learning',
+                objectives: 'Hiểu các thuật toán AI, áp dụng ML vào bài toán thực tế',
+                content: 'Search algorithms, Knowledge representation, Machine Learning, Neural Networks',
+                teaching_methods: 'Lý thuyết và thực hành dự án',
+                assessment_methods: 'Project: 40%, Giữa kỳ: 20%, Cuối kỳ: 40%',
+                prerequisites: 'CS201, CS301',
+                clos: [
+                    { code: 'CLO1', description: 'Nắm vững lý thuyết AI cơ bản' },
+                    { code: 'CLO2', description: 'Áp dụng ML algorithms' },
+                    { code: 'CLO3', description: 'Xây dựng hệ thống AI đơn giản' }
+                ],
+                references: 'Artificial Intelligence: A Modern Approach - Russell & Norvig'
+            },
+            3: {
+                id: 3,
+                subject_code: 'CS201',
+                subject_name: 'Cấu trúc dữ liệu',
+                credits: 4,
+                semester: 3,
+                academic_year: '2025-2026',
+                department: 'CNTT',
+                faculty: 'CNTT',
+                workflow_status: 'published',
+                description: 'Các cấu trúc dữ liệu cơ bản và nâng cao',
+                objectives: 'Sinh viên hiểu và vận dụng các cấu trúc dữ liệu',
+                content: 'Array, Linked List, Stack, Queue, Tree, Graph, Hash Table',
+                teaching_methods: 'Lý thuyết và coding thực hành',
+                assessment_methods: 'Lab: 30%, Giữa kỳ: 30%, Cuối kỳ: 40%',
+                prerequisites: 'CS101',
+                clos: [
+                    { code: 'CLO1', description: 'Hiểu các CTDL cơ bản' },
+                    { code: 'CLO2', description: 'Cài đặt CTDL bằng C++/Java' },
+                    { code: 'CLO3', description: 'Phân tích độ phức tạp thuật toán' }
+                ],
+                references: 'Data Structures and Algorithms - Cormen'
+            },
+            4: {
+                id: 4,
+                subject_code: 'CS102',
+                subject_name: 'Lập trình hướng đối tượng',
+                credits: 3,
+                semester: 2,
+                academic_year: '2025-2026',
+                department: 'CNTT',
+                faculty: 'CNTT',
+                workflow_status: 'draft',
+                description: 'Các khái niệm OOP và lập trình Java/C++',
+                objectives: 'Nắm vững tư duy OOP và áp dụng vào thực tế',
+                content: 'Class, Object, Inheritance, Polymorphism, Abstraction, Encapsulation',
+                teaching_methods: 'Lý thuyết và bài tập coding',
+                assessment_methods: 'Assignments: 40%, Midterm: 20%, Final: 40%',
+                prerequisites: 'CS101',
+                clos: [
+                    { code: 'CLO1', description: 'Hiểu nguyên lý OOP' },
+                    { code: 'CLO2', description: 'Lập trình Java/C++ OOP' },
+                    { code: 'CLO3', description: 'Thiết kế hệ thống OOP' }
+                ],
+                references: 'Head First Java, Effective Java'
+            },
+            5: {
+                id: 5,
+                subject_code: 'CS303',
+                subject_name: 'Mạng máy tính',
+                credits: 3,
+                semester: 5,
+                academic_year: '2025-2026',
+                department: 'CNTT',
+                faculty: 'CNTT',
+                workflow_status: 'published',
+                description: 'Kiến thức về mạng máy tính và giao thức mạng',
+                objectives: 'Hiểu kiến trúc mạng và các giao thức Internet',
+                content: 'OSI Model, TCP/IP, Routing, Network Security',
+                teaching_methods: 'Lý thuyết và lab thực hành',
+                assessment_methods: 'Lab: 25%, Giữa kỳ: 35%, Cuối kỳ: 40%',
+                prerequisites: 'CS201',
+                clos: [
+                    { code: 'CLO1', description: 'Hiểu mô hình OSI/TCP-IP' },
+                    { code: 'CLO2', description: 'Cấu hình mạng cơ bản' },
+                    { code: 'CLO3', description: 'Phân tích giao thức mạng' }
+                ],
+                references: 'Computer Networking: A Top-Down Approach'
+            }
+        };
+
         // Get syllabus ID from URL
         $(document).ready(function() {
             // Hide loader immediately
@@ -302,10 +421,25 @@
         // Load syllabus data
         async function loadSyllabus() {
             try {
+                // Try to use mock data first
+                if (mockSyllabusData[syllabusId]) {
+                    console.log('Using mock data for syllabus ID:', syllabusId);
+                    syllabusData = mockSyllabusData[syllabusId];
+                    displaySyllabus(syllabusData);
+                    $('.loader-bg').fadeOut();
+                    return;
+                }
+
+                // Otherwise try API
                 const token = localStorage.getItem('token') || localStorage.getItem('access_token');
                 if (!token) {
                     console.error('No token found');
-                    window.location.href = 'login1.html';
+                    showAlert('warning', 'Not authenticated. Showing mock data.');
+                    // Use first mock data as fallback
+                    if (mockSyllabusData[1]) {
+                        syllabusData = mockSyllabusData[1];
+                        displaySyllabus(syllabusData);
+                    }
                     return;
                 }
 
